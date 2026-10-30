@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: masthead, a "Right now" band, a two-column grid of life areas with project cards, then a Wins shelf and an Idea Vault. */
+:root {
+  --bg: #f4f1f3;
+  --surface: #ffffff;
+  --ink: #2a2027;
+  --muted: #6f6169;
+  --line: #e3dae0;
+  --accent: #5b2d48;
+  --accent-soft: #efe2ea;
+  --band-fg: #fbf6f9;
+
+  --t-active-bg: #dcf1e2; --t-active-fg: #1f6b3a;
+  --t-next-bg: #dde9fb;   --t-next-fg: #1f4f99;
+  --t-time-bg: #fcebcf;   --t-time-fg: #8a5300;
+  --t-later-bg: #ebe7ea;  --t-later-fg: #5c5359;
+  --t-done-bg: #efe2ea;   --t-done-fg: #5b2d48;
+
+  --f-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #19141a; --surface: #241d24; --ink: #f1e9ee; --muted: #b3a5ad; --line: #3a2f38;
+    --accent: #d9a6c4; --accent-soft: #3a2533; --band-fg: #fbf6f9;
+    --t-active-bg: #1d3a27; --t-active-fg: #9fe0b4;
+    --t-next-bg: #1c2e4d;   --t-next-fg: #a9c8f5;
+    --t-time-bg: #3d2c10;   --t-time-fg: #f5cb85;
+    --t-later-bg: #2f292e;  --t-later-fg: #c4b9c0;
+    --t-done-bg: #3a2533;   --t-done-fg: #e7bcd5;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #19141a; --surface: #241d24; --ink: #f1e9ee; --muted: #b3a5ad; --line: #3a2f38;
+  --accent: #d9a6c4; --accent-soft: #3a2533; --band-fg: #fbf6f9;
+  --t-active-bg: #1d3a27; --t-active-fg: #9fe0b4;
+  --t-next-bg: #1c2e4d;   --t-next-fg: #a9c8f5;
+  --t-time-bg: #3d2c10;   --t-time-fg: #f5cb85;
+  --t-later-bg: #2f292e;  --t-later-fg: #c4b9c0;
+  --t-done-bg: #3a2533;   --t-done-fg: #e7bcd5;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Masthead */
+.mast { padding-block: 40px 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(40px, 7vw, 64px); line-height: 1; margin: 0; text-wrap: balance; }
+h1 em { color: var(--accent); }
+.example-note { font-size: 13px; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 999px; padding: 6px 14px; }
+
+/* Right now band */
+.band { background: #5b2d48; color: var(--band-fg); border-radius: 20px; padding: 24px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; }
+.band h2 { font-family: var(--f-display); font-weight: 400; font-size: 30px; margin: 0 0 12px; }
+.band ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: p; }
+.band ol li { counter-increment: p; display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.band ol li::before { content: counter(p); width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.16); display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+.band .sub { opacity: .72; font-size: 13px; display: block; }
+.week { background: rgba(255,255,255,.08); border-radius: 14px; padding: 16px 18px; }
+.week h3 { margin: 0 0 8px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.week ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.week li { display: flex; gap: 10px; }
+.week li b { min-width: 64px; font-weight: 600; opacity: .85; }
+
+/* Areas */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 40px 0 14px; }
+.section-head h2 { font-family: var(--f-display); font-weight: 400; font-size: 32px; margin: 0; }
+.section-head p { margin: 0; color: var(--muted); font-size: 13px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.areas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.area { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; gap: 10px; align-content: start; }
+.area-title { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.area-title .dot { width: 10px; height: 10px; border-radius: 3px; background: var(--accent); transform: rotate(45deg); }
+.card { border-top: 1px solid var(--line); padding-top: 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; }
+.card:first-of-type { border-top: 0; padding-top: 0; }
+.card h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; grid-column: 1 / -1; }
+.thread { grid-column: 1 / -1; font-size: 12px; color: var(--muted); opacity: .85; }
+
+.tag { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; white-space: nowrap; align-self: start; }
+.tag.active { background: var(--t-active-bg); color: var(--t-active-fg); }
+.tag.next   { background: var(--t-next-bg);   color: var(--t-next-fg); }
+.tag.time   { background: var(--t-time-bg);   color: var(--t-time-fg); }
+.tag.later  { background: var(--t-later-bg);  color: var(--t-later-fg); }
+.tag.done   { background: var(--t-done-bg);   color: var(--t-done-fg); }
+
+/* Wins */
+.wins { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.win { background: var(--accent-soft); border-radius: 16px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.win .star { color: var(--accent); font-size: 18px; line-height: 1; }
+.win h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.win p { margin: 0; font-size: 13px; color: var(--muted); }
+
+/* Idea vault */
+.vault { display: flex; flex-wrap: wrap; gap: 10px; }
+.idea { background: var(--surface); border: 1px dashed var(--line); border-radius: 12px; padding: 10px 14px; font-size: 14px; }
+.idea span { color: var(--muted); font-size: 12px; display: block; }
+
+/* How it works */
+.how { margin: 44px 0 48px; border-top: 1px solid var(--line); padding-top: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.how h3 { font-family: var(--f-display); font-weight: 400; font-size: 22px; margin: 0 0 4px; }
+.how p { margin: 0; color: var(--muted); font-size: 14px; }
+.how code { font-size: 13px; background: var(--accent-soft); color: var(--ink); padding: 1px 6px; border-radius: 6px; }
+
+@media (max-width: 820px) {
+  .band { grid-template-columns: 1fr; }
+  .areas { grid-template-columns: minmax(0, 1fr); }
+  .wins { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .how { grid-template-columns: 1fr; }
+}
+@media (max-width: 440px) {
+  .wins { grid-template-columns: minmax(0, 1fr); }
+  .band { padding: 20px 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <p class="eyebrow">My hub · rebuilt by Claude on request</p>
+      <h1>Life <em>Planner</em></h1>
+    </div>
+    <span class="example-note">Example content. Ask Claude to fill it with yours.</span>
+  </header>
+
+  <section class="band" aria-labelledby="now">
+    <div>
+      <h2 id="now">Right now</h2>
+      <ol>
+        <li><span>Move three times this week<span class="sub">Health first. Short walks count.</span></span></li>
+        <li><span>Send two job applications<span class="sub">Good enough beats perfect.</span></span></li>
+        <li><span>One small creative session<span class="sub">Optional, for fun.</span></span></li>
+      </ol>
+    </div>
+    <div class="week">
+      <h3>This week</h3>
+      <ul>
+        <li><b>Health</b><span>2 walks, 1 swim, stretch Sunday</span></li>
+        <li><b>Career</b><span>Rewrite resume summary</span></li>
+        <li><b>Connect</b><span>Message one former colleague</span></li>
+        <li><b>Rest</b><span>A slow Saturday morning</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <h2>Areas</h2>
+    <div class="legend" aria-label="Tag legend">
+      <span class="tag active">Active</span><span class="tag next">Next</span><span class="tag time">Time-bound</span><span class="tag later">Later</span><span class="tag done">Done</span>
+    </div>
+  </div>
+
+  <div class="areas">
+    <section class="area">
+      <h2 class="area-title"><span class="dot"></span>Career</h2>
+      <article class="card"><h3>Resume refresh</h3><span class="tag active">Active</span><p>Down to one page. Summary rewrite is next.</p><span class="thread">Career · Resume</span></article>
+      <article class="card"><h3>Job applications</h3><span class="tag active">Active</span><p>Two sent this week. Aim for steady, not perfect.</p><span class="thread">Career · Job search</span></article>
+      <article class="card"><h3>Networking habit</h3><span class="tag next">Next</span><p>Reach out to one person a week.</p><span class="thread">Career · Networking</span></article>
+      <article class="card"><h3>Personal website</h3><span class="tag done">Done</span><p>Live. Maintenance only from here.</p><span class="thread">Career · Website</span></article>
+    </section>
+
+    <section class="area">
+      <h2 class="area-title"><span class="dot"></span>Health</h2>
+      <article class="card"><h3>Weekly movement</h3><span class="tag active">Active</span><p>Three sessions: walk, swim, stretch. Build slowly.</p><span class="thread">Health · Exercise</span></article>
+      <article class="card"><h3>Sleep routine</h3><span class="tag next">Next</span><p>Screens off by 10:30 on weeknights.</p><span class="thread">Health · Sleep</span></article>
+      <article class="card"><h3>Spring charity hike</h3><span class="tag time">Time-bound</span><p>Signed up. Training starts in the new year.</p><span class="thread">Health · Exercise</span></article>
+    </section>
+
+    <section class="area">
+      <h2 class="area-title"><span class="dot"></span>Creative</h2>
+      <article class="card"><h3>Watercolour basics</h3><span class="tag active">Active</span><p>One small painting a week, no pressure.</p><span class="thread">Creative · Fun projects</span></article>
+      <article class="card"><h3>Family photo book</h3><span class="tag time">Time-bound</span><p>A gift for the holidays. Finish, don't expand.</p><span class="thread">Creative · Fun projects</span></article>
+      <article class="card"><h3>Tiny browser game</h3><span class="tag later">Later</span><p>Parked until career has momentum.</p><span class="thread">Creative · Side projects</span></article>
+    </section>
+
+    <section class="area">
+      <h2 class="area-title"><span class="dot"></span>Life</h2>
+      <article class="card"><h3>Goals &amp; roadmap</h3><span class="tag active">Active</span><p>Quarterly check-in. Keep it light.</p><span class="thread">Life · Goals &amp; roadmap</span></article>
+      <article class="card"><h3>Declutter one room</h3><span class="tag next">Next</span><p>Start with the hall closet.</p><span class="thread">Life · Home</span></article>
+      <article class="card"><h3>Summer trip</h3><span class="tag later">Later</span><p>Pick a place in the spring.</p><span class="thread">Life · Travel</span></article>
+    </section>
+  </div>
+
+  <div class="section-head">
+    <h2>Wins</h2>
+    <p>Things you finished. Worth remembering.</p>
+  </div>
+  <div class="wins">
+    <article class="win"><span class="star" aria-hidden="true">✦</span><h3>Website launched</h3><p>From idea to live site.</p></article>
+    <article class="win"><span class="star" aria-hidden="true">✦</span><h3>First 10 swims</h3><p>A routine that stuck.</p></article>
+    <article class="win"><span class="star" aria-hidden="true">✦</span><h3>Gave a talk</h3><p>Nervous, did it anyway.</p></article>
+    <article class="win"><span class="star" aria-hidden="true">✦</span><h3>Finished a course</h3><p>Certificate in hand.</p></article>
+  </div>
+
+  <div class="section-head">
+    <h2>Idea Vault</h2>
+    <p>Saved, not scheduled. No pressure.</p>
+  </div>
+  <div class="vault">
+    <div class="idea">Sourdough experiments<span>Creative</span></div>
+    <div class="idea">Learn basic Spanish<span>Life</span></div>
+    <div class="idea">Balcony herb garden<span>Life</span></div>
+    <div class="idea">Volunteer at the library<span>Life</span></div>
+    <div class="idea">Podcast with a friend<span>Creative</span></div>
+    <div class="idea">Write a how-to blog post<span>Career</span></div>
+  </div>
+
+  <section class="how" aria-label="How it works">
+    <div><h3>One project</h3><p>Make a Claude project for your life. Paste the project instructions into its settings.</p></div>
+    <div><h3>One thread per topic</h3><p>Name each thread <code>Area · Topic</code>, like <code>Health · Exercise</code>. Talk about that topic there.</p></div>
+    <div><h3>Refresh on request</h3><p>Ask Claude to refresh your dashboard. It reads each thread's latest status and rebuilds this page.</p></div>
+  </section>
+</div>
+</body>
+</html>
