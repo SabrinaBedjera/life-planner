@@ -1,0 +1,266 @@
+[
+  {
+    "family": "Chakra Petch",
+    "style": "normal",
+    "weight": "500",
+    "file": "chakra-petch-normal-500.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 9956
+  },
+  {
+    "family": "Chakra Petch",
+    "style": "normal",
+    "weight": "600",
+    "file": "chakra-petch-normal-600.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 9968
+  },
+  {
+    "family": "Chakra Petch",
+    "style": "normal",
+    "weight": "700",
+    "file": "chakra-petch-normal-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 9900
+  },
+  {
+    "family": "IBM Plex Sans",
+    "style": "normal",
+    "weight": "400 600",
+    "file": "ibm-plex-sans-normal-400-600.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 45712
+  },
+  {
+    "family": "Press Start 2P",
+    "style": "normal",
+    "weight": "400",
+    "file": "press-start-2p-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 12512
+  },
+  {
+    "family": "DM Serif Display",
+    "style": "italic",
+    "weight": "400",
+    "file": "dm-serif-display-italic-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 24572
+  },
+  {
+    "family": "DM Serif Display",
+    "style": "normal",
+    "weight": "400",
+    "file": "dm-serif-display-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 24744
+  },
+  {
+    "family": "Manrope",
+    "style": "normal",
+    "weight": "400 800",
+    "file": "manrope-normal-400-800.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 24532
+  },
+  {
+    "family": "VT323",
+    "style": "normal",
+    "weight": "400",
+    "file": "vt323-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 17936
+  },
+  {
+    "family": "DM Mono",
+    "style": "normal",
+    "weight": "400",
+    "file": "dm-mono-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 14820
+  },
+  {
+    "family": "DM Mono",
+    "style": "normal",
+    "weight": "500",
+    "file": "dm-mono-normal-500.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 14988
+  },
+  {
+    "family": "Archivo Black",
+    "style": "normal",
+    "weight": "400",
+    "file": "archivo-black-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 18604
+  },
+  {
+    "family": "Fraunces",
+    "style": "italic",
+    "weight": "500",
+    "file": "fraunces-italic-500.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 42372
+  },
+  {
+    "family": "Fraunces",
+    "style": "normal",
+    "weight": "500 700",
+    "file": "fraunces-normal-500-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 67304
+  },
+  {
+    "family": "Nunito Sans",
+    "style": "normal",
+    "weight": "400 700",
+    "file": "nunito-sans-normal-400-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 49648
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "italic",
+    "weight": "600",
+    "file": "cormorant-garamond-italic-600.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 23784
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "normal",
+    "weight": "600 700",
+    "file": "cormorant-garamond-normal-600-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 37640
+  },
+  {
+    "family": "Quicksand",
+    "style": "normal",
+    "weight": "400 700",
+    "file": "quicksand-normal-400-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 28244
+  },
+  {
+    "family": "Caveat",
+    "style": "normal",
+    "weight": "600 700",
+    "file": "caveat-normal-600-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 74932
+  },
+  {
+    "family": "UnifrakturMaguntia",
+    "style": "normal",
+    "weight": "400",
+    "file": "unifrakturmaguntia-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 26512
+  },
+  {
+    "family": "Cinzel",
+    "style": "normal",
+    "weight": "500 700",
+    "file": "cinzel-normal-500-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 25904
+  },
+  {
+    "family": "EB Garamond",
+    "style": "italic",
+    "weight": "400",
+    "file": "eb-garamond-italic-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 25388
+  },
+  {
+    "family": "EB Garamond",
+    "style": "normal",
+    "weight": "400 600",
+    "file": "eb-garamond-normal-400-600.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 44336
+  },
+  {
+    "family": "Pixelify Sans",
+    "style": "normal",
+    "weight": "400 700",
+    "file": "pixelify-sans-normal-400-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 12016
+  },
+  {
+    "family": "Anton",
+    "style": "normal",
+    "weight": "400",
+    "file": "anton-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 18612
+  },
+  {
+    "family": "Space Grotesk",
+    "style": "normal",
+    "weight": "400 700",
+    "file": "space-grotesk-normal-400-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 22288
+  },
+  {
+    "family": "Permanent Marker",
+    "style": "normal",
+    "weight": "400",
+    "file": "permanent-marker-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 29564
+  },
+  {
+    "family": "Playfair Display",
+    "style": "italic",
+    "weight": "500",
+    "file": "playfair-display-italic-500.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 23076
+  },
+  {
+    "family": "Playfair Display",
+    "style": "normal",
+    "weight": "500 800",
+    "file": "playfair-display-normal-500-800.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 38404
+  },
+  {
+    "family": "Crimson Pro",
+    "style": "italic",
+    "weight": "400",
+    "file": "crimson-pro-italic-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 19104
+  },
+  {
+    "family": "Crimson Pro",
+    "style": "normal",
+    "weight": "400 600",
+    "file": "crimson-pro-normal-400-600.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 48200
+  },
+  {
+    "family": "Shrikhand",
+    "style": "normal",
+    "weight": "400",
+    "file": "shrikhand-normal-400.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 15940
+  },
+  {
+    "family": "Karla",
+    "style": "normal",
+    "weight": "400 700",
+    "file": "karla-normal-400-700.woff2",
+    "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bytes": 24320
+  }
+]

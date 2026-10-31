@@ -1,0 +1,8 @@
+%page% .lpm-girly { position: relative; display: flex; align-items: center; justify-content: center; padding: 6px 0 4px; }
+%page% .lpm-collage { margin: 0; }
+%page% .lpm-collage img { display: block; width: min(780px, 82vw); height: auto; filter: drop-shadow(0 6px 10px rgba(143,13,85,.25)); }
+%page% .lpm-disco { position: absolute; left: -10px; top: -6px; width: clamp(64px, 11vw, 112px); transform: rotate(-8deg); filter: drop-shadow(0 8px 10px rgba(42,15,34,.28)); }
+%page% #lp-decor img { filter: drop-shadow(0 8px 10px rgba(42,15,34,.28)); }
+%page% .lpd-gp-cherries { width: 96px; top: 640px; left: calc(50% - 640px); transform: rotate(-10deg); }
+%page% .lpd-gp-heart { width: 70px; top: 320px; right: calc(50% - 620px); transform: rotate(12deg); }
+%page% .lpd-gp-martini { width: 96px; top: 980px; right: calc(50% - 640px); transform: rotate(6deg); }

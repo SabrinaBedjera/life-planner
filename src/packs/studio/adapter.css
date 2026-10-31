@@ -1,0 +1,11 @@
+/* Studio pack under another theme */
+:host { --paper: var(--t-bg); --card: var(--t-card); --ink: var(--t-ink); --muted: var(--t-muted); --line: var(--t-line);
+  --blush: var(--t-chip); --rose: var(--t-accent); --rose-dark: var(--t-accent); --pinky: var(--t-accent-3); --birch: var(--t-card-2); --birch-dark: var(--t-accent-4); --oak: var(--t-accent-4);
+  --sage: var(--t-card-2); --sage-dark: var(--t-accent-2); --olive: var(--t-accent-2); --olive-dark: var(--t-accent-2); --sky: var(--t-card-2);
+  --forest: var(--t-accent-2); --forest-2: var(--t-accent-2); --mustard: var(--t-accent-4); --terracotta: var(--t-accent); --wood: var(--t-accent-4);
+  --f-head: var(--t-font-display); --f-body: var(--t-font-body); --f-display: var(--t-font-display); }
+.mast { display: none; }
+.deco, .vignette { display: none; }
+.panel.has-deco .panel-head, .panel.has-deco:has(.deco.sm) .panel-head, .panel.has-deco:has(.deco.xs) .panel-head { padding-right: 0; min-height: 0; }
+.panel::before { background: var(--t-accent); }
+.step { background: var(--t-chip); color: var(--t-chip-ink); }

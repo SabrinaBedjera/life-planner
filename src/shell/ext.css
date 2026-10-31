@@ -1,0 +1,5 @@
+/* A pack shown inside another planner: only its tab content, no second header, nav or footer */
+.lp-root { min-height: 0 !important; background: none !important; padding: 0 !important; }
+%wrap% { max-width: none !important; margin: 0 !important; padding: 0 !important; }
+%header%, %nav%, %foot%, %ext% { display: none !important; }
+:host { background: none !important; min-height: 0 !important; }

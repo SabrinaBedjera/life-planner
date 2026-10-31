@@ -1,0 +1,9 @@
+/* Girly Pop pack under another theme */
+:host { --bg: var(--t-bg); --bg-2: var(--t-card-2); --surface: var(--t-card); --surface-2: var(--t-card-2); --fg: var(--t-ink); --muted: var(--t-muted); --line: var(--t-line);
+  --accent: var(--t-accent); --accent-soft: var(--t-chip); --on-accent: var(--t-accent-ink); --good: var(--t-good); --bad: var(--t-bad); --warn: var(--t-warn); --info: var(--t-accent-2);
+  --mint: var(--t-accent-3); --mint-ink: var(--t-ink); --blush: var(--t-chip); --emerald: var(--t-accent-2); --emerald-2: var(--t-accent-2); --lime: var(--t-accent-3); --gold: var(--t-accent-4);
+  --lcd: var(--t-card-2); --lcd-ink: var(--t-ink); --tick-off: var(--t-line);
+  --font-display: var(--t-font-display); --font-body: var(--t-font-body); --font-mono: var(--t-font-mono); --font-lcd: var(--t-font-mono); }
+.top, .gutter, .sparkfield, .sticker { display: none !important; }
+.card:has(> .s-empire) > :not(.card-head):not(.sticker) { margin-right: 0; }
+.card-head h2::after { display: none; }

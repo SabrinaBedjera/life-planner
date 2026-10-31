@@ -1,4 +1,4 @@
-<style>
+<style id="lpb-style">
 /* Life Planner backup kit: universal backups, safe imports and save warnings.
    Shared by every planner. Edit shared/backup-kit.html, then run `npm run sync`. */
 .lpb { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
@@ -28,10 +28,13 @@
   "use strict";
   var C = window.LP_BACKUP_CONFIG || {};
   var KEY = C.key, PLANNER = C.planner;
+  // C.store (used by the shared-codebase planners) holds several packs plus settings:
+  // { read() -> {packs:{id:data}, settings}, write(snapshot, exact), packs:{id:name}, active(id), enable(snapshot, ids) }
+  var STORE = C.store || null;
   var NAMES = { "girly-pop": "Girly Pop", arcade: "Arcade", studio: "Studio" };
   var NAME = NAMES[PLANNER] || PLANNER;
   var RESTORE = KEY + ":restore-point", LAST = KEY + ":last-backup", FLASH = KEY + ":flash";
-  var FORMAT = "life-planner-backup", VERSION = 1, MAX_BYTES = 25 * 1024 * 1024, REMIND_DAYS = 30;
+  var FORMAT = "life-planner-backup", VERSION = STORE ? 2 : 1, MAX_BYTES = 25 * 1024 * 1024, REMIND_DAYS = 30;
   var BAD = { "__proto__": 1, "constructor": 1, "prototype": 1 };
   var LABELS = { toread: "To read", appts: "Appointments", medits: "Meditations", spends: "Spending", todos: "To-dos", jobs: "Jobs", contacts: "Contacts", weeks: "Weeks" };
   var BTN = C.btnClass || "";
@@ -66,6 +69,7 @@
   function button(text, onClick, extra) { return h("button", { type: "button", "class": (BTN + " " + (extra || "")).trim(), text: text, on: onClick }); }
   function isQuota(e) { return !!e && (e.name === "QuotaExceededError" || e.name === "NS_ERROR_DOM_QUOTA_REACHED" || e.code === 22 || e.code === 1014); }
   function current() { // what the planner holds right now, including a change that failed to save
+    if (STORE) { try { return clean(STORE.read()); } catch (e) { return null; } }
     if (source) { try { var s = source(); if (s) return JSON.parse(JSON.stringify(s)); } catch (e) {} }
     return readJSON(KEY);
   }
@@ -112,6 +116,7 @@
   }
   function exportBackup(data) {
     data = data || current();
+    if (STORE && data && !Object.keys(data.packs || {}).length) data = null;
     if (!data) { say("There's nothing to back up yet."); return Promise.resolve(false); }
     return download("life-planner-" + PLANNER + "-backup-" + today() + ".json", JSON.stringify(envelope(data), null, 2)).then(function () {
       try { set(LAST, today()); } catch (e) {}
@@ -135,17 +140,36 @@
       if (typeof o.version !== "number" || o.version < 1) return { error: "This backup file looks damaged, so nothing was imported." };
       if (o.version > VERSION) return { error: "This backup was made by a newer version of Life Planner. Download the latest planner file from GitHub, then import it there." };
       if (typeof o.planner !== "string" || !isPlain(o.data)) return { error: "This backup file looks damaged, so nothing was imported." };
-      return { planner: o.planner, exportedAt: o.exportedAt, data: clean(o.data) };
+      if (o.version >= 2 && !isPlain(o.data.packs)) return { error: "This backup file looks damaged, so nothing was imported." };
+      return toShape({ planner: o.planner, exportedAt: o.exportedAt, data: clean(o.data), v2: o.version >= 2 });
     }
     // The older Girly Pop "Everything (JSON)" export, from before universal backups
     if (isPlain(o) && typeof o.exported === "string" && Array.isArray(o.roles)) {
-      return { planner: "girly-pop", exportedAt: o.exported, legacy: true, data: clean({
+      return toShape({ planner: "girly-pop", exportedAt: o.exported, legacy: true, data: clean({
         jobs: byId(o.roles), contacts: byId(o.contacts), projects: byId(o.projects), profile: byId(o.profile),
         weeks: byId(o.weeks), workouts: byId(o.workouts), creative: byId(o.creative), targets: byId(o.targets),
         settings: isPlain(o.settings) ? { main: o.settings } : {}
-      }) };
+      }) });
     }
     return { error: "This file isn't a Life Planner backup. Pick the .json file you exported from your planner." };
+  }
+  // Single-planner files keep the old shape; multi-pack planners see every backup as {packs, settings}.
+  function toShape(b) {
+    if (!STORE) {
+      if (b.v2) { // a backup from a newer shared-codebase planner: offer the part that matches this file
+        var mine = b.data.packs[PLANNER];
+        if (!isPlain(mine)) return { error: "This backup doesn't have any " + NAME + " content in it, so there's nothing to import here. Open it in the planner it came from." };
+        return { planner: PLANNER, from: b.planner, exportedAt: b.exportedAt, data: mine };
+      }
+      return b;
+    }
+    if (b.v2) {
+      var packs = {}; Object.keys(b.data.packs).forEach(function (id) { if (STORE.packs[id] && isPlain(b.data.packs[id])) packs[id] = b.data.packs[id]; });
+      return { planner: b.planner, exportedAt: b.exportedAt, data: { packs: packs, settings: isPlain(b.data.settings) ? b.data.settings : null } };
+    }
+    if (!STORE.packs[b.planner]) return { error: "This file isn't a Life Planner backup. Pick the .json file you exported from your planner." };
+    var one = {}; one[b.planner] = b.data;
+    return { planner: b.planner, exportedAt: b.exportedAt, legacy: b.legacy, data: { packs: one, settings: null } };
   }
   function count(v) {
     if (Array.isArray(v)) return v.length;
@@ -184,8 +208,9 @@
     pendingBackup = b;
     var title = h("h2", { id: "lpbTitle", text: "Import a backup" });
     if (b.error) return openDialog([title, h("p", { text: b.error }), h("div", { "class": "lpb-actions" }, [button("Close", closeDialog)])]);
-    var from = NAMES[b.planner] || b.planner;
+    var from = NAMES[b.from || b.planner] || b.from || b.planner;
     var intro = h("p", { text: "This backup is from " + from + ", saved " + nice(b.exportedAt) + (b.legacy ? " (an older Girly Pop export)." : ".") });
+    if (STORE) return showImportMulti(b, title, intro, from);
     if (b.planner !== PLANNER) {
       return openDialog([title, intro,
         h("p", { text: "To restore it, open your " + from + " planner and import it there. Moving information between different planners is coming in a future update, and this backup file will work with it." }),
@@ -208,11 +233,55 @@
       h("p", { "class": "lpb-small", text: "Before anything changes, a copy of your planner as it is now is saved in this browser, so you can use “Undo last import” at the bottom." }),
       h("div", { "class": "lpb-actions" }, [button("Add to what I have", function () { apply("merge"); }), replaceBtn, button("Cancel", closeDialog)])]);
   }
+  function choices(note) {
+    var replaceBtn = button("Replace with backup", function () {
+      if (!replaceBtn.dataset.armed) { replaceBtn.dataset.armed = "1"; replaceBtn.textContent = "Tap again to replace"; setTimeout(function () { replaceBtn.textContent = "Replace with backup"; delete replaceBtn.dataset.armed; }, 4000); return; }
+      apply("replace");
+    });
+    return [h("p", null, [h("strong", { text: "Add to what I have: " }), document.createTextNode("keeps everything in your planner and adds anything from the backup that's missing. Nothing you have is changed. Items you edited after the backup may appear twice.")]),
+      h("p", null, [h("strong", { text: "Replace: " }), document.createTextNode("each section in the backup replaces the same section in your planner. Sections the backup doesn't have stay as they are.")]),
+      note,
+      h("p", { "class": "lpb-small", text: "Before anything changes, a copy of your planner as it is now is saved in this browser, so you can use “Undo last import” at the bottom." }),
+      h("div", { "class": "lpb-actions" }, [button("Add to what I have", function () { apply("merge"); }), replaceBtn, button("Cancel", closeDialog)])];
+  }
+  function showImportMulti(b, title, intro, from) {
+    var cur = current() || { packs: {}, settings: {} };
+    var ids = Object.keys(b.data.packs);
+    if (!ids.length) return openDialog([title, intro, h("p", { text: "This backup is empty, so there's nothing to import." }), h("div", { "class": "lpb-actions" }, [button("Close", closeDialog)])]);
+    var rows = [], hidden = [];
+    ids.forEach(function (id) {
+      var inc = b.data.packs[id], have = cur.packs[id] || {}, pname = STORE.packs[id];
+      if (!STORE.active(id)) hidden.push(pname);
+      Object.keys(inc).forEach(function (k) {
+        var a = count(inc[k]), c = count(have[k]);
+        if (a === null && c === null) return;
+        rows.push(h("tr", null, [h("td", { text: (ids.length > 1 || id !== PLANNER ? pname + " · " : "") + label(k) }), h("td", { text: a === null ? "–" : String(a) }), h("td", { text: c === null ? "–" : String(c) })]));
+      });
+    });
+    var table = rows.length ? h("div", { "class": "lpb-table", tabindex: "0", "aria-label": "What the backup holds" }, [h("table", null, [h("thead", null, [h("tr", null, [h("th", { text: "Section" }), h("th", { text: "In backup" }), h("th", { text: "In your planner now" })])]), h("tbody", null, rows)])]) : null;
+    var notes = [];
+    if (b.planner !== PLANNER) notes.push("This backup comes from a different planner. Its content goes into the matching tabs here and is kept separate from your " + NAME + " content. Your theme and tab choices stay as they are.");
+    if (hidden.length) notes.push("Tabs for " + hidden.join(" and ") + " are switched off in this planner, so they'll be switched on to show what you import.");
+    openDialog([title, intro, table].concat(choices(notes.length ? h("p", { text: notes.join(" ") }) : null)));
+  }
+  function nextMulti(cur, b, mode) {
+    var next = clean(cur), inc = b.data;
+    Object.keys(inc.packs).forEach(function (id) {
+      var have = next.packs[id];
+      if (!isPlain(have)) next.packs[id] = clean(inc.packs[id]);
+      else if (mode === "replace") Object.keys(inc.packs[id]).forEach(function (k) { if (!BAD[k]) have[k] = clean(inc.packs[id][k]); });
+      else next.packs[id] = merge(have, clean(inc.packs[id]), 0);
+    });
+    if (b.planner === PLANNER && isPlain(inc.settings)) next.settings = mode === "replace" ? clean(inc.settings) : merge(next.settings || {}, clean(inc.settings), 0);
+    STORE.enable(next, Object.keys(inc.packs).filter(function (id) { return !STORE.active(id); }));
+    return next;
+  }
   function apply(mode, skipRestorePoint) {
     var b = pendingBackup; if (!b) return;
     var cur = current();
     var next;
-    if (!cur) next = clean(b.data);
+    if (STORE) next = nextMulti(cur || { packs: {}, settings: {} }, b, mode);
+    else if (!cur) next = clean(b.data);
     else if (mode === "replace") { next = clean(cur); Object.keys(b.data).forEach(function (k) { next[k] = clean(b.data[k]); }); }
     else next = merge(clean(cur), clean(b.data), 0);
     if (cur && !skipRestorePoint) {
@@ -227,9 +296,10 @@
             cont, button("Cancel", closeDialog)])]);
       }
     }
-    try { set(KEY, JSON.stringify(next)); }
+    try { if (STORE) STORE.write(next); else set(KEY, JSON.stringify(next)); }
     catch (e) {
       if (!skipRestorePoint) del(RESTORE);
+      if (STORE && cur) { try { STORE.write(cur, true); } catch (e2) {} }
       return openDialog([h("h2", { text: "That didn't fit" }),
         h("p", { text: isQuota(e) ? "This browser doesn't have enough storage space for the backup, so nothing was changed. Try “Add to what I have” with a smaller backup, or remove some photos first." : "This browser blocked the import, so nothing was changed." }),
         h("div", { "class": "lpb-actions" }, [button("Close", closeDialog)])]);
@@ -242,7 +312,7 @@
     var r = readJSON(RESTORE);
     if (!r || !isPlain(r.data)) { say("There's no import to undo."); status(); return; }
     if (!btn.dataset.armed) { btn.dataset.armed = "1"; btn.textContent = "Tap again to undo the import"; setTimeout(function () { btn.textContent = "Undo last import"; delete btn.dataset.armed; }, 4000); return; }
-    try { set(KEY, JSON.stringify(r.data)); } catch (e) { say("Undo didn't fit in this browser's storage. Nothing was changed."); return; }
+    try { if (STORE) STORE.write(r.data, true); else set(KEY, JSON.stringify(r.data)); } catch (e) { say("Undo didn't fit in this browser's storage. Nothing was changed."); return; }
     del(RESTORE);
     try { set(FLASH, "undone"); } catch (e) {}
     location.reload();
@@ -266,7 +336,7 @@
     undoBtns.forEach(function (b) { b.hidden = !hasUndo; });
   }
   function init() {
-    var mount = C.mount && document.querySelector(C.mount);
+    var mount = C.mountNode ? C.mountNode() : C.mount && document.querySelector(C.mount);
     bar = h("div", { "class": "lpb-bar", hidden: "" }); document.body.appendChild(bar);
     dlg = h("dialog", { "class": "lpb-dialog", "aria-labelledby": "lpbTitle" }); document.body.appendChild(dlg);
     dlg.addEventListener("close", function () { pendingBackup = null; });
@@ -333,14 +403,19 @@
     });
     return cur;
   }
+  var samplesFns = {};
   function restoreSamples() {
-    if (!samplesFn) return;
+    if (!samplesFn && !Object.keys(samplesFns).length) return;
     openDialog([h("h2", { id: "lpbTitle", text: "Restore sample content?" }),
       h("p", { text: "This adds the example items back into your planner, so you can see how everything works." }),
       h("p", { text: "Your own content stays exactly as it is: nothing is replaced or deleted, and examples that are already there aren't added twice. You can delete any sample item afterwards." }),
       h("div", { "class": "lpb-actions" }, [button("Add sample content", function () {
-        var next = addSamples(current() || {}, samplesFn());
-        try { set(KEY, JSON.stringify(next)); }
+        var next;
+        if (STORE) {
+          next = current() || { packs: {}, settings: {} };
+          Object.keys(samplesFns).forEach(function (id) { if (STORE.active(id)) next.packs[id] = addSamples(next.packs[id] || {}, samplesFns[id]()); });
+        } else next = addSamples(current() || {}, samplesFn());
+        try { if (STORE) STORE.write(next); else set(KEY, JSON.stringify(next)); }
         catch (e) { return openDialog([h("h2", { text: "That didn't fit" }), h("p", { text: "This browser doesn't have room to add the sample content, so nothing was changed." }), h("div", { "class": "lpb-actions" }, [button("Close", closeDialog)])]); }
         try { set(FLASH, "samples"); } catch (e) {}
         location.reload();
@@ -348,7 +423,7 @@
   }
 
   window.LPBackup = {
-    setSamples: function (fn) { samplesFn = fn; },
+    setSamples: function (fn, pack) { if (pack) samplesFns[pack] = fn; else samplesFn = fn; },
     restoreSamples: restoreSamples,
     saveFailed: saveFailed,
     setSource: function (fn) { source = fn; },

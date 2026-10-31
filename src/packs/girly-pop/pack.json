@@ -1,0 +1,98 @@
+{
+  "id": "girly-pop",
+  "name": "Girly Pop",
+  "short": "girly",
+  "title": "Life Planner · Girly Pop",
+  "viewSelector": "section.panel",
+  "viewId": "panel-",
+  "nav": "nav.tabs",
+  "navItem": "a.tab",
+  "header": "header.top",
+  "map": {
+    "card": ".card",
+    "head": ".card-head",
+    "btn": ".btn",
+    "field": ".field",
+    "tab": ".tab",
+    "nav": ".tabs",
+    "list": ".list",
+    "item": ".list li",
+    "hint": ".hint",
+    "chip": ".chip",
+    "header": ".top",
+    "title": ".top h1",
+    "foot": ".foot",
+    "wrap": ".wrap",
+    "quote": ".quote",
+    "ext": ".banner, .subtabs, .gutter, .sparkfield, #meta"
+  },
+  "views": [
+    {
+      "id": "week",
+      "label": "This week",
+      "area": "plan",
+      "group": "week",
+      "desc": "This week's schedule, a phone-style weekly list, this week's roadmap and a reflection box."
+    },
+    {
+      "id": "goals",
+      "label": "Goals",
+      "area": "plan",
+      "group": "week",
+      "desc": "Big goals, a 3-month window and a week-by-week roadmap."
+    },
+    {
+      "id": "roles",
+      "label": "Roles",
+      "area": "work",
+      "group": "jobs",
+      "desc": "A job search tracker with fit scores, statuses and next steps."
+    },
+    {
+      "id": "insights",
+      "label": "Insights",
+      "area": "work",
+      "group": "jobs",
+      "desc": "Charts of your job search: fit map, where every role went, gaps and warm contacts."
+    },
+    {
+      "id": "people",
+      "label": "People",
+      "area": "people",
+      "group": "jobs",
+      "desc": "Networking contacts with follow-up reminders."
+    },
+    {
+      "id": "projects",
+      "label": "Lab projects",
+      "area": "creative",
+      "group": "jobs",
+      "desc": "Skills and projects: what you've built and what's next."
+    },
+    {
+      "id": "profile",
+      "label": "Profile",
+      "area": "work",
+      "group": "jobs",
+      "desc": "Your job-search profile: target roles, strengths and preferences."
+    },
+    {
+      "id": "fitness",
+      "label": "Fitness",
+      "area": "health",
+      "group": "life",
+      "desc": "A fitness goal, training notes, a plan, charts and logged sessions."
+    },
+    {
+      "id": "creative",
+      "label": "Creative",
+      "area": "creative",
+      "group": "life",
+      "desc": "Creative projects with word counts and progress."
+    }
+  ],
+  "navMode": "grouped",
+  "footBtn": "btn small",
+  "backupPrepend": true,
+  "notePrefix": "Saved in this browser only. "
+}

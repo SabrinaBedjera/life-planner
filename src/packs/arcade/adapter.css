@@ -1,0 +1,10 @@
+/* Arcade pack under another theme: its own colour names point at the theme's tokens */
+:host { --bg: var(--t-bg); --panel: var(--t-card); --panel-2: var(--t-card-2); --fg: var(--t-ink); --muted: var(--t-muted); --line: var(--t-line);
+  --cyan: var(--t-accent); --magenta: var(--t-accent-2); --lime: var(--t-accent-3); --amber: var(--t-accent-4); --red: var(--t-bad); --grey: var(--t-muted);
+  --f-display: var(--t-font-display); --f-body: var(--t-font-body); --f-pixel: var(--t-font-mono); }
+.mast .eyebrow, .mast h1 { display: none; }
+.mast > div:first-child { display: none; }
+.mast { justify-content: flex-end; padding: 0; background: none; border: 0; box-shadow: none; }
+.player { flex: 0 1 320px; }
+.hud::before, .hud::after { display: none; }
+.panel { border-top: var(--t-card-border); }

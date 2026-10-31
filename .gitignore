@@ -1,1 +1,18 @@
 node_modules/
+
+# Never commit personal planner data or backups
+*-backup-*.json
+life-planner-*-backup*.json
+backups/
+private/
+my-data/
+*.local.json
+*.csv
+.env
+.env.*
+*.pem
+*.key
+
+# scratch files from local testing
+tests/_*.mjs
+test-results/

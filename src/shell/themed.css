@@ -1,0 +1,18 @@
+/* Applied inside a planner pack whenever a theme other than its own is chosen.
+   %name% placeholders are swapped for each pack's own selectors at build time. */
+:host { color-scheme: var(--t-scheme); background: none !important; }
+.lp-root { background: transparent !important; color: var(--t-ink); font-family: var(--t-font-body); }
+%card% { background: var(--t-card); color: var(--t-ink); border: var(--t-card-border); border-radius: var(--t-card-radius); box-shadow: var(--t-card-shadow); }
+%card%::before, %card%::after { border-color: var(--t-accent); }
+%head% h2, %card% h2, %card% h3 { font-family: var(--t-font-display); color: var(--t-heading); text-transform: var(--t-display-case); letter-spacing: var(--t-display-tracking); font-weight: var(--t-display-weight); font-style: normal; text-shadow: none; }
+%btn% { background: var(--t-btn); color: var(--t-btn-ink); border: var(--t-btn-border); border-radius: var(--t-btn-radius); box-shadow: var(--t-btn-shadow); font-family: var(--t-btn-font); text-transform: var(--t-btn-case); font-weight: var(--t-btn-weight); letter-spacing: normal; text-shadow: none; }
+%btn%:hover { filter: brightness(1.07); }
+%field% { background: var(--t-field); color: var(--t-field-ink); border: var(--t-field-border); border-radius: var(--t-field-radius); font-family: var(--t-font-body); box-shadow: none; }
+%field%::placeholder { color: var(--t-muted); opacity: .85; }
+%tab% { background: var(--t-tab); color: var(--t-tab-ink); border: var(--t-tab-border); border-radius: var(--t-tab-radius); font-family: var(--t-tab-font); text-transform: var(--t-tab-case); font-style: normal; box-shadow: var(--t-tab-shadow); text-shadow: none; }
+%tab%[aria-selected="true"] { background: var(--t-tab-on); color: var(--t-tab-on-ink); border-color: var(--t-tab-on); }
+%hint% { color: var(--t-muted); }
+%chip% { background: var(--t-chip); color: var(--t-chip-ink); border-color: var(--t-line); }
+%foot% { color: var(--t-muted); border-color: var(--t-line); }
+%header% { background: var(--t-card); color: var(--t-ink); border: var(--t-card-border); border-radius: var(--t-card-radius); box-shadow: var(--t-card-shadow); }
+:focus-visible { outline-color: var(--t-accent); }

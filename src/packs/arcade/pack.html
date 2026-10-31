@@ -1,0 +1,161 @@
+<div class="wrap">
+  <header class="mast hud">
+    <div>
+      <p class="eyebrow">PLAYER 1 · UNI EDITION</p>
+      <h1>Life <span>Planner</span></h1>
+    </div>
+    <div class="player" aria-label="Progress">
+      <div class="row"><span id="lvl">LVL 1</span><b id="xpText">0 XP</b></div>
+      <div class="xp" aria-hidden="true"><i id="xpBar"></i></div>
+      <span class="note">Tick things off to earn XP. Example content, yours to change.</span>
+    </div>
+  </header>
+
+  <button class="quote" id="quote" type="button" aria-label="Show another quote"><span class="q" id="qText"></span><span class="who" id="qWho"></span></button>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <a class="tab" role="tab" href="#week">Week</a>
+    <a class="tab" role="tab" href="#uni">Uni</a>
+    <a class="tab" role="tab" href="#work">Work</a>
+    <a class="tab" role="tab" href="#social">Social</a>
+    <a class="tab" role="tab" href="#gym">Gym</a>
+  </nav>
+
+  <!-- WEEK -->
+  <section class="view" id="view-week" role="tabpanel">
+    <div class="panel hud" style="--c: var(--lime)">
+      <div class="panel-head"><h2>Week ahead</h2><span class="hint">Type in any day · saves as you go</span></div>
+      <div class="sched" id="sched"></div>
+      <span class="saved" id="schedMsg"></span>
+    </div>
+    <div class="panel" style="--c: var(--amber)">
+      <div class="panel-head"><h2>Coming up</h2><span class="hint">Deadlines, applications and club stuff, next 4</span></div>
+      <ul class="list" id="upcoming"></ul>
+    </div>
+    <div class="panel" style="--c: var(--magenta)">
+      <div class="panel-head"><h2>Respawn</h2><span class="hint" id="hpLine">How's your HP today?</span></div>
+      <div class="battery">
+        <span class="hint">Battery today</span>
+        <div class="bat-btns" id="batBtns" role="radiogroup" aria-label="How's your battery today?"></div>
+      </div>
+      <div class="bat-week" id="batWeek" aria-label="Battery this week"></div>
+      <details class="bat-history">
+        <summary class="hint">Last 4 weeks</summary>
+        <div class="bat-month" id="batMonth" aria-label="Battery over the last 4 weeks"></div>
+      </details>
+      <div class="party">
+        <h3>Your party</h3>
+        <div class="party-row">
+          <div class="chips" id="party"></div>
+          <form class="party-add" id="partyForm">
+            <input class="field" id="partyName" placeholder="Add someone in your corner" aria-label="Add someone in your corner">
+            <button class="btn" type="submit">Add</button>
+          </form>
+        </div>
+      </div>
+      <div id="resets" class="resets">
+        <h3>Low battery? Pick one</h3>
+        <ul class="list" id="list-resets"></ul>
+        <form class="addrow" data-add="resets">
+          <input class="field" name="title" placeholder="Add something that helps you" aria-label="Something that helps" required>
+          <button class="btn" type="submit">Add</button>
+        </form>
+        <p class="hint" id="emptyLine" hidden>Empty days are easier in co-op. Send someone from your party a quick &quot;hey&quot;.</p>
+      </div>
+    </div>
+    <div class="panel" style="--c: var(--cyan)">
+      <div class="panel-head"><h2>This week's quests</h2><span class="hint">Tick off = +10 XP</span></div>
+      <div class="lanes" id="lanes"></div>
+      <form class="addrow" id="questForm">
+        <select class="field sm" id="questLane" aria-label="Category"></select>
+        <input class="field" id="questText" placeholder="Add a quest for this week" aria-label="New quest">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- UNI -->
+  <section class="view" id="view-uni" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--lime)">
+      <div class="panel-head"><h2>Study sessions</h2><span class="hint">Tap a box when you finish one · +10 XP each</span></div>
+      <div class="study-row">
+        <div class="study" id="study" aria-label="Study sessions this week"></div>
+        <div class="target"><span class="hint">Weekly target</span>
+          <button class="btn ghost step" type="button" data-act="study-minus" aria-label="Lower target">−</button>
+          <b id="studyTarget">5</b>
+          <button class="btn ghost step" type="button" data-act="study-plus" aria-label="Raise target">+</button>
+        </div>
+      </div>
+      <span class="hint" id="studyMsg"></span>
+    </div>
+    <div class="panel" style="--c: var(--cyan)">
+      <div class="panel-head"><h2>Deadlines &amp; exams</h2><span class="hint">Tap the status to change it · submitted = +25 XP</span></div>
+      <ul class="list" id="list-deadlines"></ul>
+      <form class="addrow" data-add="deadlines">
+        <input class="field" name="title" placeholder="Assignment or exam" aria-label="Assignment or exam" required>
+        <input class="field sm" name="module" placeholder="Module" aria-label="Module">
+        <input class="field sm" name="date" type="date" aria-label="Due date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="view" id="view-work" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--amber)">
+      <div class="panel-head"><h2>Jobs &amp; internships</h2><span class="hint">Part-time, summer, placements · tap status to update</span></div>
+      <ul class="list" id="list-jobs"></ul>
+      <form class="addrow" data-add="jobs">
+        <input class="field" name="title" placeholder="Role" aria-label="Role" required>
+        <input class="field sm" name="org" placeholder="Where" aria-label="Company">
+        <input class="field sm" name="date" type="date" aria-label="Deadline or next step">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- GYM -->
+  <section class="view" id="view-gym" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--lime)">
+      <div class="panel-head"><h2>Gym</h2><span class="hint">Log a session = +15 XP</span></div>
+      <div class="streak" id="streak" aria-label="Sessions this week"></div>
+      <ul class="list" id="list-gym"></ul>
+      <form class="addrow" data-add="gym">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <select class="field sm" name="type" aria-label="Session type"><option>Push</option><option>Pull</option><option>Legs</option><option>Full body</option><option>Run</option><option>Sport</option></select>
+        <input class="field" name="title" placeholder="Notes (PB? how it felt)" aria-label="Notes">
+        <button class="btn" type="submit">Log</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SOCIAL -->
+  <section class="view" id="view-social" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--magenta)">
+      <div class="panel-head"><h2>Clubs &amp; societies</h2><span class="hint">Tap status to update · joining one = +20 XP</span></div>
+      <ul class="list" id="list-clubs"></ul>
+      <form class="addrow" data-add="clubs">
+        <input class="field" name="title" placeholder="Club or society" aria-label="Club or society" required>
+        <input class="field sm" name="role" placeholder="Your role" aria-label="Your role">
+        <input class="field sm" name="date" type="date" aria-label="Next meet-up">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="panel" style="--c: var(--amber)">
+      <div class="panel-head"><h2>Responsibilities</h2><span class="hint">Things you've said you'll do for a club · done = +15 XP</span></div>
+      <ul class="list" id="list-duties"></ul>
+      <form class="addrow" data-add="duties">
+        <input class="field" name="title" placeholder="What you need to do" aria-label="Responsibility" required>
+        <input class="field sm" name="club" placeholder="For which club" aria-label="Club">
+        <input class="field sm" name="date" type="date" aria-label="Due">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+
+  <div class="foot">
+    <span>Saves in this browser only. To keep it in Claude, use the setup in the <code>life-planner</code> repo.</span>
+    <span style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn ghost" type="button" onclick="LPBackup.restoreSamples()">Restore sample content</button><button class="btn ghost" type="button" data-act="reset">Start fresh</button></span>
+  </div>
+</div>
