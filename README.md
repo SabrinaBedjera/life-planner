@@ -21,7 +21,7 @@ Each one is a single file. They all have a 7-day week you can type into, lists y
 | **Best for** | Career changers and busy planners | Students | Home, hobbies and family life |
 | **Feel** | Pink, playful, glam | Dark, neon, game-like | Soft, calm, easy to read |
 | **Tabs** | This week, Jobs, Life | Week, Uni, Work, Social, Gym | This week, Home projects, Wellbeing, Family & friends, Inspiration, Books, My channel |
-| **Stand-out features** | Job tracker with fit scores and a funnel chart, goals, fitness log, creative projects | XP bar, quote of the day, study sessions, deadlines, clubs, an energy check-in with ideas for low days | Daily quote, mood journal, book shelf with covers, home project tracker, posting calendar, a "Make it yours" button to change the title, colours and tab names |
+| **Stand-out features** | Job tracker with fit scores and a funnel chart, goals with a week-by-week roadmap, fitness log, creative projects | XP bar, quote of the day, study sessions, deadlines, clubs, an energy check-in with ideas for low days | Daily quote, mood journal, book shelf with covers, home project tracker, posting calendar, a "Make it yours" button to change the title, colours and tab names |
 | **Detail level** | Most detailed | Simple, made not to overwhelm | Simple, big buttons |
 
 ## Use it in your browser (easiest)
