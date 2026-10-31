@@ -62,8 +62,8 @@ Tap **✦ Customize**, then **Themes**, and pick a card. Each card shows a small
 | Arcade | Dark neon HUD, pixel fonts and XP bars |
 | Studio | Cosy Scandi home: gingham, birch and sage |
 | Goth / Witchy | Candlelight, moon phases, crystals and blackletter |
-| Cottagecore | Linen, wildflowers, mushrooms and stitched edges |
-| Desktop 93 | Retro computer desktop: bevelled windows, pixel icons, teal screen |
+| Cottagecore | Wildflowers, teatime, gingham bows and stitched edges |
+| Desktop 93 | Retro computer desk: bevelled windows, floppy disks, teal screen |
 | Streetwear | Bold type, hard shadows, stickers and safety orange |
 | Dark Academia | Leather, candlelight, brass and old library books |
 | 70s Groove | Sunshine stripes, daisies and big round shapes |

@@ -1,13 +1,18 @@
 %page% .lpm-cottage { position: relative; text-align: center; padding: 34px 16px 30px; background: #fffaf0; border: 1.5px dashed #c9b98f; border-radius: 26px; box-shadow: 0 0 0 6px #fffaf0, 0 0 0 7.5px #e8dcbf, 0 14px 30px -16px rgba(90,70,30,.5); }
 %page% .lpm-cottage .lpm-title { font-family: "Caveat", "Segoe Script", cursive; color: #4f6233; font-size: clamp(56px, 11vw, 104px); line-height: .9; font-weight: 700; text-transform: none; letter-spacing: 0; }
 %page% .c-sub { margin: 6px 0 0; font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 600; font-size: 21px; color: #7a3b2e; }
-%page% .c-vine { position: absolute; left: 50%; top: 8px; width: min(420px, 70%); transform: translateX(-50%); opacity: .95; }
-%page% .c-mush { position: absolute; left: 22px; bottom: 14px; width: clamp(56px, 10vw, 96px); transform: rotate(-6deg); }
-%page% .c-straw { position: absolute; right: 30px; bottom: 16px; width: clamp(44px, 8vw, 74px); transform: rotate(10deg); }
-%page% .c-daisy { position: absolute; right: clamp(70px, 14vw, 120px); top: 26px; width: clamp(30px, 5vw, 46px); }
+%page% .lpm-cottage > img { position: absolute; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(90,70,30,.25)); }
+%page% .c-bow { left: 50%; top: -26px; width: 92px; transform: translateX(-50%) rotate(-4deg); }
+%page% .c-teapot { left: 14px; bottom: 10px; width: clamp(80px, 13vw, 150px); }
+%page% .c-teacup { left: clamp(84px, 13vw, 156px); bottom: 8px; width: clamp(56px, 8vw, 92px); }
+%page% .c-jar { right: 22px; bottom: 6px; height: clamp(110px, 18vw, 190px); }
+%page% .c-berries { right: clamp(80px, 12vw, 132px); bottom: 8px; width: clamp(56px, 8vw, 92px); }
+%page% .c-fly { right: clamp(150px, 22vw, 250px); top: 18px; width: clamp(34px, 5vw, 54px); transform: rotate(12deg); }
 %page% #lp-decor img { filter: drop-shadow(0 6px 8px rgba(90,70,30,.25)); }
-%page% .cd-bee { width: 64px; top: 330px; right: calc(50% - 630px); transform: rotate(-8deg); }
-%page% .cd-daisy1 { width: 54px; top: 600px; left: calc(50% - 620px); }
-%page% .cd-mush { width: 84px; top: 900px; left: calc(50% - 640px); }
-%page% .cd-straw { width: 60px; top: 1080px; right: calc(50% - 620px); transform: rotate(12deg); }
-@media (max-width: 560px) { %page% .c-mush, %page% .c-straw { display: none; } }
+%page% .cd-hat { width: 112px; top: 300px; left: calc(50% - 664px); transform: rotate(-8deg); }
+%page% .cd-daisy { width: 52px; top: 560px; right: calc(50% - 612px); }
+%page% .cd-hoop { width: 96px; top: 780px; right: calc(50% - 652px); transform: rotate(6deg); }
+%page% .cd-bunny { width: 84px; top: 940px; left: calc(50% - 640px); }
+%page% .cd-polaroid { width: 86px; top: 1200px; right: calc(50% - 644px); transform: rotate(-7deg); }
+%page% .cd-fly { width: 54px; top: 1460px; left: calc(50% - 622px); transform: rotate(-10deg); }
+@media (max-width: 760px) { %page% .c-teacup, %page% .c-berries, %page% .c-fly { display: none; } %page% .lpm-cottage { padding-inline: 74px; } %page% .c-teapot { width: 66px; left: 6px; } %page% .c-jar { height: 96px; right: 8px; } }
