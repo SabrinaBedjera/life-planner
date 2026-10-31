@@ -1,0 +1,13 @@
+{
+  "name": "life-planner",
+  "private": true,
+  "description": "Developer tools for Life Planner. You don't need any of this to use a planner: just download a file from themes/ and open it.",
+  "type": "module",
+  "scripts": {
+    "sync": "node tools/sync-shared.mjs",
+    "test": "node tests/backup.test.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  }
+}
