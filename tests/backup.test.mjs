@@ -205,6 +205,39 @@ for (const p of PLANNERS) {
   await ctx.close();
 }
 
+// "Restore sample content" only adds examples back; it never replaces or deletes your content
+for (const p of PLANNERS) {
+  const { ctx, page, errors } = await open(p);
+  const ex = await exportNow(page, p);
+  const data = ex.json.data, c = firstCollection(data);
+  const keyName = (x) => (x.text || x.title || x.name || x.company || "").toLowerCase();
+  let removed;
+  if (c.type === "array") { removed = data[c.k].splice(1, 1)[0]; data[c.k].push({ id: "mine", text: "My own item", title: "My own item" }); }
+  else { const id = Object.keys(data[c.k])[1]; removed = data[c.k][id]; delete data[c.k][id]; data[c.k]["mine"] = { text: "My own item", title: "My own item", company: "My own item" }; }
+  await page.evaluate(([k, d]) => localStorage.setItem(k, JSON.stringify(d)), [p.key, data]);
+  await page.reload(); await page.waitForTimeout(400);
+  const btn = p.id === "girly-pop" ? page.locator("#exampleBtn") : page.locator("button", { hasText: "Restore sample content" });
+  check((await btn.textContent()).trim() === "Restore sample content", `${p.id}: button is called Restore sample content`);
+  await btn.scrollIntoViewIfNeeded(); await btn.click();
+  const txt = await page.locator("dialog.lpb-dialog[open]").textContent();
+  check(/nothing is replaced or deleted/.test(txt), `${p.id}: a confirmation explains what will happen`);
+  if (shots && p.id === "girly-pop") await page.locator("dialog.lpb-dialog").screenshot({ path: join(shots, "restore-sample-confirm.png") });
+  await page.locator("dialog.lpb-dialog button", { hasText: "Cancel" }).click();
+  check(JSON.stringify(await stored(page, p.key)) === JSON.stringify(data), `${p.id}: Cancel changes nothing`);
+  await btn.click();
+  await Promise.all([page.waitForEvent("load"), page.locator("dialog.lpb-dialog button", { hasText: "Add sample content" }).click()]);
+  await page.waitForTimeout(400);
+  const after = await stored(page, p.key);
+  const items = c.type === "array" ? after[c.k] : Object.values(after[c.k]);
+  check(items.some((x) => keyName(x) === "my own item"), `${p.id}: your own items are kept`);
+  check(items.some((x) => keyName(x) === keyName(removed)), `${p.id}: a missing example comes back`);
+  const names = items.map(keyName).filter(Boolean);
+  check(new Set(names).size === names.length, `${p.id}: examples aren't added twice`);
+  check(await page.locator(".lpb-bar.lpb-ok").isVisible(), `${p.id}: a message confirms your content is still there`);
+  check(errors.length === 0, `${p.id}: no script errors` + (errors.length ? ": " + errors.join(" | ") : ""));
+  await ctx.close();
+}
+
 // Tabs keep working when a planner is shown inside a preview frame (AI chats, file viewers)
 for (const p of PLANNERS) {
   const html = readFileSync(join(root, "themes", p.id + ".html"), "utf8");

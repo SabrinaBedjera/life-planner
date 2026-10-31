@@ -38,6 +38,7 @@ Each one is a single file. They all have a 7-day week you can type into, lists y
 - Nothing you type is sent anywhere. It stays on your computer.
 - It works without internet. When you're offline the fancy fonts fall back to your computer's own fonts, and Girly Pop's job funnel chart stays blank until you're back online. (A coming update builds these into the file.)
 - Click **Start fresh** at the bottom to clear the example content and make it yours.
+- Want the examples back? **Restore sample content** adds them again without touching anything you've made.
 - If a change ever fails to save (for example, the browser's storage is full or blocked in a private window), a yellow message pops up so you can export a backup straight away.
 
 ## Back up your planner

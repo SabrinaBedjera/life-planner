@@ -915,11 +915,54 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     if (flash) {
       del(FLASH);
       showBar(flash === "undone" ? "Import undone. Your planner is back to how it was before." :
+        flash === "samples" ? "Sample content added. Everything you'd made is still there." :
         "Backup imported! Changed your mind? Use “Undo last import” at the bottom.", true, false);
     }
   }
 
+  /* ---------- sample content: only ever adds, never replaces ---------- */
+  var samplesFn = null;
+  function isEmpty(v) { return v == null || v === "" || (Array.isArray(v) && !v.length) || (isPlain(v) && !Object.keys(v).length); }
+  function sig(x) { // what makes two items "the same" example, ignoring ids and ticks
+    if (!isPlain(x)) return JSON.stringify(x);
+    var t = x.text || x.title || x.name || x.label || x.company;
+    if (typeof t === "string" && t) return "t:" + t.trim().toLowerCase();
+    var c = {}; Object.keys(x).forEach(function (k) { if (k !== "id" && k !== "done") c[k] = x[k]; });
+    return JSON.stringify(c);
+  }
+  function addSamples(cur, ex) {
+    Object.keys(ex).forEach(function (k) {
+      if (BAD[k]) return;
+      var a = cur[k], b = ex[k];
+      if (isEmpty(a)) { if (!isEmpty(b)) cur[k] = clean(b); return; }
+      if (Array.isArray(a) && Array.isArray(b) && b.every(isPlain)) {
+        var have = {}; a.forEach(function (x) { have[sig(x)] = 1; });
+        b.forEach(function (x) { if (!have[sig(x)]) { a.push(clean(x)); have[sig(x)] = 1; } });
+      } else if (isPlain(a) && isPlain(b) && Object.keys(b).every(function (id) { return isPlain(b[id]); })) {
+        var sigs = {}; Object.keys(a).forEach(function (id) { if (isPlain(a[id])) sigs[sig(a[id])] = 1; });
+        Object.keys(b).forEach(function (id) { if (!BAD[id] && !own(a, id) && !sigs[sig(b[id])]) a[id] = clean(b[id]); });
+      }
+      // anything else you have (your own text, settings, numbers) stays exactly as it is
+    });
+    return cur;
+  }
+  function restoreSamples() {
+    if (!samplesFn) return;
+    openDialog([h("h2", { id: "lpbTitle", text: "Restore sample content?" }),
+      h("p", { text: "This adds the example items back into your planner, so you can see how everything works." }),
+      h("p", { text: "Your own content stays exactly as it is: nothing is replaced or deleted, and examples that are already there aren't added twice. You can delete any sample item afterwards." }),
+      h("div", { "class": "lpb-actions" }, [button("Add sample content", function () {
+        var next = addSamples(current() || {}, samplesFn());
+        try { set(KEY, JSON.stringify(next)); }
+        catch (e) { return openDialog([h("h2", { text: "That didn't fit" }), h("p", { text: "This browser doesn't have room to add the sample content, so nothing was changed." }), h("div", { "class": "lpb-actions" }, [button("Close", closeDialog)])]); }
+        try { set(FLASH, "samples"); } catch (e) {}
+        location.reload();
+      }), button("Cancel", closeDialog)])]);
+  }
+
   window.LPBackup = {
+    setSamples: function (fn) { samplesFn = fn; },
+    restoreSamples: restoreSamples,
     saveFailed: saveFailed,
     setSource: function (fn) { source = fn; },
     exportBackup: function () { return exportBackup(); },
@@ -1208,7 +1251,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
   </section>
   <footer class="foot">
       <button class="btn small" type="button" id="freshBtn">Start fresh</button>
-      <button class="btn small" type="button" id="exampleBtn">Bring back the examples</button>
+      <button class="btn small" type="button" id="exampleBtn">Restore sample content</button>
       <details class="export">
         <summary class="btn small">More exports</summary>
         <div class="menu">
@@ -2352,7 +2395,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     if (!data) data = seedData();
     const subs = {};
     const persist = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) { if (window.LPBackup) LPBackup.saveFailed(e); } };
-    if (window.LPBackup) LPBackup.setSource(() => data);
+    if (window.LPBackup) { LPBackup.setSource(() => data); LPBackup.setSamples(seedData); }
     const coll = (c) => (data[c] = data[c] || {});
     const snapOf = (c) => ({ docs: Object.entries(coll(c)).map(([id, v]) => ({ id, data: () => ({ ...v }) })) });
     const emit = (c) => (subs[c] || []).forEach((f) => f());
@@ -2372,7 +2415,6 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
       }),
       doc: (path) => { const [c, id] = path.split("/"); return ref(c, id); },
       clearAll: () => { data = { settings: { main: { ...EX.settings } } }; persist(); Object.keys(subs).forEach(emit); },
-      resetExamples: () => { data = seedData(); persist(); Object.keys(subs).forEach(emit); }
     };
   }
 
@@ -2417,7 +2459,7 @@ document.getElementById("freshBtn").addEventListener("click", (e) => {
   if (window.lifePlannerDB) window.lifePlannerDB.clearAll();
   b.textContent = "Start fresh"; delete b.dataset.armed;
 });
-document.getElementById("exampleBtn").addEventListener("click", () => { if (window.lifePlannerDB) window.lifePlannerDB.resetExamples(); });
+document.getElementById("exampleBtn").addEventListener("click", () => { if (window.LPBackup) window.LPBackup.restoreSamples(); });
 </script>
 <script>
 /* Phone status bar clock and the week in the title bar */
