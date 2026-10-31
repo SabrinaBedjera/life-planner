@@ -7,3 +7,21 @@
 .top, .gutter, .sparkfield, .sticker { display: none !important; }
 .card:has(> .s-empire) > :not(.card-head):not(.sticker) { margin-right: 0; }
 .card-head h2::after { display: none; }
+/* The flip-phone week list takes on the theme's colours and type */
+.phone { background: var(--t-ink); box-shadow: 0 10px 22px -16px rgba(0,0,0,.5); }
+.phone-screen { background: var(--t-card); color: var(--t-ink); }
+.phone-screen::before { display: none; }
+.phone-screen::after { box-shadow: inset 0 0 0 1px var(--t-line); }
+.phone-status, .phone-keys, .phone .lane .checklist li, .phone .lane .checklist span, .phone .lane p, .phone .lane-input { color: var(--t-ink); }
+.ps-sig i, .ps-bat i, .ps-bat::after { background: var(--t-ink); }
+.ps-bat, .phone-keys b { border-color: var(--t-ink); }
+.phone-title { background: var(--t-accent); color: var(--t-accent-ink); box-shadow: none; }
+.phone .lane { border-bottom-color: var(--t-line); }
+.phone .lane h3 { color: var(--t-heading); }
+.phone .lane:nth-child(1) { --ic: var(--t-accent); } .phone .lane:nth-child(2) { --ic: var(--t-accent-2); } .phone .lane:nth-child(3) { --ic: var(--t-accent-3); } .phone .lane:nth-child(4) { --ic: var(--t-accent-4); } .phone .lane:nth-child(5) { --ic: var(--t-muted); }
+.phone .lane p.saved, .phone .lane-input::placeholder { color: var(--t-muted); }
+.phone .lane-input { border-bottom-color: var(--t-line); }
+.phone .lane-input:focus { border-bottom-color: var(--t-accent); background: transparent; }
+.phone .lane input[type=checkbox] { accent-color: var(--t-accent); }
+.phone-keys { border-top-color: var(--t-line); background: var(--t-card-2); }
+.phone .lane { grid-template-columns: minmax(92px, max-content) minmax(0, 1fr); }

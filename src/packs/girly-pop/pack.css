@@ -460,7 +460,8 @@ h1.collage img { display: block; height: clamp(40px, 7vw, 72px); width: auto; ma
   .g-disco { animation: bob2 5s ease-in-out infinite; } .g-heart { animation: bob2 4.4s ease-in-out infinite .8s; } .g-cherries { animation: bob2 5.6s ease-in-out infinite 1.4s; }
   @keyframes bob2 { 50% { translate: 0 -7px; } }
 }
-.foot { display: flex; justify-content: flex-end; padding: 4px 0 24px; }
+.foot { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; padding: 4px 0 24px; }
+@media (max-width: 760px) { .foot > #lpBackup { flex: 1 1 100%; } .foot { justify-content: flex-start; } }
 .foot .export .menu { top: auto; bottom: calc(100% + 6px); }
 @media (min-width: 441px) {
   .tabs { gap: 12px; }

@@ -1034,8 +1034,8 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
   var samplesFns = {};
   function restoreSamples() {
     if (!samplesFn && !Object.keys(samplesFns).length) return;
-    openDialog([h("h2", { id: "lpbTitle", text: "Restore sample content?" }),
-      h("p", { text: "This adds the example items back into your planner, so you can see how everything works." }),
+    openDialog([h("h2", { id: "lpbTitle", text: (C.restoreLabel || "Restore sample content") + "?" }),
+      h("p", { text: "This adds the template's example items back into your planner, so you can see how everything works." }),
       h("p", { text: "Your own content stays exactly as it is: nothing is replaced or deleted, and examples that are already there aren't added twice. You can delete any sample item afterwards." }),
       h("div", { "class": "lpb-actions" }, [button("Add sample content", function () {
         var next;

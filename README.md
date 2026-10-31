@@ -37,7 +37,7 @@ Each planner is one file that works on its own, even with no internet. The three
 - Nothing you type is sent anywhere. There's no account, no tracking and no cloud. It stays on your computer.
 - It works fully offline: the fonts, pictures and charts are all inside the file.
 - Click **Start fresh** at the bottom to clear the example content in the planner's own tabs and make it yours.
-- Want the examples back? **Restore sample content** adds them again without touching anything you've made.
+- Want the examples back? **Restore default template design** adds the example content again without touching anything you've made.
 - If a change ever fails to save (for example, the browser's storage is full or blocked in a private window), a yellow message pops up so you can export a backup straight away.
 
 ## Choose your tabs

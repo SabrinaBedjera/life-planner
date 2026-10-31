@@ -420,7 +420,7 @@
     planner: P.id, key: KEY,
     mountNode: function () { var c = ctxs[P.primary]; return c && c.root.querySelector(PACKS[P.primary].meta.map.foot); },
     prepend: PACKS[P.primary].meta.backupPrepend !== false, btnClass: PACKS[P.primary].meta.footBtn || "btn",
-    notePrefix: PACKS[P.primary].meta.notePrefix || "",
+    notePrefix: PACKS[P.primary].meta.notePrefix || "", restoreLabel: "Restore default template design",
     store: {
       packs: (function () { var o = {}; ORDER.forEach(function (pid) { o[pid] = PACKS[pid].meta.name; }); return o; })(),
       read: snapshot, write: writeSnapshot,

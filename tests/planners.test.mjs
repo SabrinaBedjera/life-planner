@@ -342,6 +342,30 @@ console.log("\nbackups");
   await ctx.close();
 }
 
+{
+  // Phone-sized footer buttons stay button-sized, the flip-phone list follows the theme, and the restore button has its new name
+  const { ctx } = await context({ width: 390, height: 844 });
+  for (const id of ["girly-pop", "arcade", "studio"]) {
+    const { page } = await openIn(ctx, "planners", id);
+    await page.evaluate((k) => { localStorage.setItem(k, JSON.stringify({ theme: "groovy", tabs: {} })); }, KEY(id) + ":settings");
+    await page.reload(); await page.waitForTimeout(500);
+    const tallest = await shadow(page, `return Math.max(...[...root.querySelectorAll("footer button, .foot button, .foot summary")].filter((b) => b.offsetParent).map((b) => b.getBoundingClientRect().height));`);
+    check(tallest > 0 && tallest < 80, `${id}: footer buttons fit their text on a phone (${Math.round(tallest)}px tall)`);
+    const label = await shadow(page, `return [...root.querySelectorAll("button")].some((b) => b.textContent.trim() === "Restore default template design");`);
+    check(label, `${id}: the restore button says "Restore default template design"`);
+    await page.close();
+  }
+  const { page } = await openIn(ctx, "planners", "girly-pop");
+  await page.evaluate((k) => { localStorage.setItem(k, JSON.stringify({ theme: "girly-pop", tabs: {} })); }, KEY("girly-pop") + ":settings");
+  await page.reload(); await page.waitForTimeout(500);
+  const native = await shadow(page, `return getComputedStyle(root.querySelector(".phone-title")).backgroundImage;`);
+  await page.evaluate((k) => { localStorage.setItem(k, JSON.stringify({ theme: "groovy", tabs: {} })); }, KEY("girly-pop") + ":settings");
+  await page.reload(); await page.waitForTimeout(500);
+  const themed = await shadow(page, `const t = getComputedStyle(root.querySelector(".phone-title")); return [t.backgroundImage, t.backgroundColor];`);
+  check(/gradient/.test(native) && themed[0] === "none" && themed[1] === "rgb(200, 74, 23)", "the weekly phone list uses the theme's colours instead of Girly Pop pink");
+  await ctx.close();
+}
+
 await browser.close();
 console.log(`\n${passes} passed, ${failures} failed`);
 process.exit(failures ? 1 : 0);
