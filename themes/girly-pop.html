@@ -330,6 +330,21 @@ details.add > summary { cursor: pointer; padding: 10px 16px; font-weight: 600; f
 .tlink span { color: var(--accent); }
 .tlink.page { background: var(--accent-soft); border-color: transparent; }
 .tlink:hover { border-color: var(--accent); }
+/* Roadmap: a week-by-week plan in Goals, with this week's slice on This week */
+.roadmap { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.rm-week { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--surface-2); }
+.rm-week.past { opacity: .6; }
+.rm-week.now { background: var(--accent-soft); box-shadow: 0 0 0 1.5px var(--accent); }
+.rm-when { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-display); font-style: italic; font-size: 17px; line-height: 1.15; }
+.rm-when b, .rm-when em { font-family: var(--font-lcd); font-style: normal; font-weight: 400; font-size: 16px; color: var(--accent); letter-spacing: .04em; }
+.rm-when em { color: var(--muted); }
+.rm-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 8px; vertical-align: 1px; }
+.rm-note p { margin: 0; color: var(--muted); font-size: 14px; }
+.roadmap .checklist li { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.rm-x { font-size: 16px; text-decoration: none; opacity: .55; line-height: 1.4; }
+.rm-x:hover { opacity: 1; color: var(--bad); }
+.rm-add { margin-top: 4px; }
+@media (max-width: 560px) { .rm-week { grid-template-columns: minmax(0, 1fr); gap: 6px; } .rm-when { flex-direction: row; justify-content: space-between; align-items: baseline; } }
 /* ===== Y2K glam skin ===== */
 body {
   background-color: var(--bg);
@@ -1059,6 +1074,10 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
         <input class="field" id="newItem" placeholder="Add something for this week" aria-label="New item" style="flex:1 1 220px"><button class="btn" type="submit">Add</button>
       </form>
     </div>
+    <div class="card" id="rmNowCard" hidden>
+      <div class="card-head"><h2 id="rmNowTitle">On the roadmap this week</h2><a class="hint" href="#goals">See the whole plan</a></div>
+      <ul class="checklist" id="rmNowList"></ul>
+    </div>
     <div class="card">
       <div class="card-head"><h2>How did the week go?</h2><span class="hint">One box. Write it however it comes out.</span></div>
       <textarea class="field" id="r-text" rows="5" aria-label="How did the week go?" placeholder="What worked, what felt awkward, any conversations, anything to change next week…"></textarea>
@@ -1078,6 +1097,20 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
       <div class="card-head"><h2>3 Month Window</h2><span class="hint">The big milestones ahead</span></div>
       <div class="scroll-x"><svg id="strip" role="img" aria-label="Timeline of targets and deadlines over the next three months"></svg></div>
       <ul class="upnext" id="upnext" hidden></ul>
+    </div>
+    <div class="card" id="roadmapCard">
+      <div class="card-head"><h2 id="rmTitle">Roadmap</h2><span class="hint">Week by week · tick things off as you go</span></div>
+      <div class="md rm-note" id="rmNote"></div>
+      <ul class="roadmap" id="rmList"></ul>
+      <details class="add rm-add">
+        <summary>Add to the roadmap</summary>
+        <form class="add-form" id="rmForm">
+          <label for="rm-week">Week of<input class="field" id="rm-week" type="date" required></label>
+          <label for="rm-lane">Area<select class="field" id="rm-lane"><option value="career">Career</option><option value="body">Health</option><option value="people">Social</option><option value="creative">Creative</option><option value="other">Other</option></select></label>
+          <label class="full" for="rm-text">What<input class="field" id="rm-text" required placeholder="e.g. Send two applications"></label>
+          <div class="full row between"><span class="saved" id="rmMsg">Any day works; it files under that week.</span><button class="btn primary" type="submit">Add</button></div>
+        </form>
+      </details>
     </div>
   </section>
 
@@ -2150,6 +2183,36 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
   }
 
   /* ================= Render orchestration ================= */
+  /* ================= Roadmap ================= */
+  const RM_LANE = { body: "Health", career: "Career", people: "Social", creative: "Creative", other: "Other" };
+  const roadmap = () => state.settings.roadmap || null;
+  function rmItem(it, wi, edit) {
+    return `<li class="${it.done ? "done" : ""}"><label><input type="checkbox" data-act="toggle-rm" data-w="${wi}" data-id="${esc(it.id)}" ${it.done ? "checked" : ""}><span><i class="rm-dot" style="--c:var(${AREA_C[it.lane] || "--muted"})" title="${esc(RM_LANE[it.lane] || "")}"></i>${esc(it.text)}</span></label>${edit ? `<button class="link-btn rm-x" data-act="del-rm" data-w="${wi}" data-id="${esc(it.id)}" aria-label="Remove: ${esc(it.text)}">×</button>` : ""}</li>`;
+  }
+  async function saveRoadmap(rm) {
+    state.settings.roadmap = rm;
+    if (live()) { try { await state.db.collection("settings").doc("main").update({ roadmap: rm }); } catch (err) { showBanner("That change didn't save."); } }
+  }
+  function renderRoadmap() {
+    const rm = roadmap();
+    if (!rm || !Array.isArray(rm.weeks) || !rm.weeks.length) {
+      $("rmTitle").textContent = (rm && rm.title) || "Roadmap"; $("rmNote").innerHTML = "";
+      $("rmList").innerHTML = `<li class="saved">No roadmap yet. Add a few weeks below: one or two things each, no more.</li>`;
+      $("rmNowCard").hidden = true; return;
+    }
+    $("rmTitle").textContent = rm.title || "Roadmap";
+    $("rmNote").innerHTML = rm.note ? md(rm.note) : "";
+    const cur = rm.weeks.findIndex((w) => w.start === WEEK);
+    $("rmList").innerHTML = rm.weeks.map((w, wi) => {
+      const items = w.items || [], done = items.filter((i) => i.done).length;
+      const cls = wi === cur ? "now" : w.start < WEEK ? "past" : "";
+      return `<li class="rm-week ${cls}"><div class="rm-when"><span>${esc(w.label || fmtShort(w.start))}</span>${wi === cur ? "<b>This week</b>" : items.length ? `<em>${done}/${items.length}</em>` : ""}</div><ul class="checklist">${items.map((it) => rmItem(it, wi, true)).join("")}</ul></li>`;
+    }).join("");
+    $("rmNowCard").hidden = cur < 0;
+    if (cur < 0) return;
+    $("rmNowTitle").textContent = `On the ${rm.short || "roadmap"} this week`;
+    $("rmNowList").innerHTML = (rm.weeks[cur].items || []).map((it) => rmItem(it, cur)).join("");
+  }
   function renderMeta() {
     $("meta").textContent = state.jobs.length ? `${state.jobs.filter((j) => !INACTIVE.has(j.status)).length} active roles · ${state.people.length} contacts · ${state.projects.length} projects` : "";
   }
@@ -2166,7 +2229,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
   const typing = () => document.activeElement && document.activeElement.matches("textarea, input:not([type=checkbox])");
   function render(force) {
     if (!force && typing()) { renderMeta(); return; }
-    renderWeek(); renderGoals(); renderFitness(); renderPipeline(); renderList(); renderPeople(); renderProjects(); renderProfile(); renderMeta(); renderCharts();
+    renderWeek(); renderGoals(); renderRoadmap(); renderFitness(); renderPipeline(); renderList(); renderPeople(); renderProjects(); renderProfile(); renderMeta(); renderCharts();
   }
 
   /* ================= Events ================= */
@@ -2241,6 +2304,18 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
       const id = t.closest("[data-tid]").dataset.tid; state.targets = state.targets.filter((x) => x.id !== id);
       if (live()) { try { await state.db.collection("targets").doc(id).delete(); } catch (err) { showBanner("That change didn't save."); } }
       render(true); return;
+    }
+    if (act === "toggle-rm") {
+      const rm = roadmap(); if (!rm) return;
+      const wi = Number(t.dataset.w);
+      const weeks = rm.weeks.map((w, i) => (i !== wi ? w : { ...w, items: (w.items || []).map((it) => (it.id === t.dataset.id ? { ...it, done: t.checked } : it)) }));
+      await saveRoadmap({ ...rm, weeks }); render(true); return;
+    }
+    if (act === "del-rm") {
+      const rm = roadmap(); if (!rm) return;
+      const wi = Number(t.dataset.w);
+      const weeks = rm.weeks.map((w, i) => (i !== wi ? w : { ...w, items: (w.items || []).filter((it) => it.id !== t.dataset.id) })).filter((w) => (w.items || []).length);
+      await saveRoadmap({ ...rm, weeks }); render(true); return;
     }
     if (act === "save-sched") { await saveSchedule(); return; }
     if (act === "save-focus") { await saveWeek({ focus: $("focus").value.trim() }); render(true); return; }
@@ -2332,6 +2407,18 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     if (!tg.text) return;
     if (await addTo("targets", state.targets, tg, $("targetMsg"), "Target added.")) { $("t-text").value = ""; $("t-due").value = ""; }
   });
+  $("rmForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const text = $("rm-text").value.trim(), d = parse($("rm-week").value);
+    if (!text || !d) return;
+    const start = isoLocal(mondayOf(d)), rm = roadmap() || { title: "Roadmap", weeks: [] };
+    const weeks = (rm.weeks || []).slice();
+    let wi = weeks.findIndex((w) => w.start === start);
+    if (wi < 0) { weeks.push({ start, items: [] }); weeks.sort((a, b) => a.start.localeCompare(b.start)); wi = weeks.findIndex((w) => w.start === start); }
+    weeks[wi] = { ...weeks[wi], items: [...(weeks[wi].items || []), { id: "r" + Date.now(), lane: $("rm-lane").value, text, done: false }] };
+    await saveRoadmap({ ...rm, weeks });
+    $("rm-text").value = ""; $("rmMsg").textContent = "Added."; render(true);
+  });
   $("creativeForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const p = { name: $("c-name").value.trim(), status: $("c-status").value, summary: $("c-summary").value.trim(), nextStep: $("c-next").value.trim(), links: [], order: 99, added: todayISO() };
@@ -2385,7 +2472,24 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
       jobs: byId(EX.jobs), contacts: byId(EX.people), projects: byId(EX.projects), profile: byId(EX.profile),
       weeks: {}, skills: byId(EX.skills), workouts: byId(EX.workouts), creative: byId(EX.creative),
       targets: byId([{ id: "ext1", text: "Apply to 5 jobs (sample)", area: "career", due: addDays(todayISO(), 21), done: false, metric: "applications", goal: 5 }]),
-      settings: { main: { ...EX.settings } }
+      settings: { main: { ...EX.settings, roadmap: exampleRoadmap() } }
+    };
+  }
+  // A sample week-by-week plan, dated from this week so it always looks current.
+  function exampleRoadmap() {
+    const mon = mondayOf(new Date());
+    const wk = (n, items) => { const d = new Date(mon); d.setDate(d.getDate() + 7 * n); const start = isoLocal(d); return { start, items: items.map(([lane, text], i) => ({ id: `${start}-${i}`, lane, text, done: false })) }; };
+    return {
+      title: "Road to the holidays", short: "plan",
+      note: "A light week-by-week plan (sample). Career first, rest counts, creative only on lighter weeks. Tick things off, remove them with ×, or add your own below.",
+      weeks: [
+        wk(0, [["career", "Update the résumé"], ["career", "One small LinkedIn action"], ["body", "Three movement sessions"]]),
+        wk(1, [["career", "Send two applications"], ["creative", "Gift project: list what's left to do"]]),
+        wk(2, [["career", "Applications"], ["people", "Plan a catch-up with a friend"]]),
+        wk(3, [["career", "Applications"], ["creative", "Gift project: finish it"]]),
+        wk(4, [["career", "Applications, lighter"], ["creative", "Wrap gifts"]]),
+        wk(5, [["people", "Holiday: rest and celebrate"]]),
+      ],
     };
   }
   function makeLocalDB() {
