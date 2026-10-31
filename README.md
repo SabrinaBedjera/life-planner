@@ -35,9 +35,26 @@ Each one is a single file. They all have a 7-day week you can type into, lists y
 
 - Your planner saves **inside that browser on that computer**. Open it the same way each time and your notes will be there.
 - Move the file somewhere safe, like your Documents folder, and add a bookmark so it's one click away.
-- Clearing your browser history or "site data" can erase what you typed. Girly Pop has an **Export data** button at the bottom to save a backup.
 - Nothing you type is sent anywhere. It stays on your computer.
+- It works without internet. When you're offline the fancy fonts fall back to your computer's own fonts, and Girly Pop's job funnel chart stays blank until you're back online. (A coming update builds these into the file.)
 - Click **Start fresh** at the bottom to clear the example content and make it yours.
+- Want the examples back? **Restore sample content** adds them again without touching anything you've made.
+- If a change ever fails to save (for example, the browser's storage is full or blocked in a private window), a yellow message pops up so you can export a backup straight away.
+
+## Back up your planner
+
+Your planner lives only in the browser where you use it. Clearing your browser history or "site data", or switching to a new computer, starts you from empty. A backup file keeps it safe.
+
+- **Export backup** (in Girly Pop: **Backup & export**, then **Everything (JSON backup)**) downloads one `.json` file with everything in your planner. The footer shows when you last made one.
+- **Import backup** brings a backup back, on the same computer or a new one. Before anything changes it shows what's in the file and lets you pick:
+  - **Add to what I have**: keeps everything you have and adds anything from the backup that's missing.
+  - **Replace with backup**: your planner becomes the backup; anything the backup doesn't cover stays as it is (tap twice to confirm).
+  - **Cancel**: nothing changes.
+- Every import first saves a copy of your planner as it was, so **Undo last import** can put it back.
+- All three planners use the same backup format. For now a backup restores into the planner it came from; moving information between planners comes in a later update, and today's backups will work with it.
+- Backups made with Girly Pop's older "Everything (JSON)" export can be imported too.
+
+Your backup file holds everything you typed, so keep it somewhere private.
 
 ## Use it with Claude or another AI
 
@@ -71,6 +88,8 @@ Attach the file the same way and use the same message. If the AI can show a live
 ## Files
 
 - `themes/girly-pop.html`, `themes/arcade.html`, `themes/studio.html`: the planners. Each works on its own.
+- `shared/backup-kit.html`: the backup, import and save-warning code that all three planners share. It is copied into each planner by `npm run sync`, so each download stays a single file.
+- `tests/`: browser tests for developers (`npm install`, then `npm test`). You don't need these to use a planner.
 
 The example people, jobs and places in the files are made up.
 
