@@ -132,6 +132,18 @@ textarea.field { resize: vertical; }
 .bat-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 .bat-week div { text-align: center; padding: 6px 0; border: 1px solid var(--line); background: var(--panel-2); font-family: var(--f-pixel); font-size: 8px; color: var(--muted); }
 .bat-week div.set { background: var(--bc); border-color: var(--bc); color: var(--bg); }
+.bat-history summary { cursor: pointer; width: fit-content; }
+.bat-month { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; margin-top: 8px; max-width: 196px; }
+.bat-month div { aspect-ratio: 1; max-width: 100%; border: 1px solid var(--line); background: var(--panel-2); }
+.bat-month div.set { background: var(--bc); border-color: var(--bc); }
+.bat-month div.now { outline: 1px solid var(--fg); outline-offset: 1px; }
+.party { display: flex; flex-direction: column; gap: 8px; }
+.party h3, .resets h3 { margin: 0; font-family: var(--f-pixel); font-size: 9px; font-weight: 400; color: var(--magenta); line-height: 1.6; }
+.party-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--cyan); color: var(--cyan); padding: 4px 4px 4px 10px; font-family: var(--f-display); font-weight: 600; font-size: 14px; }
+.party-add { display: flex; gap: 6px; flex: 1 1 240px; min-width: 0; }
+.party-add .field { flex: 1 1 auto; }
 .resets { display: flex; flex-direction: column; gap: 10px; border-top: 1px dashed var(--line); padding-top: 12px; }
 .resets h3 { margin: 0; font-family: var(--f-pixel); font-size: 9px; font-weight: 400; color: var(--magenta); line-height: 1.6; }
 .talk { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 12px; align-items: center; }
@@ -188,12 +200,26 @@ textarea.field { resize: vertical; }
       <ul class="list" id="upcoming"></ul>
     </div>
     <div class="panel" style="--c: var(--magenta)">
-      <div class="panel-head"><h2>Respawn</h2><span class="hint">For the low days. Nobody else sees this.</span></div>
+      <div class="panel-head"><h2>Respawn</h2><span class="hint" id="hpLine">How's your HP today?</span></div>
       <div class="battery">
         <span class="hint">Battery today</span>
         <div class="bat-btns" id="batBtns" role="radiogroup" aria-label="How's your battery today?"></div>
       </div>
       <div class="bat-week" id="batWeek" aria-label="Battery this week"></div>
+      <details class="bat-history">
+        <summary class="hint">Last 4 weeks</summary>
+        <div class="bat-month" id="batMonth" aria-label="Battery over the last 4 weeks"></div>
+      </details>
+      <div class="party">
+        <h3>Your party</h3>
+        <div class="party-row">
+          <div class="chips" id="party"></div>
+          <form class="party-add" id="partyForm">
+            <input class="field" id="partyName" placeholder="Add someone in your corner" aria-label="Add someone in your corner">
+            <button class="btn" type="submit">Add</button>
+          </form>
+        </div>
+      </div>
       <div id="resets" class="resets">
         <h3>Low battery? Pick one</h3>
         <ul class="list" id="list-resets"></ul>
@@ -201,11 +227,7 @@ textarea.field { resize: vertical; }
           <input class="field" name="title" placeholder="Add something that helps you" aria-label="Something that helps" required>
           <button class="btn" type="submit">Add</button>
         </form>
-        <div class="talk">
-          <label class="hint" for="mate">A mate to text</label><input class="field" id="mate" placeholder="Name">
-          <label class="hint" for="support">Uni support line</label><input class="field" id="support" placeholder="Number from the uni wellbeing page">
-        </div>
-        <p class="hint">Feeling really bad, or not safe? Talk to someone today. Call that number, a doctor, or your local emergency number.</p>
+        <p class="hint" id="emptyLine" hidden>Empty days are easier in co-op. Send someone from your party a quick &quot;hey&quot;.</p>
       </div>
     </div>
     <div class="panel" style="--c: var(--cyan)">
@@ -390,14 +412,16 @@ textarea.field { resize: vertical; }
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state) state = examples();
   ["clubs", "duties"].forEach(function (k) { if (!state[k]) state[k] = examples()[k]; });
-  if (!state.resets) state.resets = [
+  if (state.resetsV !== 3) { state.resetsV = 3; state.resets = [
     { id: uid(), title: "10-minute walk outside" },
+    { id: uid(), title: "Gym or a run" },
+    { id: uid(), title: "Refuel: eat something good" },
+    { id: uid(), title: "Shower and a glass of water" },
     { id: uid(), title: "Text a mate, about anything" },
-    { id: uid(), title: "Shower, proper food, glass of water" },
-    { id: uid(), title: "Gym or a quick stretch" },
-    { id: uid(), title: "One playlist or one match, then stop" },
-    { id: uid(), title: "Early night, phone in the other room" }
-  ];
+    { id: uid(), title: "Early night, phone in the other room" },
+    { id: uid(), title: "Call a family member" },
+    { id: uid(), title: "Talk to a counsellor" }
+  ]; }
   if (!state.battery) state.battery = {};
 
   /* Respawn: daily battery check */
@@ -409,25 +433,32 @@ textarea.field { resize: vertical; }
     { v: 5, name: "Full", w: "17px", c: "var(--lime)" }
   ];
   function renderBattery() {
-    var todayKey = iso(today), cur = state.battery[todayKey];
+    var todayKey = iso(today);
+    if (!state.batAuto) state.batAuto = {};
+    if (!state.battery[todayKey]) { state.battery[todayKey] = 4; state.batAuto[todayKey] = true; save(); }
+    var cur = state.battery[todayKey], picked = !state.batAuto[todayKey];
     var btns = document.getElementById("batBtns");
     btns.innerHTML = BATS.map(function (b) {
       return '<button class="bat" role="radio" data-v="' + b.v + '" aria-checked="' + (cur === b.v) + '" style="--w:' + b.w + ";--bc:" + b.c + '"><i></i>' + b.name + "</button>";
     }).join("");
     btns.querySelectorAll(".bat").forEach(function (el) {
-      el.addEventListener("click", function () { var v = +el.dataset.v; state.battery[todayKey] = state.battery[todayKey] === v ? undefined : v; save(); renderBattery(); });
+      el.addEventListener("click", function () { var v = +el.dataset.v; state.battery[todayKey] = v; delete state.batAuto[todayKey]; save(); renderBattery(); });
     });
     var names = ["M", "T", "W", "T", "F", "S", "S"];
     document.getElementById("batWeek").innerHTML = names.map(function (n, i) {
       var v = state.battery[iso(new Date(monday.getTime() + i * DAY))], b = BATS[v - 1];
       return '<div class="' + (b ? "set" : "") + '"' + (b ? ' style="--bc:' + b.c + '" title="' + b.name + '"' : "") + ">" + n + "</div>";
     }).join("");
+    var cells = [], start = new Date(monday.getTime() - 21 * DAY);
+    for (var k = 0; k < 28; k++) {
+      var dk = iso(new Date(start.getTime() + k * DAY)), bv = BATS[state.battery[dk] - 1];
+      cells.push('<div class="' + (bv ? "set " : "") + (dk === todayKey ? "now" : "") + '"' + (bv ? ' style="--bc:' + bv.c + '" title="' + dk + ": " + bv.name + '"' : ' title="' + dk + '"') + "></div>");
+    }
+    document.getElementById("batMonth").innerHTML = cells.join("");
     document.getElementById("resets").hidden = !(cur && cur <= 2);
+    document.getElementById("emptyLine").hidden = cur !== 1;
+    document.getElementById("hpLine").textContent = !picked ? "Feeling good today? Tap if that's changed." : cur <= 2 ? "Low HP? Time to recharge." : cur === 3 ? "Holding steady. Keep it up." : "Full HP. Nice one.";
   }
-  ["mate", "support"].forEach(function (k) {
-    var el = document.getElementById(k); el.value = state[k] || "";
-    el.addEventListener("input", function () { state[k] = el.value; save(); });
-  });
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} renderXP(); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function $(s) { return document.querySelector(s); }
@@ -602,8 +633,8 @@ textarea.field { resize: vertical; }
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0, resets: state.resets, battery: {}, mate: "", support: "" };
-        save(); renderWeek(); renderQuests(); renderAll(); renderBattery(); document.getElementById("mate").value = ""; document.getElementById("support").value = "";
+        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0, resets: state.resets, resetsV: 3, battery: {}, batAuto: {}, party: [] };
+        save(); renderWeek(); renderQuests(); renderAll(); renderBattery(); renderParty();
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Tap again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
     }
@@ -618,8 +649,26 @@ textarea.field { resize: vertical; }
   }
   window.addEventListener("hashchange", route);
 
-  renderWeek(); renderQuests(); renderAll(); renderBattery(); route();
+  /* Your party: people in his corner */
+  if (!state.party) state.party = [];
+  function renderParty() {
+    var box = document.getElementById("party");
+    box.innerHTML = state.party.length ? "" : '<span class="hint">Mates, teammates, family. Who\'s got your back?</span>';
+    state.party.forEach(function (name, i) {
+      var c = document.createElement("span"); c.className = "chip";
+      c.innerHTML = esc(name) + '<button class="x" aria-label="Remove ' + esc(name) + '">×</button>';
+      c.querySelector(".x").addEventListener("click", function () { state.party.splice(i, 1); save(); renderParty(); });
+      box.appendChild(c);
+    });
+  }
+  document.getElementById("partyForm").addEventListener("submit", function (e) {
+    e.preventDefault(); var inp = document.getElementById("partyName"), v = inp.value.trim(); if (!v) return;
+    state.party.push(v); inp.value = ""; save(); renderParty();
+  });
+
+  renderWeek(); renderQuests(); renderAll(); renderBattery(); renderParty(); route();
 })();
 </script>
 
-</body></html>
+</body>
+</html>
