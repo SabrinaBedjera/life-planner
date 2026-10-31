@@ -26,6 +26,7 @@ Each one is a single file. They all have a 7-day week you can type into, lists y
 - Clearing your browser history or "site data" can erase what you typed. Girly Pop has an **Export data** button at the bottom to save a backup.
 - Nothing you type is sent anywhere. It stays on your computer.
 - Click **Start fresh** at the bottom to clear the example content and make it yours.
+- In Studio, click **Make it yours** (top right) to change the title, colours and header picture, and to rename or hide tabs. No AI or coding needed.
 
 ## Use it with Claude or another AI
 

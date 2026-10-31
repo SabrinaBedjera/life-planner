@@ -391,6 +391,41 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
 .v-chair { bottom: 8px; }
 .v-table { bottom: -2px; }
 .v-olive { bottom: 0; }
+
+/* Make it yours */
+.mast h1 { font-size: calc(clamp(48px, 8vw, 88px) * var(--fit, 1)); overflow-wrap: anywhere; }
+@media (max-width: 560px) { .mast-copy { margin-top: 28px; } }
+.mast { position: relative; }
+.custom-open { position: absolute; top: 16px; right: 16px; z-index: 5; padding: 7px 14px; font-size: 14px; background: rgba(255,255,255,.85); }
+.mast[data-bg="sage"] { background: repeating-linear-gradient(0deg, rgba(108,138,76,.14) 0 18px, transparent 18px 36px), repeating-linear-gradient(90deg, rgba(108,138,76,.14) 0 18px, transparent 18px 36px), #eef3e6; border-color: #dbe5cf; }
+.mast[data-bg="lilac"] { background: repeating-linear-gradient(0deg, rgba(138,114,194,.14) 0 18px, transparent 18px 36px), repeating-linear-gradient(90deg, rgba(138,114,194,.14) 0 18px, transparent 18px 36px), #f2eefa; border-color: #e1d9f2; }
+.mast[data-bg="cream"] { background: #fbf5ec; border-color: var(--line); }
+.mast[data-bg="blush"] { background: var(--blush); border-color: var(--line); }
+.vignette.has-photo > img:not(.v-photo) { display: none; }
+.vignette .v-photo { position: absolute; left: 20px; right: 0; bottom: 22px; top: 40px; width: calc(100% - 20px); height: calc(100% - 62px); object-fit: cover; border-radius: 18px; border: 6px solid #fff; box-shadow: 0 14px 28px -16px rgba(80,40,50,.6); }
+.foot-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+dialog#customize { border: 0; padding: 0; border-radius: 24px; width: min(640px, calc(100vw - 24px)); max-height: calc(100vh - 32px); background: var(--card); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(60,30,40,.45); }
+dialog#customize::backdrop { background: rgba(59,47,44,.35); }
+.cbox { display: flex; flex-direction: column; gap: 16px; padding: 24px; }
+.chead { display: flex; justify-content: space-between; align-items: center; }
+.chead h2 { margin: 0; font-family: var(--f-head); font-size: 28px; }
+.cbox fieldset { border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px 16px; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.cbox legend { font-weight: 700; padding: 0 6px; color: var(--olive-dark); }
+.crow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.crow .field { flex: 1 1 160px; width: auto; }
+.crow input[type="color"].field { flex: 0 0 56px; height: 44px; }
+.clabel { flex: 0 0 130px; font-weight: 600; }
+.presets { display: flex; gap: 6px; }
+.preset { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line); cursor: pointer; padding: 0; }
+.ctabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ctab { display: flex; gap: 10px; align-items: center; }
+.ctab .field { flex: 1; }
+.cfoot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 560px) {
+  .custom-open { top: 12px; right: 12px; font-size: 13px; padding: 6px 12px; }
+  .ctabs { grid-template-columns: minmax(0, 1fr); }
+  .clabel { flex-basis: 100%; }
+}
 </style>
 </head>
 <body>
@@ -399,6 +434,7 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
     <div class="mast-copy">
       <h1><span class="h-life">Life</span> <span class="h-plan">Planner</span></h1>
     </div>
+    <button class="btn ghost custom-open" type="button" data-act="customize">Make it yours</button>
     <!-- A cosy corner: armchair, lamp, plants and a basket -->
     <div class="vignette" aria-hidden="true">
       <img class="v-art" src="data:image/webp;base64,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" alt="">
@@ -694,9 +730,38 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
 
   <div class="foot">
     <span>Saves in this browser only. Use the same browser on the same computer each time.</span>
-    <button class="btn ghost" type="button" data-act="reset">Start fresh</button>
+    <span class="foot-btns"><button class="btn ghost" type="button" data-act="customize">Make it yours</button><button class="btn ghost" type="button" data-act="reset">Start fresh</button></span>
   </div>
 </div>
+
+<!-- MAKE IT YOURS -->
+<dialog id="customize" aria-labelledby="cTitle">
+  <form method="dialog" class="cbox">
+    <div class="chead"><h2 id="cTitle">Make it yours</h2><button class="x" value="close" aria-label="Close">×</button></div>
+    <p class="hint">Changes show straight away and save in this browser.</p>
+
+    <fieldset><legend>Title</legend>
+      <div class="crow"><input class="field" id="cT1" aria-label="First line of the title" maxlength="20"><input class="field" id="cT2" aria-label="Second line of the title" maxlength="20"></div>
+    </fieldset>
+
+    <fieldset><legend>Colours</legend>
+      <div class="crow"><span class="clabel">Main colour</span><div class="presets" id="cMainP"></div><input class="field" type="color" id="cMain" aria-label="Main colour"></div>
+      <div class="crow"><span class="clabel">Highlight colour</span><div class="presets" id="cHiP"></div><input class="field" type="color" id="cHi" aria-label="Highlight colour"></div>
+    </fieldset>
+
+    <fieldset><legend>Header</legend>
+      <div class="crow"><span class="clabel">Background</span><select class="field" id="cBg" aria-label="Header background"><option value="pink">Pink gingham</option><option value="sage">Sage gingham</option><option value="lilac">Lilac gingham</option><option value="cream">Plain cream</option><option value="blush">Plain blush</option></select></div>
+      <div class="crow"><span class="clabel">Picture</span><label class="btn ghost filebtn">Use my own photo<input type="file" id="cPhoto" accept="image/*" hidden></label><button class="btn ghost" type="button" id="cPhotoReset">Back to the cosy room</button></div>
+    </fieldset>
+
+    <fieldset><legend>Tabs</legend>
+      <p class="hint">Rename a tab, or untick it to hide it.</p>
+      <div id="cTabs" class="ctabs"></div>
+    </fieldset>
+
+    <div class="cfoot"><button class="btn ghost" type="button" id="cReset">Undo all my changes</button><button class="btn" value="close">Done</button></div>
+  </form>
+</dialog>
 
 <script>
 (function () {
@@ -986,14 +1051,14 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
   /* Books */
   var SPINES = ["#f3b3c2", "#c8d6b4", "#ecd8b8", "#dc7891", "#a9bd8f", "#f8d6dd"];
   // Shrink a photo so lots of covers still fit in the browser's storage
-  function shrink(file, cb) {
+  function shrink(file, cb, maxW) {
     var r = new FileReader();
     r.onload = function () {
       var img = new Image();
       img.onload = function () {
-        var w = 240, h = Math.round(img.height * w / img.width), c = document.createElement("canvas");
+        var w = Math.min(maxW || 240, img.width), h = Math.round(img.height * w / img.width), c = document.createElement("canvas");
         c.width = w; c.height = h; c.getContext("2d").drawImage(img, 0, 0, w, h);
-        cb(c.toDataURL("image/jpeg", 0.8));
+        cb(c.toDataURL("image/jpeg", maxW ? 0.85 : 0.8));
       };
       img.src = r.result;
     };
@@ -1202,23 +1267,92 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { quotesV: 2, week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], medits: [], quotes: [], books: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], journal: {}, uploads: [], watch: [], channels: [], tries: [], postDay: state.postDay };
+        state = { quotesV: 2, week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], medits: [], quotes: [], books: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], custom: state.custom, journal: {}, uploads: [], watch: [], channels: [], tries: [], postDay: state.postDay };
         save(); renderWeek(); renderTodos(); renderAll(); jDay = iso(today); renderJournal();
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Click again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
     }
   });
 
+  /* Make it yours: title, colours, header and tabs */
+  var MAIN_P = ["#6c8a4c", "#c9516f", "#8a72c2", "#4f86a8", "#c96a36", "#3b2f2c"];
+  var HI_P = ["#dc7891", "#e8a0b4", "#a58fd0", "#6aa3c7", "#e08a5a", "#6c8a4c"];
+  var TAB_DEFAULTS = Array.prototype.map.call(document.querySelectorAll(".tab"), function (t) { return { id: t.getAttribute("href").slice(1), name: t.textContent }; });
+  function custom() { if (!state.custom) state.custom = {}; return state.custom; }
+  function applyCustom() {
+    var c = state.custom || {}, root = document.documentElement.style;
+    $(".h-life").textContent = c.t1 || "Life"; $(".h-plan").textContent = c.t2 == null ? "Planner" : c.t2;
+    // Shrink long titles so they fit beside the picture
+    var longest = Math.max((c.t1 || "Life").length, (c.t2 == null ? "Planner" : c.t2).length);
+    $(".mast h1").style.setProperty("--fit", longest > 7 ? (7 / longest).toFixed(3) : 1);
+    if (c.main) { root.setProperty("--olive", c.main); root.setProperty("--olive-dark", shade(c.main, -0.25)); root.setProperty("--sage-dark", c.main); }
+    else ["--olive", "--olive-dark", "--sage-dark"].forEach(function (v) { root.removeProperty(v); });
+    if (c.hi) { root.setProperty("--rose", c.hi); root.setProperty("--rose-dark", shade(c.hi, -0.25)); root.setProperty("--pinky", shade(c.hi, 0.35)); root.setProperty("--blush", shade(c.hi, 0.7)); }
+    else ["--rose", "--rose-dark", "--pinky", "--blush"].forEach(function (v) { root.removeProperty(v); });
+    $(".mast").setAttribute("data-bg", c.bg || "pink");
+    var v = $(".vignette");
+    v.classList.toggle("has-photo", !!c.photo);
+    var ph = v.querySelector(".v-photo");
+    if (c.photo) { if (!ph) { ph = document.createElement("img"); ph.className = "v-photo"; ph.alt = ""; v.appendChild(ph); } ph.src = c.photo; }
+    else if (ph) ph.remove();
+    var tabs = c.tabs || {};
+    document.querySelectorAll(".tab").forEach(function (t) {
+      var id = t.getAttribute("href").slice(1), def = TAB_DEFAULTS.filter(function (d) { return d.id === id; })[0], o = tabs[id] || {};
+      t.textContent = o.name || def.name; t.hidden = o.hide === true;
+    });
+    if (document.title) document.title = (c.t1 || "Life") + " " + (c.t2 == null ? "Planner" : c.t2);
+  }
+  function swatchRow(box, list, key, input) {
+    box.innerHTML = list.map(function (col) { return '<button type="button" class="preset" style="background:' + col + '" data-c="' + col + '" aria-label="Use ' + col + '"></button>'; }).join("");
+    box.addEventListener("click", function (e) { var b = e.target.closest(".preset"); if (!b) return; custom()[key] = b.dataset.c; input.value = b.dataset.c; save(); applyCustom(); });
+    input.addEventListener("input", function () { custom()[key] = input.value; save(); applyCustom(); });
+  }
+  function fillCustomForm() {
+    var c = state.custom || {}, cs = getComputedStyle(document.documentElement);
+    $("#cT1").value = c.t1 || "Life"; $("#cT2").value = c.t2 == null ? "Planner" : c.t2;
+    $("#cMain").value = c.main || "#6c8a4c"; $("#cHi").value = c.hi || "#dc7891"; $("#cBg").value = c.bg || "pink";
+    var tabs = c.tabs || {};
+    $("#cTabs").innerHTML = TAB_DEFAULTS.map(function (d) {
+      var o = tabs[d.id] || {};
+      return '<label class="ctab"><input type="checkbox" class="check" data-id="' + d.id + '"' + (o.hide ? "" : " checked") + ' aria-label="Show ' + esc(d.name) + '"><input class="field" data-id="' + d.id + '" value="' + esc(o.name || d.name) + '" aria-label="Name for ' + esc(d.name) + '"></label>';
+    }).join("");
+  }
+  swatchRow($("#cMainP"), MAIN_P, "main", $("#cMain"));
+  swatchRow($("#cHiP"), HI_P, "hi", $("#cHi"));
+  $("#cT1").addEventListener("input", function () { custom().t1 = this.value; save(); applyCustom(); });
+  $("#cT2").addEventListener("input", function () { custom().t2 = this.value; save(); applyCustom(); });
+  $("#cBg").addEventListener("change", function () { custom().bg = this.value; save(); applyCustom(); });
+  $("#cPhoto").addEventListener("change", function () { if (this.files[0]) shrink(this.files[0], function (d) { custom().photo = d; save(); applyCustom(); }, 900); this.value = ""; });
+  $("#cPhotoReset").addEventListener("click", function () { delete custom().photo; save(); applyCustom(); });
+  $("#cTabs").addEventListener("input", function (e) {
+    var id = e.target.dataset.id; if (!id) return;
+    var c = custom(); if (!c.tabs) c.tabs = {}; if (!c.tabs[id]) c.tabs[id] = {};
+    if (e.target.type === "checkbox") {
+      var shown = $("#cTabs").querySelectorAll(".check:checked").length;
+      if (!e.target.checked && shown === 0) { e.target.checked = true; return; } // keep at least one tab
+      c.tabs[id].hide = !e.target.checked;
+    } else c.tabs[id].name = e.target.value.trim();
+    save(); applyCustom(); route();
+  });
+  $("#cReset").addEventListener("click", function () { state.custom = {}; save(); applyCustom(); fillCustomForm(); route(); });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('[data-act="customize"]'); if (!a) return;
+    fillCustomForm();
+    var d = $("#customize"); if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+  });
+
   /* Tabs */
   var VIEWS = ["week", "home", "wellbeing", "people", "ideas", "books", "watch"];
   function route() {
     var v = (location.hash || "#week").slice(1); if (v === "journal") v = "wellbeing"; if (VIEWS.indexOf(v) < 0) v = "week";
+    var visible = VIEWS.filter(function (n) { var t = document.querySelector('.tab[href="#' + n + '"]'); return t && !t.hidden; });
+    if (visible.indexOf(v) < 0) v = visible[0] || "week";
     VIEWS.forEach(function (n) { document.getElementById("view-" + n).hidden = n !== v; });
     document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", t.getAttribute("href") === "#" + v ? "true" : "false"); });
   }
   window.addEventListener("hashchange", route);
 
-  renderWeek(); renderTodos(); renderAll(); renderJournal(); route();
+  applyCustom(); renderWeek(); renderTodos(); renderAll(); renderJournal(); route();
 })();
 </script>
 </body>
