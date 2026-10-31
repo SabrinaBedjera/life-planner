@@ -6,7 +6,7 @@
 <title>Life Planner · Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
 <style>
 /* Studio: a calm, design-lover's planner. Warm paper, blush pink, birch wood and sage,
    with flat-pack "assembly instruction" touches (numbered steps, line drawings, paint chips).
@@ -162,29 +162,110 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
   .page { padding-left: 46px; background: linear-gradient(90deg, transparent 32px, #f2b7c4 32px, #f2b7c4 34px, transparent 34px), repeating-linear-gradient(#fffdfb 0 33px, #ecdfe3 33px 34px); background-attachment: local; }
 }
 @media (prefers-reduced-motion: reduce) { .tab { transition: none; } }
+
+/* ===== Refined "seasonal catalogue" look =====
+   Warm linen, forest green, mustard lettering, dusty pink, terracotta and honey wood. */
+:root {
+  --paper: #f6efe4; --card: #fffdf9; --ink: #2f2a24; --muted: #6e6458; --line: #e7dccb;
+  --blush: #f4d3da; --rose: #c75b78; --rose-dark: #a2405e; --birch: #ead7b7; --birch-dark: #b38a55;
+  --sage: #c6d3bc; --sage-dark: #4f6b4a; --sky: #d7e2e2;
+  --forest: #33482f; --forest-2: #445e3e; --mustard: #f0c840; --terracotta: #c96a36; --wood: #c99a63;
+  --f-display: "Archivo Black", "Arial Black", Impact, sans-serif;
+}
+body { background-color: var(--paper); background-image: radial-gradient(circle at 1px 1px, rgba(110,90,60,.07) 1px, transparent 0); }
+.wrap { gap: 24px; }
+
+/* Header: catalogue cover */
+.mast { position: relative; overflow: hidden; grid-template-columns: minmax(0, 1fr) 260px; align-items: end; gap: 10px 24px;
+  background: radial-gradient(120% 140% at 85% 10%, var(--forest-2), var(--forest) 60%); color: #fbf3e4;
+  border: 0; border-radius: 26px; padding: 34px 34px 0; box-shadow: 0 18px 40px -22px rgba(40,50,30,.6); }
+.mast-copy { padding-bottom: 32px; }
+.edition { display: inline-block; margin: 0 0 14px; padding: 5px 12px; background: #2c6f73; color: #fff; font-family: var(--f-display); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; border-radius: 4px; box-shadow: 3px 3px 0 rgba(0,0,0,.25); }
+.mast h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(48px, 8vw, 88px); line-height: .92; letter-spacing: .01em; text-transform: uppercase; }
+.h-life { color: var(--mustard); text-shadow: 4px 4px 0 #1f2c1c; }
+.h-plan { display: block; color: #f6b3c2; text-shadow: 4px 4px 0 #1f2c1c; }
+.mast .lede { color: #efe6d4; font-family: var(--f-head); font-style: italic; font-size: 20px; margin-top: 14px; }
+.mast .still { width: 260px; height: auto; display: block; align-self: end; }
+
+/* Tabs: soft pills, selected in forest with mustard text */
+.tabs { gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px; box-shadow: 0 6px 18px -12px rgba(60,40,20,.35); }
+.tab { border: 0; border-radius: 999px; box-shadow: none; background: transparent; font-size: 17px; padding: 12px 14px; color: var(--ink); }
+.tab:hover { transform: none; box-shadow: none; background: var(--blush); }
+.tab[aria-selected="true"] { background: var(--forest); color: var(--mustard); box-shadow: none; }
+@media (min-width: 761px) { .tab { flex: 1 1 auto; padding: 12px 10px; white-space: nowrap; } }
+
+/* Cards */
+.panel { border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 10px 28px -18px rgba(70,50,25,.45); position: relative; overflow: hidden; }
+.panel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--c, var(--blush)); }
+.panel h2 { font-size: 28px; font-weight: 600; letter-spacing: -.005em; }
+.step { width: 34px; height: 34px; border: 0; background: var(--c, var(--blush)); color: var(--ink); font-size: 16px; }
+.hint { font-style: italic; font-family: var(--f-head); font-size: 17px; }
+
+.field { background: #fbf6ee; border: 1px solid var(--line); }
+.btn { border: 0; background: var(--forest); color: #fff; border-radius: 999px; padding: 11px 22px; }
+.btn:hover { background: var(--rose-dark); }
+.btn.ghost { border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.check { border: 2px solid #8c7b66; border-radius: 50%; }
+.check:checked { background: var(--forest); border-color: var(--forest); }
+.check:checked::after { color: var(--mustard); }
+.item { border-bottom: 1px solid var(--line); }
+.pill { border: 0; }
+.day { border: 1px solid var(--line); background: #fbf6ee; }
+.day.today { border-color: var(--rose); background: #fff4f6; box-shadow: inset 0 0 0 1px var(--rose); }
+.lane { border: 1px solid var(--line); }
+.dots div { border: 1px solid var(--line); }
+.dots div.on { background: var(--forest); border-color: var(--forest); color: var(--mustard); }
+.swatch, .swatch .nm { border-color: var(--line); }
+.swatch { border-width: 1px; box-shadow: 0 6px 16px -12px rgba(60,40,20,.5); }
+.mood { border: 1px solid var(--line); }
+.mood[aria-pressed="true"] { background: var(--rose); border-color: var(--rose); color: #fff; }
+.page { border: 1px solid var(--line); }
+
+/* YouTube "new arrivals" bar, echoing the catalogue cover */
+.newbar { background: var(--forest); border: 0; border-radius: 22px; padding: 18px 22px; box-shadow: 0 10px 28px -18px rgba(40,50,30,.7); }
+.newbar b { font-family: var(--f-display); font-weight: 400; font-size: 32px; color: var(--mustard); text-shadow: 3px 3px 0 #1f2c1c; }
+.newbar select { border: 0; }
+.tag-new { background: var(--mustard); color: var(--forest); font-family: var(--f-display); font-weight: 400; }
+
+@media (max-width: 760px) {
+  .mast { grid-template-columns: minmax(0, 1fr); padding: 26px 22px 0; }
+  .mast-copy { padding-bottom: 6px; }
+  .mast .still { width: 210px; justify-self: end; margin-right: -6px; }
+  .tabs { border-radius: 22px; }
+}
+@media (max-width: 560px) {
+  .mast .still { display: block; width: 180px; }
+  .tab { flex-basis: 40%; }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="mast">
-    <div>
-      <p class="eyebrow">Studio edition</p>
-      <h1>Life <em>Planner</em></h1>
-      <p class="lede">My week, my home projects, my journal and the people I love, all in one calm place.</p>
-      <div class="chips" aria-hidden="true">
-        <span class="chip" style="--c:#f7d9df"></span><span class="chip" style="--c:#c9516f"></span><span class="chip" style="--c:#ecd9bb"></span><span class="chip" style="--c:#b9cbb3"></span><span class="chip" style="--c:#cfdbe6"></span>
-      </div>
+    <div class="mast-copy">
+      <p class="edition"><span id="edition">Fall 2026</span> edition</p>
+      <h1><span class="h-life">Life</span> <span class="h-plan">Planner</span></h1>
+      <p class="lede">My week, my home, my journal and the people I love. New arrivals, every season.</p>
     </div>
-    <!-- A little flat-pack chair and hex key, drawn like an assembly instruction -->
-    <svg viewBox="0 0 200 170" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M60 20 L60 95 L130 95 L130 20" fill="#f7d9df"/>
-      <path d="M60 20 L130 20"/>
-      <path d="M50 95 L140 95 L140 108 L50 108 Z" fill="#ecd9bb"/>
-      <path d="M58 108 L52 160 M132 108 L138 160 M80 108 L78 150 M110 108 L112 150"/>
-      <path d="M72 40 L118 40 M72 60 L118 60 M72 78 L118 78" stroke-dasharray="2 7"/>
-      <path d="M160 40 L160 120 L180 120" stroke-width="5" stroke="#c9516f"/>
-      <circle cx="30" cy="40" r="13" fill="#fff"/><text x="30" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="currentColor" stroke="none" font-weight="700">1</text>
-      <path d="M150 140 q8 -14 18 0" stroke-dasharray="3 5"/>
+    <!-- A cosy still life: armchair, rattan basket, lamp and a vase of flowers -->
+    <svg class="still" viewBox="0 0 260 200" aria-hidden="true">
+      <rect x="0" y="168" width="260" height="32" fill="#c99a63"/>
+      <path d="M0 176 H260 M0 186 H260" stroke="#b5864f" stroke-width="2"/>
+      <path d="M150 40 h44 l12 40 h-68 z" fill="#d9773f"/>
+      <path d="M172 80 v62" stroke="#3a2a22" stroke-width="4"/>
+      <ellipse cx="172" cy="146" rx="20" ry="5" fill="#3a2a22"/>
+      <path d="M36 92 q0 -34 40 -34 h28 q40 0 40 34 v20 h-108 z" fill="#f3b6c3"/>
+      <rect x="22" y="100" width="22" height="46" rx="10" fill="#e893a7"/>
+      <rect x="136" y="100" width="22" height="46" rx="10" fill="#e893a7"/>
+      <rect x="40" y="112" width="100" height="34" rx="8" fill="#f3b6c3"/>
+      <path d="M46 126 h88" stroke="#e893a7" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+      <path d="M40 146 l-6 22 M140 146 l6 22" stroke="#7a4e2d" stroke-width="5" stroke-linecap="round"/>
+      <path d="M200 132 h40 l-5 36 h-30 z" fill="#d9b27c"/>
+      <path d="M202 142 h36 M203 152 h34 M204 161 h32" stroke="#b98a52" stroke-width="2"/>
+      <path d="M214 132 q6 -14 12 0" stroke="#b98a52" stroke-width="3" fill="none"/>
+      <rect x="66" y="4" width="48" height="40" rx="2" fill="#f0c840"/>
+      <rect x="71" y="9" width="38" height="30" fill="#fbf3e4"/>
+      <circle cx="84" cy="22" r="7" fill="#f3b6c3"/><path d="M76 39 q14 -18 33 -6 v6 z" fill="#a9bfa4"/>
     </svg>
   </header>
 
@@ -377,7 +458,7 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
           <button class="btn" type="submit">Add</button>
         </form>
       </div>
-      <div class="panel" style="--c: var(--forest)">
+      <div class="panel" style="--c: var(--blush)">
         <div class="panel-head"><h2><span class="step">3</span>Finds wishlist</h2><span class="hint">Click the label: spotted, want it, bought</span></div>
         <ul class="list" id="list-tries"></ul>
         <form class="addrow" data-add="tries">
@@ -711,7 +792,8 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
 
   var seasonNow = ["Winter", "Winter", "Spring", "Spring", "Spring", "Summer", "Summer", "Summer", "Fall", "Fall", "Fall", "Holidays"][today.getMonth()];
   $("#season").value = state.season || seasonNow;
-  $("#season").addEventListener("change", function () { state.season = this.value; save(); });
+  $("#edition").textContent = (state.season || seasonNow) + " " + today.getFullYear();
+  $("#season").addEventListener("change", function () { state.season = this.value; save(); $("#edition").textContent = this.value + " " + today.getFullYear(); });
 
   function renderAll() {
     ["projects", "shopping", "measures", "moves", "appts", "birthdays", "plans", "ideas", "watch", "channels", "tries"].forEach(renderList);
