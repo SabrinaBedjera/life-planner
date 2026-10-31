@@ -766,7 +766,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     try { o = JSON.parse(text); } catch (e) { return { error: "This file isn't a Life Planner backup. Pick the .json file you exported from your planner." }; }
     if (isPlain(o) && o.format === FORMAT) {
       if (typeof o.version !== "number" || o.version < 1) return { error: "This backup file looks damaged, so nothing was imported." };
-      if (o.version > VERSION) return { error: "This backup was made by a newer version of Life Planner. Download the latest planner file from GitHub, then import it there." };
+      if (o.version > 2) return { error: "This backup was made by a newer version of Life Planner. Download the latest planner file from GitHub, then import it there." };
       if (typeof o.planner !== "string" || !isPlain(o.data)) return { error: "This backup file looks damaged, so nothing was imported." };
       if (o.version >= 2 && !isPlain(o.data.packs)) return { error: "This backup file looks damaged, so nothing was imported." };
       return toShape({ planner: o.planner, exportedAt: o.exportedAt, data: clean(o.data), v2: o.version >= 2 });

@@ -1,0 +1,13 @@
+%page% .lpm-cottage { position: relative; text-align: center; padding: 34px 16px 30px; background: #fffaf0; border: 1.5px dashed #c9b98f; border-radius: 26px; box-shadow: 0 0 0 6px #fffaf0, 0 0 0 7.5px #e8dcbf, 0 14px 30px -16px rgba(90,70,30,.5); }
+%page% .lpm-cottage .lpm-title { font-family: "Caveat", "Segoe Script", cursive; color: #4f6233; font-size: clamp(56px, 11vw, 104px); line-height: .9; font-weight: 700; text-transform: none; letter-spacing: 0; }
+%page% .c-sub { margin: 6px 0 0; font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 600; font-size: 21px; color: #7a3b2e; }
+%page% .c-vine { position: absolute; left: 50%; top: 8px; width: min(420px, 70%); transform: translateX(-50%); opacity: .95; }
+%page% .c-mush { position: absolute; left: 22px; bottom: 14px; width: clamp(56px, 10vw, 96px); transform: rotate(-6deg); }
+%page% .c-straw { position: absolute; right: 30px; bottom: 16px; width: clamp(44px, 8vw, 74px); transform: rotate(10deg); }
+%page% .c-daisy { position: absolute; right: clamp(70px, 14vw, 120px); top: 26px; width: clamp(30px, 5vw, 46px); }
+%page% #lp-decor img { filter: drop-shadow(0 6px 8px rgba(90,70,30,.25)); }
+%page% .cd-bee { width: 64px; top: 330px; right: calc(50% - 630px); transform: rotate(-8deg); }
+%page% .cd-daisy1 { width: 54px; top: 600px; left: calc(50% - 620px); }
+%page% .cd-mush { width: 84px; top: 900px; left: calc(50% - 640px); }
+%page% .cd-straw { width: 60px; top: 1080px; right: calc(50% - 620px); transform: rotate(12deg); }
+@media (max-width: 560px) { %page% .c-mush, %page% .c-straw { display: none; } }

@@ -1,0 +1,4 @@
+%head% h2, %card% h2 { font-size: 1.35em; line-height: 1; }
+%btn%:hover { background: #ff4d00; border-color: #111; filter: none; }
+%btn%:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #ff4d00; }
+%tab%:hover { background: #ffcc00; }

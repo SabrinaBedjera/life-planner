@@ -1,0 +1,11 @@
+%page% .lpm-street { position: relative; background: #fff; border: 3px solid #111; box-shadow: 8px 8px 0 #111; padding: 46px 22px 22px; overflow: hidden; }
+%page% .s-tape { position: absolute; left: -10px; right: -10px; top: 10px; background: #ffcc00; border-block: 3px solid #111; font: 700 13px/1 "Space Grotesk", sans-serif; letter-spacing: .12em; padding: 5px 0; white-space: nowrap; overflow: hidden; transform: rotate(-1.2deg); }
+%page% .s-drop { margin: 6px 0 4px; font: 700 13px "Space Grotesk", sans-serif; letter-spacing: .14em; }
+%page% .lpm-street .lpm-title { font-size: clamp(54px, 12vw, 120px); line-height: .86; color: #111; -webkit-text-stroke: 0; text-shadow: 5px 5px 0 #ff4d00; }
+%page% .s-tag { position: absolute; right: clamp(120px, 22vw, 220px); bottom: 26px; font: 400 clamp(20px, 3.4vw, 30px) "Permanent Marker", cursive; color: #2b59ff; transform: rotate(-7deg); }
+%page% .s-star { position: absolute; right: 18px; top: 44px; width: clamp(70px, 12vw, 120px); transform: rotate(12deg); }
+%page% .s-code { position: absolute; right: 20px; bottom: 14px; width: 92px; border: 2px solid #111; }
+@media (max-width: 640px) { %page% .s-code, %page% .s-tag { display: none; } }
+%page% .sd-smile { width: 74px; top: 380px; left: calc(50% - 640px); transform: rotate(-12deg); }
+%page% .sd-arrow { width: 96px; top: 700px; right: calc(50% - 660px); transform: rotate(180deg); }
+%page% .sd-star { width: 84px; top: 980px; left: calc(50% - 650px); transform: rotate(-8deg); }

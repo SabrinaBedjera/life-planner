@@ -71,7 +71,7 @@ body { padding-bottom: 64px; }
 /* Mini theme previews in the gallery: drawn from each theme's own tokens */
 .lpc-preview { position: relative; height: 120px; border-radius: 10px; overflow: hidden; background: var(--t-page); color: var(--t-ink); padding: 10px; box-sizing: border-box; font-family: var(--t-font-body); isolation: isolate; }
 .lpc-preview > img, .lpc-preview > svg, .lpc-preview .lpp-deco { position: absolute; z-index: 2; pointer-events: none; }
-.lpp-title { position: relative; z-index: 1; font-family: var(--t-font-display); color: var(--t-heading); text-transform: var(--t-display-case); letter-spacing: var(--t-display-tracking); font-weight: var(--t-display-weight); font-size: 19px; line-height: 1.05; white-space: nowrap; }
+.lpp-title { position: relative; z-index: 1; font-family: var(--t-font-display); color: var(--t-heading); text-transform: var(--t-display-case); letter-spacing: var(--t-display-tracking); font-weight: var(--t-display-weight); font-size: 17px; line-height: 1.05; white-space: nowrap; max-width: 72%; overflow: hidden; }
 .lpp-tabs { position: relative; z-index: 1; display: flex; gap: 4px; margin: 7px 0; }
 .lpp-tabs i { font-style: normal; font-size: 9px; padding: 3px 7px; background: var(--t-tab); color: var(--t-tab-ink); border: var(--t-tab-border); border-radius: var(--t-tab-radius); font-family: var(--t-tab-font); text-transform: var(--t-tab-case); }
 .lpp-tabs i.on { background: var(--t-tab-on); color: var(--t-tab-on-ink); }

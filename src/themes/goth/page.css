@@ -1,0 +1,12 @@
+%page% .lpm-goth { position: relative; text-align: center; padding: 26px 16px 22px; border: 1px solid #4a3b57; border-radius: 6px; background: radial-gradient(600px 220px at 50% 0, rgba(196,162,239,.16), transparent 70%), #17121e; box-shadow: 0 0 0 1px #0b0810, 0 18px 40px rgba(0,0,0,.5); outline: 1px solid rgba(217,178,106,.35); outline-offset: -8px; overflow: hidden; }
+%page% .lpm-goth .lpm-title { font-family: "UnifrakturMaguntia", "Old English Text MT", serif; text-transform: none; letter-spacing: .01em; font-weight: 400; color: #e6cf98; font-size: clamp(46px, 9vw, 86px); text-shadow: 0 0 22px rgba(217,178,106,.35); }
+%page% .g-phases { margin: 0 0 6px; color: #c4a2ef; letter-spacing: .6em; font-size: 14px; }
+%page% .g-sub { margin: 10px 0 0; font-family: "EB Garamond", serif; font-style: italic; color: #b3a6bd; font-size: 18px; }
+%page% .g-moon { position: absolute; right: 26px; top: 18px; width: clamp(54px, 9vw, 92px); filter: drop-shadow(0 0 18px rgba(255,236,190,.35)); }
+%page% .g-web { position: absolute; left: 0; top: 0; width: clamp(80px, 14vw, 150px); opacity: .9; }
+%page% #lp-decor img { filter: drop-shadow(0 6px 12px rgba(0,0,0,.5)); }
+%page% .gd-candle { width: 70px; top: 520px; left: calc(50% - 640px); }
+%page% .gd-crystal { width: 96px; top: 860px; right: calc(50% - 650px); }
+%page% .gd-bat1 { width: 64px; top: 196px; right: calc(50% - 600px); transform: rotate(10deg); }
+%page% .gd-bat2 { width: 40px; top: 150px; right: calc(50% - 520px); transform: rotate(-12deg); opacity: .8; }
+@media (max-width: 1240px) { %page% .gd-bat1 { right: 16px; top: 170px; width: 46px; } %page% .gd-bat2 { display: none; } }
