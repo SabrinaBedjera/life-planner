@@ -15,6 +15,7 @@
   --paper: #fbf6f1; --card: #ffffff; --ink: #3d2230; --muted: #6f5a64; --line: #ead9de;
   --blush: #f7d9df; --rose: #c9516f; --rose-dark: #9e3553; --birch: #ecd9bb; --birch-dark: #b89566;
   --sage: #b9cbb3; --sage-dark: #557052; --sky: #cfdbe6;
+  --forest: #3f5a3a; --mustard: #f2cf4a; --terracotta: #d9773f;
   --f-head: "Fraunces", Georgia, "Times New Roman", serif;
   --f-body: "Nunito Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   color-scheme: light;
@@ -26,6 +27,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(
   background-image: radial-gradient(circle at 1px 1px, rgba(61,34,48,.06) 1px, transparent 0); background-size: 22px 22px; }
 .wrap { max-width: 1060px; margin: 0 auto; padding: 28px 16px 64px; display: flex; flex-direction: column; gap: 22px; }
 button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--rose-dark); font-weight: 700; }
 :focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
 
 /* Header */
@@ -41,7 +43,7 @@ h1 em { font-style: italic; color: var(--rose); }
 
 /* Tabs */
 .tabs { display: flex; gap: 10px; flex-wrap: wrap; }
-.tab { flex: 1 1 150px; text-align: center; text-decoration: none; color: var(--ink); font-weight: 700; font-size: 18px; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--ink); background: var(--card); box-shadow: 3px 3px 0 var(--line); transition: transform .15s, box-shadow .15s; }
+.tab { flex: 1 1 118px; display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; color: var(--ink); font-weight: 700; font-size: 18px; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--ink); background: var(--card); box-shadow: 3px 3px 0 var(--line); transition: transform .15s, box-shadow .15s; }
 .tab:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--blush); }
 .tab[aria-selected="true"] { background: var(--rose); color: #fff; box-shadow: 4px 4px 0 var(--ink); }
 
@@ -119,6 +121,34 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
 
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; font-size: 15px; color: var(--muted); border-top: 2px dashed var(--line); padding-top: 18px; }
 
+/* Journal */
+.prompt { margin: 0; font-family: var(--f-head); font-style: italic; font-size: 22px; color: var(--rose-dark); }
+.jbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.jbar .field { flex: 0 1 200px; }
+.moods { display: flex; flex-wrap: wrap; gap: 8px; }
+.mood { appearance: none; border: 2px solid var(--line); background: var(--paper); border-radius: 999px; padding: 8px 14px; font-weight: 700; font-size: 15px; cursor: pointer; }
+.mood[aria-pressed="true"] { background: var(--blush); border-color: var(--ink); }
+.page { width: 100%; min-height: 260px; resize: vertical; border: 2px solid var(--line); border-radius: 14px; padding: 6px 18px 18px 52px; font-size: 18px; line-height: 34px;
+  background: linear-gradient(90deg, transparent 38px, #f2b7c4 38px, #f2b7c4 40px, transparent 40px), repeating-linear-gradient(#fffdfb 0 33px, #ecdfe3 33px 34px); background-attachment: local; }
+.page:focus { border-color: var(--rose); outline: none; }
+.good { display: flex; flex-direction: column; gap: 10px; }
+.good label { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; align-items: center; font-weight: 700; }
+.item .open { appearance: none; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; font-weight: 700; color: var(--ink); }
+.item .open:hover { color: var(--rose-dark); text-decoration: underline; }
+.item.current .open { color: var(--rose-dark); }
+
+/* Watch list: seasonal "new arrivals" feel, forest green with mustard lettering */
+.newbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; background: var(--forest); color: var(--mustard); border: 2px solid var(--ink); border-radius: 16px; padding: 14px 18px; box-shadow: 5px 5px 0 var(--mustard); }
+.newbar b { font-family: var(--f-head); font-size: 30px; letter-spacing: .04em; text-transform: uppercase; line-height: 1; }
+.newbar span { color: #fff; font-size: 16px; }
+.newbar select { background: #fff; color: var(--ink); border-color: var(--mustard); }
+.tag-new { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 6px; background: var(--mustard); color: var(--forest); font-size: 12px; font-weight: 800; letter-spacing: .08em; vertical-align: 2px; }
+.pill[data-s="spotted"] { background: var(--sky); }
+.pill[data-s="want"] { background: var(--mustard); }
+.pill[data-s="bought"] { background: var(--sage); }
+.play { flex: none; display: inline-grid; place-items: center; width: 34px; height: 24px; border-radius: 7px; background: var(--rose); }
+.play::after { content: ""; border-left: 10px solid #fff; border-top: 6px solid transparent; border-bottom: 6px solid transparent; margin-left: 2px; }
+
 @media (max-width: 960px) { .sched { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 760px) { .two, .lanes { grid-template-columns: minmax(0, 1fr); } .mast { grid-template-columns: minmax(0, 1fr); } .mast svg { width: 140px; } }
 @media (max-width: 560px) {
@@ -129,6 +159,7 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
   .item .due { grid-column: 2; grid-row: 2; }
   .panel, .mast { padding: 18px; }
   .tab { flex-basis: 40%; font-size: 17px; }
+  .page { padding-left: 46px; background: linear-gradient(90deg, transparent 32px, #f2b7c4 32px, #f2b7c4 34px, transparent 34px), repeating-linear-gradient(#fffdfb 0 33px, #ecdfe3 33px 34px); background-attachment: local; }
 }
 @media (prefers-reduced-motion: reduce) { .tab { transition: none; } }
 </style>
@@ -139,7 +170,7 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
     <div>
       <p class="eyebrow">Studio edition</p>
       <h1>Life <em>Planner</em></h1>
-      <p class="lede">My week, my home projects and the people I love, all in one calm place.</p>
+      <p class="lede">My week, my home projects, my journal and the people I love, all in one calm place.</p>
       <div class="chips" aria-hidden="true">
         <span class="chip" style="--c:#f7d9df"></span><span class="chip" style="--c:#c9516f"></span><span class="chip" style="--c:#ecd9bb"></span><span class="chip" style="--c:#b9cbb3"></span><span class="chip" style="--c:#cfdbe6"></span>
       </div>
@@ -163,6 +194,8 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
     <a class="tab" role="tab" href="#wellbeing">Wellbeing</a>
     <a class="tab" role="tab" href="#people">Family &amp; friends</a>
     <a class="tab" role="tab" href="#ideas">Inspiration</a>
+    <a class="tab" role="tab" href="#journal">Journal</a>
+    <a class="tab" role="tab" href="#watch">YouTube</a>
   </nav>
 
   <!-- THIS WEEK -->
@@ -295,6 +328,68 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
     </div>
   </section>
 
+  <!-- JOURNAL -->
+  <section class="view" id="view-journal" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--blush)">
+      <div class="panel-head"><h2><span class="step">1</span><span id="jTitle">Today's page</span></h2><span class="hint">Write as much or as little as you like. It saves by itself.</span></div>
+      <p class="prompt" id="jPrompt"></p>
+      <div class="jbar">
+        <input class="field" type="date" id="jDate" aria-label="Which day">
+        <button class="btn ghost" type="button" id="jToday">Back to today</button>
+      </div>
+      <div class="moods" id="jMoods" role="group" aria-label="How I feel"></div>
+      <textarea class="page" id="jText" aria-label="Journal page" placeholder="Dear diary..."></textarea>
+      <span class="saved" id="jMsg"></span>
+    </div>
+    <div class="two">
+      <div class="panel" style="--c: var(--sage)">
+        <div class="panel-head"><h2><span class="step">2</span>Three good things</h2><span class="hint">Small things count</span></div>
+        <div class="good" id="jGood"></div>
+      </div>
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">3</span>Past pages</h2><span class="hint">Click a day to read it again</span></div>
+        <ul class="list" id="jPast"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- YOUTUBE -->
+  <section class="view" id="view-watch" role="tabpanel" hidden>
+    <div class="newbar"><b>New arrivals</b><span>Season:</span><select class="field sm" id="season" aria-label="Season"><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option><option>Holidays</option></select><span>Watch the new-in videos, then hunt for your favourite finds.</span></div>
+    <div class="panel" style="--c: var(--mustard)">
+      <div class="panel-head"><h2><span class="step">1</span>Videos to watch</h2><span class="hint">Paste the link from YouTube so it's one click away. Tick when watched.</span></div>
+      <ul class="list" id="list-watch"></ul>
+      <form class="addrow" data-add="watch">
+        <input class="field" name="title" placeholder="Video, e.g. 30 new home finds this winter" aria-label="Video" required>
+        <input class="field sm" name="channel" placeholder="Channel" aria-label="Channel">
+        <input class="field sm" name="link" placeholder="Link (optional)" aria-label="Link">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="two">
+      <div class="panel" style="--c: var(--sky)">
+        <div class="panel-head"><h2><span class="step">2</span>Favourite channels</h2></div>
+        <ul class="list" id="list-channels"></ul>
+        <form class="addrow" data-add="channels">
+          <input class="field" name="title" placeholder="Channel name" aria-label="Channel name" required>
+          <input class="field sm" name="topic" placeholder="About, e.g. Decor" aria-label="What it's about">
+          <input class="field sm" name="link" placeholder="Link (optional)" aria-label="Link">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--forest)">
+        <div class="panel-head"><h2><span class="step">3</span>Finds wishlist</h2><span class="hint">Click the label: spotted, want it, bought</span></div>
+        <ul class="list" id="list-tries"></ul>
+        <form class="addrow" data-add="tries">
+          <input class="field" name="title" placeholder="e.g. Rattan basket for the blankets" aria-label="Find" required>
+          <input class="field sm" name="price" placeholder="Price" aria-label="Price">
+          <input class="field sm" name="from" placeholder="Seen in which video" aria-label="Seen in which video">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <div class="foot">
     <span>Saves in this browser only. Use the same browser on the same computer each time.</span>
     <button class="btn ghost" type="button" data-act="reset">Start fresh</button>
@@ -321,10 +416,11 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
   ];
   var STATUS = {
     projects: ["idea", "measuring", "shopping", "building", "done"],
-    appts: ["booked", "done"]
+    appts: ["booked", "done"],
+    tries: ["spotted", "want", "bought"]
   };
-  var LABEL = { idea: "Idea", measuring: "Measuring", shopping: "Shopping", building: "Building", done: "Done", booked: "Booked" };
-  var CHECKED = { shopping: 1, plans: 1, ideas: 0 };
+  var LABEL = { idea: "Idea", measuring: "Measuring", shopping: "Shopping", building: "Building", done: "Done", booked: "Booked", spotted: "Spotted", want: "Want it", bought: "Bought" };
+  var CHECKED = { shopping: 1, plans: 1, ideas: 0, watch: 1 };
 
   // Example content, so the page isn't empty the first time. "Start fresh" clears it.
   function examples() {
@@ -375,6 +471,28 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
       ideas: [
         { id: uid(), title: "Scalloped lampshade for the reading corner", link: "" },
         { id: uid(), title: "Pegboard wall for craft supplies", link: "" }
+      ],
+      journal: (function () {
+        var j = {};
+        j[plus(-1)] = { mood: "Calm", text: "Finished painting the shelf. The pink looks even better in daylight.\nLong phone call with my sister in the evening.", good: ["Morning sun in the kitchen", "The shelf is done", "A good chat"] };
+        j[plus(-3)] = { mood: "Tired", text: "Slow day. Watched a home tour video and saved two ideas for the guest room.", good: ["Fresh flowers", "", ""] };
+        return j;
+      })(),
+      watch: [
+        { id: uid(), title: "35 new home products this winter", channel: "Cosy Corners", link: "", done: false },
+        { id: uid(), title: "Cottagecore home tour: the cosiest finds", channel: "Cosy Corners", link: "", done: false },
+        { id: uid(), title: "First look at the holiday decor collection", channel: "Cosy Corners", link: "", done: false },
+        { id: uid(), title: "20-minute gentle morning stretch", channel: "Stretch & Breathe", link: "", done: true }
+      ],
+      channels: [
+        { id: uid(), title: "Cosy Corners", topic: "New-in home finds and tours", link: "" },
+        { id: uid(), title: "Stretch & Breathe", topic: "Easy exercise", link: "" },
+        { id: uid(), title: "Sunday Bakes", topic: "Baking", link: "" }
+      ],
+      tries: [
+        { id: uid(), title: "Woven rattan basket", price: "$25", from: "35 new home products this winter", s: "want" },
+        { id: uid(), title: "Pinecone candles for the mantel", price: "$8", from: "First look at the holiday decor collection", s: "spotted" },
+        { id: uid(), title: "Striped linen cushion", price: "$15", from: "", s: "bought" }
       ]
     };
   }
@@ -382,6 +500,8 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
   var state;
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state) state = examples();
+  // Fill in any sections added in a newer version of this file
+  (function () { var ex = examples(); for (var k in ex) if (state[k] === undefined) state[k] = ex[k]; })();
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function $(s) { return document.querySelector(s); }
@@ -460,14 +580,19 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
     if (key === "appts") return esc(it.where);
     if (key === "moves") return esc(it.type) + (it.date ? " · " + nice(it.date) : "");
     if (key === "birthdays") return it.date ? new Date(it.date + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "long" }) : "";
-    if (key === "ideas" && it.link) { var safe = /^https?:\/\//i.test(it.link) ? it.link : "https://" + it.link; return '<a href="' + esc(safe) + '" target="_blank" rel="noopener">Open link</a>'; }
-    return "";
+    var bits = [];
+    if (key === "watch" && it.channel) bits.push(esc(it.channel));
+    if (key === "tries" && it.price) bits.push(esc(it.price));
+    if (key === "channels" && it.topic) bits.push(esc(it.topic));
+    if (key === "tries" && it.from) bits.push("Seen in: " + esc(it.from));
+    if (it.link) { var safe = /^https?:\/\//i.test(it.link) ? it.link : "https://" + it.link; bits.push('<a href="' + esc(safe) + '" target="_blank" rel="noopener">' + (key === "watch" ? "Watch" : "Open link") + "</a>"); }
+    return bits.join(" · ");
   }
   function renderList(key) {
     var ul = $("#list-" + key); if (!ul) return;
     var items = state[key].slice();
     var when = function (it) { return key === "birthdays" ? nextBirthday(it.date) : it.date; };
-    if (key !== "moves" && key !== "shopping" && key !== "measures" && key !== "ideas") items.sort(function (a, b) { return (when(a) || "9999").localeCompare(when(b) || "9999"); });
+    if (["moves", "shopping", "measures", "ideas", "watch", "channels", "tries"].indexOf(key) < 0) items.sort(function (a, b) { return (when(a) || "9999").localeCompare(when(b) || "9999"); });
     if (key === "moves") items.sort(function (a, b) { return (b.date || "").localeCompare(a.date || ""); });
     ul.innerHTML = items.length ? "" : '<li class="empty">Nothing here yet. Add one below.</li>';
     items.forEach(function (it) {
@@ -476,7 +601,7 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
       li.className = "item" + ((ticks && it.done) || (hasStatus && it.s === "done") ? " done" : "");
       var lead = ticks ? '<input type="checkbox" class="check" aria-label="Done"' + (it.done ? " checked" : "") + ">" : "<span></span>";
       var s = sub(key, it);
-      var title = esc(it.title) + (s ? "<small>" + s + "</small>" : "");
+      var title = (key === "watch" && !it.done ? '<span class="tag-new">NEW</span>' : "") + esc(it.title) + (s ? "<small>" + s + "</small>" : "");
       var right = hasStatus ? '<button class="pill" data-s="' + it.s + '" title="Click to change">' + LABEL[it.s] + "</button>" : "";
       var d = when(it);
       li.innerHTML = lead + '<span class="t"><span>' + title + "</span></span>" + (d && key !== "moves" ? dueLabel(d) : "<span></span>") + '<span style="display:flex;gap:8px;align-items:center">' + right + '<button class="x" aria-label="Remove">×</button></span>';
@@ -540,8 +665,56 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
     }).join("") : '<li class="empty">Nothing with a date yet.</li>';
   }
 
+  /* Journal */
+  var PROMPTS = ["What made you smile today?", "Which room in your home feels best right now, and why?", "Who would you like to hear from this week?", "What is something you'd like to make?", "Describe a colour you saw today.", "What are you looking forward to?", "What did you learn this week?", "What would make tomorrow lovely?"];
+  var MOODS = ["Happy", "Calm", "Busy", "Tired", "Low"];
+  var jDay = iso(today);
+  function jEntry(make) {
+    var e = state.journal[jDay];
+    if (!e && make) e = state.journal[jDay] = { mood: "", text: "", good: ["", "", ""] };
+    return e || { mood: "", text: "", good: ["", "", ""] };
+  }
+  function jTidy() {
+    var e = state.journal[jDay];
+    if (e && !e.mood && !e.text.trim() && !e.good.join("").trim()) delete state.journal[jDay];
+  }
+  function renderJournal() {
+    var e = jEntry(false), n = Math.round((new Date(jDay + "T00:00:00") - new Date(today.getFullYear(), 0, 1)) / DAY);
+    $("#jTitle").textContent = jDay === iso(today) ? "Today's page" : nice(jDay);
+    $("#jPrompt").textContent = PROMPTS[((n % PROMPTS.length) + PROMPTS.length) % PROMPTS.length];
+    $("#jDate").value = jDay; $("#jToday").hidden = jDay === iso(today);
+    $("#jText").value = e.text; $("#jMsg").textContent = "";
+    $("#jMoods").innerHTML = MOODS.map(function (m) { return '<button type="button" class="mood" aria-pressed="' + (e.mood === m) + '">' + m + "</button>"; }).join("");
+    $("#jGood").innerHTML = [0, 1, 2].map(function (i) { return '<label><span class="step" style="--c:var(--sage)">' + (i + 1) + '</span><input class="field" data-i="' + i + '" value="' + esc(e.good[i]) + '" aria-label="Good thing ' + (i + 1) + '"></label>'; }).join("");
+    renderPast();
+  }
+  function renderPast() {
+    var days = Object.keys(state.journal).sort().reverse();
+    $("#jPast").innerHTML = days.length ? "" : '<li class="empty">Your pages will show up here.</li>';
+    days.slice(0, 30).forEach(function (d) {
+      var e = state.journal[d], li = document.createElement("li");
+      li.className = "item" + (d === jDay ? " current" : ""); li.style.gridTemplateColumns = "minmax(0,1fr) auto";
+      var first = (e.text || e.good.filter(Boolean).join(", ")).split("\n")[0];
+      li.innerHTML = '<span class="t"><button type="button" class="open">' + esc(nice(d)) + "</button><small>" + esc(first.length > 70 ? first.slice(0, 70) + "..." : first) + "</small></span>" + (e.mood ? '<span class="due">' + esc(e.mood) + "</span>" : "<span></span>");
+      li.querySelector(".open").addEventListener("click", function () { jTidy(); jDay = d; renderJournal(); $("#jText").focus(); });
+      $("#jPast").appendChild(li);
+    });
+  }
+  $("#jText").addEventListener("input", function () { jEntry(true).text = this.value; jTidy(); save(); $("#jMsg").textContent = "Saved."; renderPast(); });
+  $("#jGood").addEventListener("input", function (ev) { var i = ev.target.dataset.i; if (i == null) return; jEntry(true).good[i] = ev.target.value; jTidy(); save(); renderPast(); });
+  $("#jMoods").addEventListener("click", function (ev) {
+    var b = ev.target.closest(".mood"); if (!b) return;
+    var e = jEntry(true); e.mood = e.mood === b.textContent ? "" : b.textContent; jTidy(); save(); renderJournal();
+  });
+  $("#jDate").addEventListener("change", function () { if (!this.value) return; jTidy(); jDay = this.value; renderJournal(); });
+  $("#jToday").addEventListener("click", function () { jTidy(); jDay = iso(today); renderJournal(); });
+
+  var seasonNow = ["Winter", "Winter", "Spring", "Spring", "Spring", "Summer", "Summer", "Summer", "Fall", "Fall", "Fall", "Holidays"][today.getMonth()];
+  $("#season").value = state.season || seasonNow;
+  $("#season").addEventListener("change", function () { state.season = this.value; save(); });
+
   function renderAll() {
-    ["projects", "shopping", "measures", "moves", "appts", "birthdays", "plans", "ideas"].forEach(renderList);
+    ["projects", "shopping", "measures", "moves", "appts", "birthdays", "plans", "ideas", "watch", "channels", "tries"].forEach(renderList);
     renderDots(); renderSwatches(); renderUpcoming();
   }
 
@@ -549,15 +722,15 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [] };
-        save(); renderWeek(); renderTodos(); renderAll();
+        state = { week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], journal: {}, watch: [], channels: [], tries: [] };
+        save(); renderWeek(); renderTodos(); renderAll(); jDay = iso(today); renderJournal();
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Click again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
     }
   });
 
   /* Tabs */
-  var VIEWS = ["week", "home", "wellbeing", "people", "ideas"];
+  var VIEWS = ["week", "home", "wellbeing", "people", "ideas", "journal", "watch"];
   function route() {
     var v = (location.hash || "#week").slice(1); if (VIEWS.indexOf(v) < 0) v = "week";
     VIEWS.forEach(function (n) { document.getElementById("view-" + n).hidden = n !== v; });
@@ -565,7 +738,7 @@ input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 7
   }
   window.addEventListener("hashchange", route);
 
-  renderWeek(); renderTodos(); renderAll(); route();
+  renderWeek(); renderTodos(); renderAll(); renderJournal(); route();
 })();
 </script>
 </body>

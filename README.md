@@ -7,7 +7,7 @@ A free, pretty planner for your week, your goals and the things you care about. 
 | Girly Pop | Arcade | Studio |
 |---|---|---|
 | ![Girly Pop preview](themes/previews/girly-pop.png) | ![Arcade preview](themes/previews/arcade.png) | ![Studio preview](themes/previews/studio.png) |
-| Pink 2000s glam: cut-out letters, sparkles and a flip-phone screen. Tabs for your week, goals, job search, fitness and creative projects. | Dark gaming style with neon colours. Earn XP by ticking things off. Made for a student: week, uni deadlines, work, clubs and gym. | Calm and design-loving: blush pink, birch and sage, with big easy-to-read text. Week, home projects, wellbeing, family and friends, and a colour mood board. |
+| Pink 2000s glam: cut-out letters, sparkles and a flip-phone screen. Tabs for your week, goals, job search, fitness and creative projects. | Dark gaming style with neon colours. Earn XP by ticking things off. Made for a student: week, uni deadlines, work, clubs and gym. | Calm and design-loving: blush pink, birch and sage, with big easy-to-read text. Week, home projects, wellbeing, family and friends, a colour mood board, a journal, and a YouTube watch list with a finds wishlist. |
 | [`themes/girly-pop.html`](themes/girly-pop.html) | [`themes/arcade.html`](themes/arcade.html) | [`themes/studio.html`](themes/studio.html) |
 
 Each one is a single file. They all have a 7-day week you can type into, lists you can tick off, and example content so you can see how it works.
