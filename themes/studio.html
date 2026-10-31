@@ -719,17 +719,26 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
   var LABEL = { idea: "Idea", measuring: "Measuring", shopping: "Shopping", building: "Building", done: "Done", booked: "Booked", filming: "Filming", editing: "Editing", scheduled: "Scheduled", posted: "Posted", spotted: "Spotted", want: "Want it", bought: "Bought" };
   var CHECKED = { shopping: 1, plans: 1, ideas: 0, watch: 1 };
 
-  // Extra quotes, also added once to planners saved before they existed
-  function moreQuotes() {
+  // Quotes by women writers, feminists and the odd witch, about flowers, home and living boldly
+  var OLD_QUOTES = ["Have nothing in your house that you do not know to be useful, or believe to be beautiful.", "Adopt the pace of nature: her secret is patience.", "Little by little, one travels far.", "Bloom where you are planted.", "The earth laughs in flowers.", "If you have a garden and a library, you have everything you need.", "Simplicity is the keynote of all true elegance.", "Home is where one starts from.", "Act as if what you do makes a difference. It does.", "Keep some room in your heart for the unimaginable.", "Not all those who wander are lost.", "Every day is a fresh start."];
+  function starterQuotes() {
     return [
-      ["The earth laughs in flowers.", "Ralph Waldo Emerson"],
-      ["If you have a garden and a library, you have everything you need.", "Cicero"],
-      ["Simplicity is the keynote of all true elegance.", "Coco Chanel"],
-      ["Home is where one starts from.", "T. S. Eliot"],
-      ["Act as if what you do makes a difference. It does.", "William James"],
-      ["Keep some room in your heart for the unimaginable.", "Mary Oliver"],
-      ["Not all those who wander are lost.", "J. R. R. Tolkien"],
-      ["Every day is a fresh start.", "Proverb"]
+      ["If you look the right way, you can see that the whole world is a garden.", "Frances Hodgson Burnett"],
+      ["I'd rather have roses on my table than diamonds on my neck.", "Emma Goldman"],
+      ["To be a Flower, is profound Responsibility.", "Emily Dickinson"],
+      ["Where flowers bloom, so does hope.", "Lady Bird Johnson"],
+      ["Keep rosemary by your garden gate. Plant lavender for luck.", "Alice Hoffman, Practical Magic"],
+      ["I'm so glad I live in a world where there are Octobers.", "L. M. Montgomery"],
+      ["Home is the nicest word there is.", "Laura Ingalls Wilder"],
+      ["There is nothing like staying at home for real comfort.", "Jane Austen"],
+      ["A woman must have money and a room of her own if she is to write fiction.", "Virginia Woolf"],
+      ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+      ["Well-behaved women seldom make history.", "Laurel Thatcher Ulrich"],
+      ["The most common way people give up their power is by thinking they don't have any.", "Alice Walker"],
+      ["I am my own muse.", "Frida Kahlo"],
+      ["Tell me, what is it you plan to do with your one wild and precious life?", "Mary Oliver"],
+      ["There is no greater agony than bearing an untold story inside you.", "Maya Angelou"],
+      ["Forever is composed of nows.", "Emily Dickinson"]
     ].map(function (q) { return { id: uid(), title: q[0], by: q[1] }; });
   }
 
@@ -768,12 +777,7 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
         { id: uid(), title: "The Secret Garden", author: "Frances Hodgson Burnett", shelf: "read", stars: 4, cover: "" },
         { id: uid(), title: "Pride and Prejudice", author: "Jane Austen", shelf: "read", stars: 5, cover: "" }
       ],
-      quotes: [
-        { id: uid(), title: "Have nothing in your house that you do not know to be useful, or believe to be beautiful.", by: "William Morris" },
-        { id: uid(), title: "Adopt the pace of nature: her secret is patience.", by: "Ralph Waldo Emerson" },
-        { id: uid(), title: "Little by little, one travels far.", by: "Proverb" },
-        { id: uid(), title: "Bloom where you are planted.", by: "Proverb" }
-      ].concat(moreQuotes()),
+      quotes: starterQuotes(),
       medits: [
         { id: uid(), date: iso(monday), mins: "10", title: "Morning breathing" },
         { id: uid(), date: plus(-1), mins: "20", title: "Body scan before bed" }
@@ -840,10 +844,12 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
   if (!state) state = examples();
   // Fill in any sections added in a newer version of this file
   (function () { var ex = examples(); for (var k in ex) if (state[k] === undefined) state[k] = ex[k]; })();
-  if (!state.moreQuotes) {
+  // Swap the first batch of example quotes for the women writers' set (once); quotes you added stay
+  if (state.quotesV !== 2) {
+    state.quotes = state.quotes.filter(function (q) { return OLD_QUOTES.indexOf(q.title) < 0; });
     var have = state.quotes.map(function (q) { return q.title; });
-    moreQuotes().forEach(function (q) { if (have.indexOf(q.title) < 0) state.quotes.push(q); });
-    state.moreQuotes = 1;
+    starterQuotes().forEach(function (q) { if (have.indexOf(q.title) < 0) state.quotes.push(q); });
+    state.quotesV = 2;
   }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -1190,7 +1196,7 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { moreQuotes: 1, week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], medits: [], quotes: [], books: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], journal: {}, uploads: [], watch: [], channels: [], tries: [], postDay: state.postDay };
+        state = { quotesV: 2, week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], medits: [], quotes: [], books: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], journal: {}, uploads: [], watch: [], channels: [], tries: [], postDay: state.postDay };
         save(); renderWeek(); renderTodos(); renderAll(); jDay = iso(today); renderJournal();
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Click again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
