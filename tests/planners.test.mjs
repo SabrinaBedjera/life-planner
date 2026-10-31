@@ -329,6 +329,8 @@ console.log("\nbackups");
   // Studio's old "hide this tab" choices carry over to Customize
   const { ctx } = await context();
   const legacy = await openIn(ctx, "themes", "studio");
+  await legacy.page.locator("#sched textarea").first().fill("Fictional plan");
+  await legacy.page.waitForTimeout(900);
   await legacy.page.evaluate(() => { const d = JSON.parse(localStorage.getItem("life-planner-studio-v1")); d.custom = { tabs: { books: { hide: true }, ideas: { name: "Mood board" } } }; localStorage.setItem("life-planner-studio-v1", JSON.stringify(d)); });
   await legacy.page.close();
   const { page, errors } = await openIn(ctx, "planners", "studio");

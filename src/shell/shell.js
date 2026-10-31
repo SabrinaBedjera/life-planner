@@ -28,13 +28,15 @@
     if (!THEMES[settings.theme]) settings.theme = P.theme;
     if (!settings.tabs || typeof settings.tabs !== "object" || Array.isArray(settings.tabs)) settings.tabs = {};
     // Studio used to hide tabs from "Make it yours": carry those choices over once.
+    var changed = false;
     if (!settings.migrated && P.primary === "studio") {
       var st = readJSON(KEY), hid = st && st.custom && st.custom.tabs;
       if (hid && typeof hid === "object") Object.keys(hid).forEach(function (v) {
-        if (hid[v] && hid[v].hide === true && libById["studio:" + v] && settings.tabs["studio:" + v] === undefined) settings.tabs["studio:" + v] = false;
+        if (hid[v] && hid[v].hide === true && libById["studio:" + v] && settings.tabs["studio:" + v] === undefined) { settings.tabs["studio:" + v] = false; changed = true; }
       });
     }
     settings.migrated = 1;
+    if (changed) saveSettings();
   }
 
   /* ---------- the tab library: every tab from every pack ---------- */
@@ -48,7 +50,10 @@
     });
   });
   function isOn(e) { var v = settings.tabs[e.id]; return v === undefined ? e.pack === P.primary : v === true; }
-  function enabled() { return LIB.filter(isOn); }
+  function enabled() { // this planner's own tabs first, then the ones added from other planners
+    var on = LIB.filter(isOn);
+    return on.filter(function (e) { return e.pack === P.primary; }).concat(on.filter(function (e) { return e.pack !== P.primary; }));
+  }
   function packActive(pid) { return LIB.some(function (e) { return e.pack === pid && isOn(e); }); }
   function navLabel(e, list) {
     var custom = e.pack === P.primary && ctxs[e.pack] && ctxs[e.pack].labelOf ? ctxs[e.pack].labelOf(e.view) : null;
@@ -350,10 +355,10 @@
   function themesPane() {
     var wrap = h("div");
     wrap.appendChild(h("p", { "class": "lpc-lead", text: "Change the look any time. Your content and your tabs stay exactly the same." }));
-    var grid = h("div", { "class": "lpc-themes", role: "radiogroup", "aria-label": "Themes" });
+    var grid = h("div", { "class": "lpc-themes", role: "group", "aria-label": "Themes" });
     B.themeOrder.forEach(function (t) {
       var th = THEMES[t], on = settings.theme === t;
-      var b = h("button", { type: "button", role: "radio", "aria-checked": String(on), "class": "lpc-theme" + (on ? " on" : ""), onclick: function () {
+      var b = h("button", { type: "button", "aria-pressed": String(on), "class": "lpc-theme" + (on ? " on" : ""), onclick: function () {
         if (settings.theme === t) return;
         var before = settings.theme;
         settings.theme = t; saveSettings(); applyTheme(); renderCustomize("themes");
