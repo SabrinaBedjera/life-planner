@@ -144,6 +144,17 @@ textarea.field { resize: vertical; }
 .chip { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--cyan); color: var(--cyan); padding: 4px 4px 4px 10px; font-family: var(--f-display); font-weight: 600; font-size: 14px; }
 .party-add { display: flex; gap: 6px; flex: 1 1 240px; min-width: 0; }
 .party-add .field { flex: 1 1 auto; }
+.study-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.study { display: flex; flex-wrap: wrap; gap: 8px; }
+.sbox { appearance: none; width: 40px; height: 40px; border: 2px solid var(--lime); background: transparent; cursor: pointer; color: var(--bg); font-family: var(--f-body); font-weight: 700; font-size: 18px; line-height: 1; }
+.sbox.on { background: var(--lime); box-shadow: 0 0 10px rgba(141,255,79,.45); }
+.target { display: flex; align-items: center; gap: 8px; }
+.target b { font-family: var(--f-display); font-size: 22px; min-width: 1.4em; text-align: center; font-variant-numeric: tabular-nums; }
+.btn.step { padding: 2px 10px; font-size: 16px; }
+.quote { appearance: none; background: none; border: 0; border-left: 3px solid var(--magenta); padding: 4px 0 4px 14px; text-align: left; cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; color: var(--fg); }
+.quote .q { font-family: var(--f-display); font-weight: 600; font-size: 18px; }
+.quote .who { font-family: var(--f-pixel); font-size: 8px; color: var(--magenta); line-height: 1.6; }
+.quote:hover .q { color: var(--cyan); }
 .resets { display: flex; flex-direction: column; gap: 10px; border-top: 1px dashed var(--line); padding-top: 12px; }
 .resets h3 { margin: 0; font-family: var(--f-pixel); font-size: 9px; font-weight: 400; color: var(--magenta); line-height: 1.6; }
 .talk { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 12px; align-items: center; }
@@ -179,6 +190,8 @@ textarea.field { resize: vertical; }
       <span class="note">Tick things off to earn XP. Example content, yours to change.</span>
     </div>
   </header>
+
+  <button class="quote" id="quote" type="button" aria-label="Show another quote"><span class="q" id="qText"></span><span class="who" id="qWho"></span></button>
 
   <nav class="tabs" role="tablist" aria-label="Sections">
     <a class="tab" role="tab" href="#week">Week</a>
@@ -243,6 +256,18 @@ textarea.field { resize: vertical; }
 
   <!-- UNI -->
   <section class="view" id="view-uni" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--lime)">
+      <div class="panel-head"><h2>Study sessions</h2><span class="hint">Tap a box when you finish one · +10 XP each</span></div>
+      <div class="study-row">
+        <div class="study" id="study" aria-label="Study sessions this week"></div>
+        <div class="target"><span class="hint">Weekly target</span>
+          <button class="btn ghost step" type="button" data-act="study-minus" aria-label="Lower target">−</button>
+          <b id="studyTarget">5</b>
+          <button class="btn ghost step" type="button" data-act="study-plus" aria-label="Raise target">+</button>
+        </div>
+      </div>
+      <span class="hint" id="studyMsg"></span>
+    </div>
     <div class="panel" style="--c: var(--cyan)">
       <div class="panel-head"><h2>Deadlines &amp; exams</h2><span class="hint">Tap the status to change it · submitted = +25 XP</span></div>
       <ul class="list" id="list-deadlines"></ul>
@@ -470,6 +495,7 @@ textarea.field { resize: vertical; }
     state.deadlines.forEach(function (d) { if (d.s === "done") n += 25; });
     state.jobs.forEach(function (j) { if (j.s !== "saved") n += 10; });
     state.gym.forEach(function () { n += 15; });
+    Object.keys(state.study || {}).forEach(function (k) { n += 10 * (state.study[k] || 0); });
     state.clubs.forEach(function (c) { if (c.s === "joined") n += 20; });
     state.duties.forEach(function (d) { if (d.done) n += 15; });
     return n;
@@ -633,8 +659,8 @@ textarea.field { resize: vertical; }
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0, resets: state.resets, resetsV: 3, battery: {}, batAuto: {}, party: [] };
-        save(); renderWeek(); renderQuests(); renderAll(); renderBattery(); renderParty();
+        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0, resets: state.resets, resetsV: 3, battery: {}, batAuto: {}, party: [], study: {}, studyTarget: 5 };
+        save(); renderWeek(); renderQuests(); renderAll(); renderBattery(); renderParty(); renderStudy();
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Tap again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
     }
@@ -666,7 +692,52 @@ textarea.field { resize: vertical; }
     state.party.push(v); inp.value = ""; save(); renderParty();
   });
 
-  renderWeek(); renderQuests(); renderAll(); renderBattery(); renderParty(); route();
+  /* Study sessions: weekly target, tap to fill */
+  /* New week: clear finished quests, carry over the rest */
+  if (state.questWeek && state.questWeek !== weekKey) state.quests = state.quests.filter(function (q) { return !q.done; });
+  state.questWeek = weekKey;
+  if (!state.study) state.study = {};
+  if (!state.studyTarget) state.studyTarget = 5;
+  function renderStudy() {
+    var done = state.study[weekKey] || 0, t = state.studyTarget, box = document.getElementById("study");
+    box.innerHTML = "";
+    for (var i = 0; i < Math.max(t, done); i++) {
+      var b = document.createElement("button");
+      b.className = "sbox" + (i < done ? " on" : ""); b.type = "button";
+      b.setAttribute("aria-label", "Session " + (i + 1) + (i < done ? ", done" : ""));
+      b.textContent = i < done ? "✓" : "";
+      (function (i) { b.addEventListener("click", function () { state.study[weekKey] = i < done ? i : i + 1; save(); renderStudy(); }); })(i);
+      box.appendChild(b);
+    }
+    document.getElementById("studyTarget").textContent = t;
+    document.getElementById("studyMsg").textContent = done >= t ? "Target hit this week. Nice." : done + " of " + t + " this week.";
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-act]"); if (!a) return;
+    if (a.dataset.act === "study-plus") { state.studyTarget = Math.min(14, state.studyTarget + 1); save(); renderStudy(); }
+    if (a.dataset.act === "study-minus") { state.studyTarget = Math.max(1, state.studyTarget - 1); save(); renderStudy(); }
+  });
+
+  /* Quote of the day: tap for another */
+  var QUOTES = [
+    ["It's dangerous to go alone! Take this.", "The Legend of Zelda"],
+    ["Believe in the you that believes in yourself.", "Kamina, Gurren Lagann"],
+    ["Plus Ultra!", "My Hero Academia"],
+    ["Stay determined.", "Undertale"],
+    ["Wake me when you need me.", "Master Chief, Halo 3"],
+    ["If you don't take risks, you can't create a future.", "Luffy, One Piece"],
+    ["Every expert was once a noob.", "Life Planner"],
+    ["Rest is a save point, not a game over.", "Life Planner"],
+    ["Small XP every day still levels you up.", "Life Planner"],
+    ["Respawns are part of the game.", "Life Planner"],
+    ["Denji's dreams started small. Small dreams count.", "A nod to Chainsaw Man"]
+  ];
+  var qi = Math.floor(today.getTime() / DAY) % QUOTES.length;
+  function showQuote() { document.getElementById("qText").textContent = "\u201C" + QUOTES[qi][0] + "\u201D"; document.getElementById("qWho").textContent = QUOTES[qi][1].toUpperCase(); }
+  document.getElementById("quote").addEventListener("click", function () { qi = (qi + 1) % QUOTES.length; showQuote(); });
+  showQuote();
+
+  renderWeek(); renderQuests(); renderAll(); renderBattery(); renderParty(); renderStudy(); route();
 })();
 </script>
 
