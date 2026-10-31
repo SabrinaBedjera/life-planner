@@ -2,15 +2,27 @@
 
 A free, pretty planner for your week, your goals and the things you care about. Pick a look, download one file and open it. No account, no install and no coding needed.
 
+![The three Life Planner looks: Girly Pop, Arcade and Studio](themes/previews/all-themes.png)
+
 ## Pick a look
 
 | Girly Pop | Arcade | Studio |
 |---|---|---|
 | ![Girly Pop preview](themes/previews/girly-pop.png) | ![Arcade preview](themes/previews/arcade.png) | ![Studio preview](themes/previews/studio.png) |
-| Pink 2000s glam: cut-out letters, sparkles and a flip-phone screen. Tabs for your week, goals, job search, fitness and creative projects. | Dark gaming style with neon colours. Earn XP by ticking things off. Made for a student: week, uni deadlines, work, clubs and gym. | Calm and design-loving: blush pink, birch and sage, with big easy-to-read text. Week, home projects, wellbeing, family and friends, and a colour mood board. |
+| Grown-up 2000s glam: dusty pink, cut-out letters, sparkles and an old-school phone screen for your weekly to-dos. For someone juggling a job search, goals, fitness and creative projects. | Dark grey gaming style with neon colours. Earn XP by ticking things off and get a game or anime quote each day. Made for a uni student: classes, deadlines, work, clubs and the gym. | Cosy and design-loving: pink gingham, sage and oak, with big easy-to-read text. Made for home life: projects, wellbeing, family and friends, inspiration, books and a video channel. |
 | [`themes/girly-pop.html`](themes/girly-pop.html) | [`themes/arcade.html`](themes/arcade.html) | [`themes/studio.html`](themes/studio.html) |
 
 Each one is a single file. They all have a 7-day week you can type into, lists you can tick off, and example content so you can see how it works.
+
+### How they differ
+
+| | Girly Pop | Arcade | Studio |
+|---|---|---|---|
+| **Best for** | Career changers and busy planners | Students | Home, hobbies and family life |
+| **Feel** | Pink, playful, glam | Dark, neon, game-like | Soft, calm, easy to read |
+| **Tabs** | This week, Jobs, Life | Week, Uni, Work, Social, Gym | This week, Home projects, Wellbeing, Family & friends, Inspiration, Books, My channel |
+| **Stand-out features** | Job tracker with fit scores and a funnel chart, goals, fitness log, creative projects | XP bar, quote of the day, study sessions, deadlines, clubs, an energy check-in with ideas for low days | Daily quote, mood journal, book shelf with covers, home project tracker, posting calendar, a "Make it yours" button to change the title, colours and tab names |
+| **Detail level** | Most detailed | Simple, made not to overwhelm | Simple, big buttons |
 
 ## Use it in your browser (easiest)
 
