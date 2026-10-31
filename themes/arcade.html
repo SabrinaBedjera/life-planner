@@ -122,6 +122,20 @@ textarea.field { resize: vertical; }
 /* Gym streak */
 .streak { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 .streak div { text-align: center; padding: 8px 0; border: 1px solid var(--line); background: var(--panel-2); font-family: var(--f-pixel); font-size: 8px; color: var(--muted); }
+/* Respawn */
+.battery { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.bat-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.bat { appearance: none; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted); padding: 7px 11px; cursor: pointer; font-family: var(--f-display); font-weight: 600; font-size: 13px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 7px; }
+.bat i { display: inline-block; width: 22px; height: 10px; border: 1.5px solid currentColor; position: relative; }
+.bat i::before { content: ""; position: absolute; inset: 1px auto 1px 1px; width: var(--w); background: currentColor; }
+.bat[aria-checked="true"] { color: var(--bc); border-color: var(--bc); box-shadow: 0 0 10px color-mix(in srgb, var(--bc) 45%, transparent); }
+.bat-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.bat-week div { text-align: center; padding: 6px 0; border: 1px solid var(--line); background: var(--panel-2); font-family: var(--f-pixel); font-size: 8px; color: var(--muted); }
+.bat-week div.set { background: var(--bc); border-color: var(--bc); color: var(--bg); }
+.resets { display: flex; flex-direction: column; gap: 10px; border-top: 1px dashed var(--line); padding-top: 12px; }
+.resets h3 { margin: 0; font-family: var(--f-pixel); font-size: 9px; font-weight: 400; color: var(--magenta); line-height: 1.6; }
+.talk { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 12px; align-items: center; }
+@media (max-width: 560px) { .talk { grid-template-columns: minmax(0, 1fr); } }
 .streak div.on { border-color: var(--lime); color: var(--bg); background: var(--lime); box-shadow: 0 0 10px rgba(141,255,79,.4); }
 
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
@@ -172,6 +186,27 @@ textarea.field { resize: vertical; }
     <div class="panel" style="--c: var(--amber)">
       <div class="panel-head"><h2>Coming up</h2><span class="hint">Deadlines, applications and club stuff, next 4</span></div>
       <ul class="list" id="upcoming"></ul>
+    </div>
+    <div class="panel" style="--c: var(--magenta)">
+      <div class="panel-head"><h2>Respawn</h2><span class="hint">For the low days. Nobody else sees this.</span></div>
+      <div class="battery">
+        <span class="hint">Battery today</span>
+        <div class="bat-btns" id="batBtns" role="radiogroup" aria-label="How's your battery today?"></div>
+      </div>
+      <div class="bat-week" id="batWeek" aria-label="Battery this week"></div>
+      <div id="resets" class="resets">
+        <h3>Low battery? Pick one</h3>
+        <ul class="list" id="list-resets"></ul>
+        <form class="addrow" data-add="resets">
+          <input class="field" name="title" placeholder="Add something that helps you" aria-label="Something that helps" required>
+          <button class="btn" type="submit">Add</button>
+        </form>
+        <div class="talk">
+          <label class="hint" for="mate">A mate to text</label><input class="field" id="mate" placeholder="Name">
+          <label class="hint" for="support">Uni support line</label><input class="field" id="support" placeholder="Number from the uni wellbeing page">
+        </div>
+        <p class="hint">Feeling really bad, or not safe? Talk to someone today. Call that number, a doctor, or your local emergency number.</p>
+      </div>
     </div>
     <div class="panel" style="--c: var(--cyan)">
       <div class="panel-head"><h2>This week's quests</h2><span class="hint">Tick off = +10 XP</span></div>
@@ -355,6 +390,44 @@ textarea.field { resize: vertical; }
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state) state = examples();
   ["clubs", "duties"].forEach(function (k) { if (!state[k]) state[k] = examples()[k]; });
+  if (!state.resets) state.resets = [
+    { id: uid(), title: "10-minute walk outside" },
+    { id: uid(), title: "Text a mate, about anything" },
+    { id: uid(), title: "Shower, proper food, glass of water" },
+    { id: uid(), title: "Gym or a quick stretch" },
+    { id: uid(), title: "One playlist or one match, then stop" },
+    { id: uid(), title: "Early night, phone in the other room" }
+  ];
+  if (!state.battery) state.battery = {};
+
+  /* Respawn: daily battery check */
+  var BATS = [
+    { v: 1, name: "Empty", w: "2px", c: "var(--red)" },
+    { v: 2, name: "Low", w: "5px", c: "var(--amber)" },
+    { v: 3, name: "OK", w: "10px", c: "var(--cyan)" },
+    { v: 4, name: "Good", w: "14px", c: "var(--lime)" },
+    { v: 5, name: "Full", w: "17px", c: "var(--lime)" }
+  ];
+  function renderBattery() {
+    var todayKey = iso(today), cur = state.battery[todayKey];
+    var btns = document.getElementById("batBtns");
+    btns.innerHTML = BATS.map(function (b) {
+      return '<button class="bat" role="radio" data-v="' + b.v + '" aria-checked="' + (cur === b.v) + '" style="--w:' + b.w + ";--bc:" + b.c + '"><i></i>' + b.name + "</button>";
+    }).join("");
+    btns.querySelectorAll(".bat").forEach(function (el) {
+      el.addEventListener("click", function () { var v = +el.dataset.v; state.battery[todayKey] = state.battery[todayKey] === v ? undefined : v; save(); renderBattery(); });
+    });
+    var names = ["M", "T", "W", "T", "F", "S", "S"];
+    document.getElementById("batWeek").innerHTML = names.map(function (n, i) {
+      var v = state.battery[iso(new Date(monday.getTime() + i * DAY))], b = BATS[v - 1];
+      return '<div class="' + (b ? "set" : "") + '"' + (b ? ' style="--bc:' + b.c + '" title="' + b.name + '"' : "") + ">" + n + "</div>";
+    }).join("");
+    document.getElementById("resets").hidden = !(cur && cur <= 2);
+  }
+  ["mate", "support"].forEach(function (k) {
+    var el = document.getElementById(k); el.value = state[k] || "";
+    el.addEventListener("input", function () { state[k] = el.value; save(); });
+  });
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} renderXP(); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function $(s) { return document.querySelector(s); }
@@ -521,7 +594,7 @@ textarea.field { resize: vertical; }
   }
 
   function renderAll() {
-    ["deadlines", "jobs", "gym", "clubs", "duties"].forEach(renderList);
+    ["deadlines", "jobs", "gym", "clubs", "duties", "resets"].forEach(renderList);
     renderStreak(); renderUpcoming(); renderXP();
   }
 
@@ -529,8 +602,8 @@ textarea.field { resize: vertical; }
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0 };
-        save(); renderWeek(); renderQuests(); renderAll();
+        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0, resets: state.resets, battery: {}, mate: "", support: "" };
+        save(); renderWeek(); renderQuests(); renderAll(); renderBattery(); document.getElementById("mate").value = ""; document.getElementById("support").value = "";
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Tap again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
     }
@@ -545,7 +618,7 @@ textarea.field { resize: vertical; }
   }
   window.addEventListener("hashchange", route);
 
-  renderWeek(); renderQuests(); renderAll(); route();
+  renderWeek(); renderQuests(); renderAll(); renderBattery(); route();
 })();
 </script>
 
