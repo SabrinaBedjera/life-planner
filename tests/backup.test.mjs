@@ -145,7 +145,7 @@ for (const p of PLANNERS) {
   await page.evaluate(() => { Storage.prototype.setItem = function () { throw new DOMException("full", "QuotaExceededError"); }; });
   await page.evaluate(() => window.LPBackup.saveFailed(new DOMException("full", "QuotaExceededError")));
   const barText = await page.locator(".lpb-bar").textContent();
-  check(/didn't save/.test(barText) && /full/.test(barText), "save failure shows a visible warning");
+  check(/storage for your planner is full/.test(barText) && /including those changes/.test(barText), "save failure shows a visible warning");
   if (shots) await page.locator(".lpb-bar").screenshot({ path: join(shots, `${p.id}-save-warning.png`) });
   check(errors.length === 0, "no script errors during the whole run" + (errors.length ? ": " + errors.join(" | ") : ""));
   await ctx.close();
@@ -160,6 +160,10 @@ for (const p of PLANNERS) {
     await field.blur().catch(() => {});
     await page.waitForTimeout(1200);
     check(await page.locator(".lpb-bar:not([hidden])").isVisible(), "typing when storage is full shows the warning");
+    const [dl] = await Promise.all([page.waitForEvent("download"), page.locator(".lpb-bar button", { hasText: "Export backup" }).click()]);
+    const rescued = join(tmp, p.id + "-rescued.json"); await dl.saveAs(rescued);
+    check(readFileSync(rescued, "utf8").includes("change that can't save"), "the warning's Export backup includes the change that didn't save");
+    check(/including your latest changes/.test(await page.locator(".lpb-bar").textContent()), "after exporting, the message confirms the latest changes are in the backup");
     await ctx.close();
   }
   // Blocked storage on open
@@ -198,6 +202,30 @@ for (const p of PLANNERS) {
   const over = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   check(!over, "studio: no sideways scrolling on a phone");
   if (shots) await page.locator(".foot").screenshot({ path: join(shots, "studio-footer-phone.png") });
+  await ctx.close();
+}
+
+// Tabs keep working when a planner is shown inside a preview frame (AI chats, file viewers)
+for (const p of PLANNERS) {
+  const html = readFileSync(join(root, "themes", p.id + ".html"), "utf8");
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route(/^https?:/, (r) => r.abort());
+  const page = await ctx.newPage();
+  await page.setContent('<iframe id="f" sandbox="allow-scripts allow-same-origin" style="width:1280px;height:900px"></iframe>');
+  await page.evaluate((h) => { document.getElementById("f").srcdoc = h; }, html);
+  await page.waitForTimeout(1000);
+  const f = page.frameLocator("#f");
+  const links = f.locator('a[href^="#"]:visible');
+  const n = Math.min(await links.count(), 4);
+  let ok = n > 1;
+  for (let i = 1; i < n; i++) {
+    const href = await links.nth(i).getAttribute("href");
+    await links.nth(i).click(); await page.waitForTimeout(250);
+    const still = await f.locator(".lpb").count() > 0;
+    const hash = still ? await f.locator("body").evaluate(() => location.hash) : "";
+    if (!still || hash !== href) { ok = false; console.log("    " + href + " -> " + (still ? hash : "page went blank")); }
+  }
+  check(ok, `${p.id}: tabs work inside a preview frame`);
   await ctx.close();
 }
 

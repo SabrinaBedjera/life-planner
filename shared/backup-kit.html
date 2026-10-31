@@ -77,17 +77,25 @@
     bar.className = "lpb-bar" + (ok ? " lpb-ok" : "");
     bar.setAttribute("role", ok ? "status" : "alert");
     bar.appendChild(h("p", { text: text }));
-    if (withExport) bar.appendChild(h("button", { type: "button", text: "Export backup", on: function () { exportBackup(); } }));
+    if (withExport) bar.appendChild(h("button", { type: "button", text: "Export backup", on: function () {
+      exportBackup().then(function (ok) {
+        if (ok) showBar("Backup saved, including your latest changes. " + (lastProblem === "full"
+          ? "To keep saving here, make some room by removing a few photos or old items."
+          : "To keep saving here, open the planner in a normal (not private) browser window."), true, false);
+      });
+    } }));
     bar.appendChild(h("button", { type: "button", text: ok ? "OK" : "Dismiss", on: function () { bar.hidden = true; lastDismiss = Date.now(); } }));
     bar.hidden = false;
     if (ok) setTimeout(function () { if (bar.classList.contains("lpb-ok")) bar.hidden = true; }, 9000);
   }
+  var lastProblem = "";
   function saveFailed(e) {
+    lastProblem = isQuota(e) ? "full" : "blocked";
     if (bar && !bar.hidden && !bar.classList.contains("lpb-ok")) return;
     if (Date.now() - lastDismiss < 30000) return;
-    showBar(isQuota(e)
-      ? "Heads up: your last change didn't save because this browser's storage for the planner is full. Export a backup now so nothing is lost, then remove a few big things (like photos) to make room."
-      : "Heads up: your last change didn't save. This browser may be blocking storage (for example in a private window). Export a backup now so nothing is lost.", false, true);
+    showBar(lastProblem === "full"
+      ? "Heads up: this browser's storage for your planner is full, so your latest changes are only kept until you close this page. Export backup saves everything, including those changes."
+      : "Heads up: this browser isn't saving your planner right now (it may be a private window), so your latest changes are only kept until you close this page. Export backup saves everything, including those changes.", false, true);
   }
 
   /* ---------- export ---------- */
@@ -280,7 +288,7 @@
       box = h("div", { "class": "lpb" + (C.vertical ? " lpb-col" : ""), id: "lpBackup" }, [
         button(C.exportLabel || "Export backup", function () { exportBackup(); }),
         button("Import backup", function () { fileInput.click(); }), undo, forget, fileInput, note]);
-      mount.appendChild(box);
+      if (C.prepend) mount.insertBefore(box, mount.firstChild); else mount.appendChild(box);
     } else { undoBtns = []; document.body.appendChild(fileInput); }
     status();
     queued.splice(0).forEach(function (q) { showBar(q[0], q[1], q[2]); });
@@ -288,7 +296,7 @@
     try { var t = KEY + ":test"; set(t, "1"); del(t); }
     catch (e) {
       if (isQuota(e)) saveFailed(e);
-      else showBar("This browser isn't letting your planner save (it may be a private window, or site data is blocked). Anything you type will disappear when you close it.", false, true);
+      else { lastProblem = "blocked"; showBar("This browser isn't letting your planner save (it may be a private window, or site data is blocked). Anything you type is kept only until you close this page, so use Export backup before you go.", false, true); }
     }
     var flash = get(FLASH);
     if (flash) {
@@ -306,5 +314,20 @@
     _parse: parseBackup, _merge: merge
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+
+  /* ---------- keep tab links working inside previews ----------
+     When a planner is shown inside a preview frame (an AI chat, a file viewer), a plain
+     "#roles" link can point at the frame's parent page and blank the planner. Changing
+     only the part after # keeps the planner on screen, exactly like a normal browser. */
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a || a.target) return;
+    var hash = a.getAttribute("href");
+    if (hash.length < 2) return;
+    e.preventDefault();
+    if (location.hash !== hash) location.hash = hash.slice(1);
+    else { var t = document.getElementById(hash.slice(1)); if (t) t.scrollIntoView(); }
+  });
 })();
 </script>

@@ -608,8 +608,8 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
 .phone .lane-input:focus { border-bottom: 1px solid #c2186b; background: rgba(255,255,255,.35); }
 @media (max-width: 640px) { .phone .lane-input { font-size: 19px; } }
 </style>
-<script>window.LP_BACKUP_CONFIG = { planner: "girly-pop", key: "life-planner-girly-pop-v1", mount: ".foot .export .menu", btnClass: "btn", vertical: true, exportLabel: "Everything (JSON backup)", notePrefix: "Saved in this browser only. " };</script>
-<style>.lpb-dialog { --lpb-bg: var(--surface); --lpb-fg: var(--fg); --lpb-line: var(--line); } .foot .export .menu { min-width: 260px; max-width: calc(100vw - 32px); }</style>
+<script>window.LP_BACKUP_CONFIG = { planner: "girly-pop", key: "life-planner-girly-pop-v1", mount: ".foot", prepend: true, btnClass: "btn small", notePrefix: "Saved in this browser only. " };</script>
+<style>.lpb-dialog { --lpb-bg: var(--surface); --lpb-fg: var(--fg); --lpb-line: var(--line); } .foot { flex-wrap: wrap; gap: 6px; } .foot > .lpb { justify-content: flex-end; margin-bottom: 4px; } .foot > .lpb .lpb-note { color: var(--muted); }</style>
 <!-- life-planner:backup-kit:start (generated from shared/backup-kit.html; edit that file, then run npm run sync) -->
 <style>
 /* Life Planner backup kit: universal backups, safe imports and save warnings.
@@ -690,17 +690,25 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     bar.className = "lpb-bar" + (ok ? " lpb-ok" : "");
     bar.setAttribute("role", ok ? "status" : "alert");
     bar.appendChild(h("p", { text: text }));
-    if (withExport) bar.appendChild(h("button", { type: "button", text: "Export backup", on: function () { exportBackup(); } }));
+    if (withExport) bar.appendChild(h("button", { type: "button", text: "Export backup", on: function () {
+      exportBackup().then(function (ok) {
+        if (ok) showBar("Backup saved, including your latest changes. " + (lastProblem === "full"
+          ? "To keep saving here, make some room by removing a few photos or old items."
+          : "To keep saving here, open the planner in a normal (not private) browser window."), true, false);
+      });
+    } }));
     bar.appendChild(h("button", { type: "button", text: ok ? "OK" : "Dismiss", on: function () { bar.hidden = true; lastDismiss = Date.now(); } }));
     bar.hidden = false;
     if (ok) setTimeout(function () { if (bar.classList.contains("lpb-ok")) bar.hidden = true; }, 9000);
   }
+  var lastProblem = "";
   function saveFailed(e) {
+    lastProblem = isQuota(e) ? "full" : "blocked";
     if (bar && !bar.hidden && !bar.classList.contains("lpb-ok")) return;
     if (Date.now() - lastDismiss < 30000) return;
-    showBar(isQuota(e)
-      ? "Heads up: your last change didn't save because this browser's storage for the planner is full. Export a backup now so nothing is lost, then remove a few big things (like photos) to make room."
-      : "Heads up: your last change didn't save. This browser may be blocking storage (for example in a private window). Export a backup now so nothing is lost.", false, true);
+    showBar(lastProblem === "full"
+      ? "Heads up: this browser's storage for your planner is full, so your latest changes are only kept until you close this page. Export backup saves everything, including those changes."
+      : "Heads up: this browser isn't saving your planner right now (it may be a private window), so your latest changes are only kept until you close this page. Export backup saves everything, including those changes.", false, true);
   }
 
   /* ---------- export ---------- */
@@ -893,7 +901,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
       box = h("div", { "class": "lpb" + (C.vertical ? " lpb-col" : ""), id: "lpBackup" }, [
         button(C.exportLabel || "Export backup", function () { exportBackup(); }),
         button("Import backup", function () { fileInput.click(); }), undo, forget, fileInput, note]);
-      mount.appendChild(box);
+      if (C.prepend) mount.insertBefore(box, mount.firstChild); else mount.appendChild(box);
     } else { undoBtns = []; document.body.appendChild(fileInput); }
     status();
     queued.splice(0).forEach(function (q) { showBar(q[0], q[1], q[2]); });
@@ -901,7 +909,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     try { var t = KEY + ":test"; set(t, "1"); del(t); }
     catch (e) {
       if (isQuota(e)) saveFailed(e);
-      else showBar("This browser isn't letting your planner save (it may be a private window, or site data is blocked). Anything you type will disappear when you close it.", false, true);
+      else { lastProblem = "blocked"; showBar("This browser isn't letting your planner save (it may be a private window, or site data is blocked). Anything you type is kept only until you close this page, so use Export backup before you go.", false, true); }
     }
     var flash = get(FLASH);
     if (flash) {
@@ -919,6 +927,21 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     _parse: parseBackup, _merge: merge
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+
+  /* ---------- keep tab links working inside previews ----------
+     When a planner is shown inside a preview frame (an AI chat, a file viewer), a plain
+     "#roles" link can point at the frame's parent page and blank the planner. Changing
+     only the part after # keeps the planner on screen, exactly like a normal browser. */
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a || a.target) return;
+    var hash = a.getAttribute("href");
+    if (hash.length < 2) return;
+    e.preventDefault();
+    if (location.hash !== hash) location.hash = hash.slice(1);
+    else { var t = document.getElementById(hash.slice(1)); if (t) t.scrollIntoView(); }
+  });
 })();
 </script>
 <!-- life-planner:backup-kit:end -->
@@ -1187,9 +1210,9 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
       <button class="btn small" type="button" id="freshBtn">Start fresh</button>
       <button class="btn small" type="button" id="exampleBtn">Bring back the examples</button>
       <details class="export">
-        <summary class="btn small">Backup &amp; export</summary>
+        <summary class="btn small">More exports</summary>
         <div class="menu">
-          <button class="btn" data-act="export-csv">Roles table (CSV)</button>
+          <button class="btn" data-act="export-csv">Job roles as a spreadsheet (CSV)</button>
           <span class="saved" id="exportMsg"></span>
         </div>
       </details>
