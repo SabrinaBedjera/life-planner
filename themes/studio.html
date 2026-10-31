@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life Planner · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Studio: a calm, design-lover's planner. Warm paper, blush pink, birch wood and sage,
+   with flat-pack "assembly instruction" touches (numbered steps, line drawings, paint chips).
+   Large, high-contrast text and big buttons so it is easy on the eyes. Everything saves in this browser. */
+:root {
+  --paper: #fbf6f1; --card: #ffffff; --ink: #3d2230; --muted: #6f5a64; --line: #ead9de;
+  --blush: #f7d9df; --rose: #c9516f; --rose-dark: #9e3553; --birch: #ecd9bb; --birch-dark: #b89566;
+  --sage: #b9cbb3; --sage-dark: #557052; --sky: #cfdbe6;
+  --f-head: "Fraunces", Georgia, "Times New Roman", serif;
+  --f-body: "Nunito Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 18px; line-height: 1.55;
+  background-image: radial-gradient(circle at 1px 1px, rgba(61,34,48,.06) 1px, transparent 0); background-size: 22px 22px; }
+.wrap { max-width: 1060px; margin: 0 auto; padding: 28px 16px 64px; display: flex; flex-direction: column; gap: 22px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
+
+/* Header */
+.mast { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; background: var(--card); border: 2px solid var(--ink); border-radius: 22px; padding: 24px 26px; box-shadow: 6px 6px 0 var(--blush); }
+.eyebrow { margin: 0 0 6px; font-size: 14px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rose-dark); }
+h1 { margin: 0; font-family: var(--f-head); font-weight: 700; font-size: clamp(38px, 6vw, 58px); line-height: 1.02; letter-spacing: -.01em; }
+h1 em { font-style: italic; color: var(--rose); }
+.lede { margin: 8px 0 0; color: var(--muted); font-size: 17px; max-width: 46ch; }
+.chips { display: flex; gap: 8px; margin-top: 16px; }
+.chip { width: 46px; height: 64px; border-radius: 6px; border: 2px solid var(--ink); background: var(--c); position: relative; }
+.chip::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 16px; background: #fff; border-top: 2px solid var(--ink); border-radius: 0 0 4px 4px; }
+.mast svg { width: 180px; height: auto; color: var(--ink); }
+
+/* Tabs */
+.tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.tab { flex: 1 1 150px; text-align: center; text-decoration: none; color: var(--ink); font-weight: 700; font-size: 18px; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--ink); background: var(--card); box-shadow: 3px 3px 0 var(--line); transition: transform .15s, box-shadow .15s; }
+.tab:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--blush); }
+.tab[aria-selected="true"] { background: var(--rose); color: #fff; box-shadow: 4px 4px 0 var(--ink); }
+
+/* Panels */
+.view { display: flex; flex-direction: column; gap: 22px; }
+.panel { background: var(--card); border: 2px solid var(--ink); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 16px; min-width: 0; box-shadow: 5px 5px 0 var(--c, var(--blush)); }
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 14px; }
+.panel h2 { margin: 0; font-family: var(--f-head); font-weight: 700; font-size: 28px; display: flex; align-items: center; gap: 12px; }
+.step { flex: none; display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--ink); background: var(--c, var(--blush)); font-family: var(--f-body); font-size: 18px; font-weight: 700; }
+.hint { font-size: 16px; color: var(--muted); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+
+/* Controls */
+.field { background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 11px 14px; min-width: 0; width: 100%; font-size: 17px; }
+.field:focus { border-color: var(--rose); outline: none; }
+select.field { width: auto; }
+.btn { appearance: none; border: 2px solid var(--ink); background: var(--ink); color: #fff; border-radius: 12px; padding: 11px 20px; font-weight: 700; font-size: 17px; cursor: pointer; }
+.btn:hover { background: var(--rose-dark); border-color: var(--rose-dark); }
+.btn.ghost { background: var(--card); color: var(--ink); }
+.btn.ghost:hover { background: var(--blush); }
+.x { appearance: none; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 24px; padding: 0 6px; line-height: 1; }
+.x:hover { color: var(--rose-dark); }
+.addrow { display: flex; flex-wrap: wrap; gap: 10px; }
+.addrow .field { flex: 1 1 180px; width: auto; }
+.addrow .field.sm { flex: 0 1 180px; }
+.saved { font-size: 15px; color: var(--sage-dark); min-height: 1.2em; font-weight: 600; }
+
+/* Week grid */
+.sched { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+.day { border: 2px solid var(--line); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; background: var(--paper); }
+.day.today { border-color: var(--rose); background: #fff7f9; }
+.day .dn { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--f-head); font-weight: 700; font-size: 19px; }
+.day .dn span { font-family: var(--f-body); font-size: 14px; color: var(--muted); font-weight: 600; }
+.day.today .dn { color: var(--rose-dark); }
+.day textarea { background: #fff; border: 2px solid transparent; border-radius: 10px; padding: 8px; font-size: 16px; min-height: 110px; resize: vertical; width: 100%; }
+.day textarea:focus { border-color: var(--rose); outline: none; }
+
+/* Lists */
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 2px dashed var(--line); }
+.item:last-child { border-bottom: 0; }
+.item .t { min-width: 0; overflow-wrap: anywhere; }
+.item .t small { display: block; color: var(--muted); font-size: 15px; }
+.item.done .t > span { text-decoration: line-through; color: var(--muted); }
+.check { appearance: none; width: 26px; height: 26px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; cursor: pointer; display: grid; place-items: center; margin: 0; }
+.check:checked { background: var(--sage); }
+.check:checked::after { content: "✓"; font-size: 17px; font-weight: 700; line-height: 1; color: var(--ink); }
+.empty { color: var(--muted); font-size: 16px; padding: 8px 0; }
+.lanes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.lane { border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; background: linear-gradient(var(--c), var(--c)) top / 100% 8px no-repeat, var(--paper); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.lane h3 { margin: 6px 0 0; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.lane .item { padding: 8px 0; }
+
+.pill { font-size: 14px; font-weight: 700; padding: 6px 12px; border-radius: 999px; border: 2px solid var(--ink); background: var(--card); cursor: pointer; white-space: nowrap; }
+.pill[data-s="idea"], .pill[data-s="planned"] { background: var(--sky); }
+.pill[data-s="measuring"], .pill[data-s="shopping"], .pill[data-s="booked"] { background: var(--birch); }
+.pill[data-s="building"] { background: var(--blush); }
+.pill[data-s="done"], .pill[data-s="went"] { background: var(--sage); }
+.due { font-size: 14px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.due.soon { color: var(--rose-dark); }
+
+/* Moves this week */
+.dots { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.dots div { text-align: center; padding: 10px 0; border: 2px solid var(--line); border-radius: 12px; font-weight: 700; color: var(--muted); }
+.dots div.on { background: var(--sage); border-color: var(--ink); color: var(--ink); }
+
+/* Mood board */
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+.swatch { border: 2px solid var(--ink); border-radius: 12px; overflow: hidden; background: #fff; position: relative; }
+.swatch .col { height: 90px; }
+.swatch .nm { padding: 8px 10px; font-weight: 700; font-size: 15px; border-top: 2px solid var(--ink); }
+.swatch .nm small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; text-transform: uppercase; }
+.swatch .x { position: absolute; top: 4px; right: 4px; background: rgba(255,255,255,.85); border-radius: 8px; }
+input[type="color"].field { padding: 4px; height: 50px; width: 70px; flex: 0 0 70px; }
+
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; font-size: 15px; color: var(--muted); border-top: 2px dashed var(--line); padding-top: 18px; }
+
+@media (max-width: 960px) { .sched { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .two, .lanes { grid-template-columns: minmax(0, 1fr); } .mast { grid-template-columns: minmax(0, 1fr); } .mast svg { width: 140px; } }
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  .mast svg { display: none; }
+  .sched { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .item { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .item .due { grid-column: 2; grid-row: 2; }
+  .panel, .mast { padding: 18px; }
+  .tab { flex-basis: 40%; font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) { .tab { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <p class="eyebrow">Studio edition</p>
+      <h1>Life <em>Planner</em></h1>
+      <p class="lede">My week, my home projects and the people I love, all in one calm place.</p>
+      <div class="chips" aria-hidden="true">
+        <span class="chip" style="--c:#f7d9df"></span><span class="chip" style="--c:#c9516f"></span><span class="chip" style="--c:#ecd9bb"></span><span class="chip" style="--c:#b9cbb3"></span><span class="chip" style="--c:#cfdbe6"></span>
+      </div>
+    </div>
+    <!-- A little flat-pack chair and hex key, drawn like an assembly instruction -->
+    <svg viewBox="0 0 200 170" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M60 20 L60 95 L130 95 L130 20" fill="#f7d9df"/>
+      <path d="M60 20 L130 20"/>
+      <path d="M50 95 L140 95 L140 108 L50 108 Z" fill="#ecd9bb"/>
+      <path d="M58 108 L52 160 M132 108 L138 160 M80 108 L78 150 M110 108 L112 150"/>
+      <path d="M72 40 L118 40 M72 60 L118 60 M72 78 L118 78" stroke-dasharray="2 7"/>
+      <path d="M160 40 L160 120 L180 120" stroke-width="5" stroke="#c9516f"/>
+      <circle cx="30" cy="40" r="13" fill="#fff"/><text x="30" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="currentColor" stroke="none" font-weight="700">1</text>
+      <path d="M150 140 q8 -14 18 0" stroke-dasharray="3 5"/>
+    </svg>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <a class="tab" role="tab" href="#week">This week</a>
+    <a class="tab" role="tab" href="#home">Home projects</a>
+    <a class="tab" role="tab" href="#wellbeing">Wellbeing</a>
+    <a class="tab" role="tab" href="#people">Family &amp; friends</a>
+    <a class="tab" role="tab" href="#ideas">Inspiration</a>
+  </nav>
+
+  <!-- THIS WEEK -->
+  <section class="view" id="view-week" role="tabpanel">
+    <div class="panel" style="--c: var(--blush)">
+      <div class="panel-head"><h2><span class="step">1</span>The week ahead</h2><span class="hint">Click a day and type. It saves by itself.</span></div>
+      <div class="sched" id="sched"></div>
+      <span class="saved" id="schedMsg"></span>
+    </div>
+    <div class="two">
+      <div class="panel" style="--c: var(--sage)">
+        <div class="panel-head"><h2><span class="step">2</span>To do this week</h2></div>
+        <div class="lanes" id="lanes"></div>
+        <form class="addrow" id="todoForm">
+          <select class="field sm" id="todoLane" aria-label="Area"></select>
+          <input class="field" id="todoText" placeholder="Add something for this week" aria-label="New to-do">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">3</span>Coming up</h2><span class="hint">The next 5 things with a date</span></div>
+        <ul class="list" id="upcoming"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME PROJECTS -->
+  <section class="view" id="view-home" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--blush)">
+      <div class="panel-head"><h2><span class="step">1</span>Projects around the house</h2><span class="hint">Click the label to move it along: idea, measuring, shopping, building, done</span></div>
+      <ul class="list" id="list-projects"></ul>
+      <form class="addrow" data-add="projects">
+        <input class="field" name="title" placeholder="Project, e.g. New shelves in the hallway" aria-label="Project" required>
+        <input class="field sm" name="room" placeholder="Room" aria-label="Room">
+        <input class="field sm" name="date" type="date" aria-label="Target date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="two">
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">2</span>Shopping list</h2></div>
+        <ul class="list" id="list-shopping"></ul>
+        <form class="addrow" data-add="shopping">
+          <input class="field" name="title" placeholder="Item" aria-label="Item" required>
+          <input class="field sm" name="note" placeholder="Size or note" aria-label="Size or note">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--sky)">
+        <div class="panel-head"><h2><span class="step">3</span>Measurements</h2><span class="hint">So you never have to measure twice</span></div>
+        <ul class="list" id="list-measures"></ul>
+        <form class="addrow" data-add="measures">
+          <input class="field" name="title" placeholder="What, e.g. Bedroom alcove" aria-label="What" required>
+          <input class="field sm" name="size" placeholder="Size, e.g. 92 × 40 cm" aria-label="Size">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- WELLBEING -->
+  <section class="view" id="view-wellbeing" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--sage)">
+      <div class="panel-head"><h2><span class="step">1</span>Moving this week</h2><span class="hint">Walks, swims, stretching, gardening: it all counts</span></div>
+      <div class="dots" id="dots" aria-label="Days you moved this week"></div>
+      <ul class="list" id="list-moves"></ul>
+      <form class="addrow" data-add="moves">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <select class="field sm" name="type" aria-label="Activity"><option>Walk</option><option>Swim</option><option>Yoga</option><option>Stretch</option><option>Gardening</option><option>Dance</option><option>Other</option></select>
+        <input class="field" name="title" placeholder="Notes, e.g. 30 min by the river" aria-label="Notes">
+        <button class="btn" type="submit">Log it</button>
+      </form>
+    </div>
+    <div class="panel" style="--c: var(--sky)">
+      <div class="panel-head"><h2><span class="step">2</span>Appointments</h2><span class="hint">Doctor, dentist, hairdresser, eye test</span></div>
+      <ul class="list" id="list-appts"></ul>
+      <form class="addrow" data-add="appts">
+        <input class="field" name="title" placeholder="Appointment" aria-label="Appointment" required>
+        <input class="field sm" name="where" placeholder="Where or time" aria-label="Where or time">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAMILY & FRIENDS -->
+  <section class="view" id="view-people" role="tabpanel" hidden>
+    <div class="two">
+      <div class="panel" style="--c: var(--blush)">
+        <div class="panel-head"><h2><span class="step">1</span>Birthdays</h2></div>
+        <ul class="list" id="list-birthdays"></ul>
+        <form class="addrow" data-add="birthdays">
+          <input class="field" name="title" placeholder="Name" aria-label="Name" required>
+          <input class="field sm" name="date" type="date" aria-label="Birthday">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">2</span>Calls &amp; visits</h2><span class="hint">Tick when done</span></div>
+        <ul class="list" id="list-plans"></ul>
+        <form class="addrow" data-add="plans">
+          <input class="field" name="title" placeholder="e.g. Call Anna" aria-label="Plan" required>
+          <input class="field sm" name="date" type="date" aria-label="When">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSPIRATION -->
+  <section class="view" id="view-ideas" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--blush)">
+      <div class="panel-head"><h2><span class="step">1</span>Colours I love</h2><span class="hint">Pick a colour and give it a name</span></div>
+      <div class="swatches" id="swatches"></div>
+      <form class="addrow" id="swatchForm">
+        <input class="field" type="color" id="swColor" value="#e8a0b4" aria-label="Colour">
+        <input class="field" id="swName" placeholder="Name, e.g. Peony" aria-label="Colour name">
+        <input class="field sm" id="swRoom" placeholder="For which room" aria-label="Room">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="panel" style="--c: var(--sage)">
+      <div class="panel-head"><h2><span class="step">2</span>Ideas &amp; finds</h2><span class="hint">Things you saw and loved. Paste a link if you have one.</span></div>
+      <ul class="list" id="list-ideas"></ul>
+      <form class="addrow" data-add="ideas">
+        <input class="field" name="title" placeholder="Idea, e.g. Pink lamp for the reading corner" aria-label="Idea" required>
+        <input class="field sm" name="link" placeholder="Link (optional)" aria-label="Link">
+        <button class="btn" type="submit">Save</button>
+      </form>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Saves in this browser only. Use the same browser on the same computer each time.</span>
+    <button class="btn ghost" type="button" data-act="reset">Start fresh</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "life-planner-studio-v1";
+  var DAY = 864e5;
+  function iso(d) { return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); }
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  function plus(n) { return iso(new Date(today.getTime() + n * DAY)); }
+  var dow = (today.getDay() + 6) % 7;
+  var monday = new Date(today.getTime() - dow * DAY);
+  var weekKey = iso(monday);
+  var uid = function () { return Math.random().toString(36).slice(2, 9); };
+
+  var LANES = [
+    { id: "home", name: "Home", c: "var(--blush)" },
+    { id: "health", name: "Health", c: "var(--sage)" },
+    { id: "people", name: "People", c: "var(--birch)" },
+    { id: "creative", name: "Creative", c: "var(--sky)" }
+  ];
+  var STATUS = {
+    projects: ["idea", "measuring", "shopping", "building", "done"],
+    appts: ["booked", "done"]
+  };
+  var LABEL = { idea: "Idea", measuring: "Measuring", shopping: "Shopping", building: "Building", done: "Done", booked: "Booked" };
+  var CHECKED = { shopping: 1, plans: 1, ideas: 0 };
+
+  // Example content, so the page isn't empty the first time. "Start fresh" clears it.
+  function examples() {
+    return {
+      week: {},
+      weekSeed: ["Walk with Mary 10am", "Pick up paint samples", "Yoga 9:30", "Lunch with my sister", "Build the bookshelf", "Farmers market\nGrandkids visit", "Slow morning\nPlan next week"],
+      todos: [
+        { id: uid(), lane: "home", text: "Choose the hallway paint colour", done: false },
+        { id: uid(), lane: "home", text: "Hang the new curtains", done: true },
+        { id: uid(), lane: "health", text: "Three walks this week", done: false },
+        { id: uid(), lane: "people", text: "Send a card to Joan", done: false },
+        { id: uid(), lane: "creative", text: "Sketch the reading corner", done: false }
+      ],
+      projects: [
+        { id: uid(), title: "Reading corner with a pink armchair", room: "Living room", date: plus(20), s: "shopping" },
+        { id: uid(), title: "Bookshelf for the guest room", room: "Guest room", date: plus(4), s: "building" },
+        { id: uid(), title: "Repaint the hallway", room: "Hallway", date: plus(35), s: "measuring" },
+        { id: uid(), title: "Herb shelf by the window", room: "Kitchen", date: "", s: "idea" }
+      ],
+      shopping: [
+        { id: uid(), title: "Picture hooks", note: "Pack of 10", done: false },
+        { id: uid(), title: "Linen cushion covers", note: "50 × 50 cm, blush", done: false },
+        { id: uid(), title: "Wood glue", note: "", done: true }
+      ],
+      measures: [
+        { id: uid(), title: "Bedroom alcove", size: "92 × 40 cm" },
+        { id: uid(), title: "Living room window", size: "140 × 160 cm" }
+      ],
+      moves: [ { id: uid(), date: iso(monday), type: "Walk", title: "30 minutes by the river" } ],
+      appts: [
+        { id: uid(), title: "Dentist check-up", where: "2:30pm", date: plus(9), s: "booked" },
+        { id: uid(), title: "Eye test", where: "High Street", date: plus(24), s: "booked" }
+      ],
+      birthdays: [
+        { id: uid(), title: "Joan", date: plus(6) },
+        { id: uid(), title: "Grandson Leo", date: plus(41) }
+      ],
+      plans: [
+        { id: uid(), title: "Call my brother", date: plus(1), done: false },
+        { id: uid(), title: "Coffee with the book club", date: plus(3), done: false }
+      ],
+      swatches: [
+        { id: uid(), color: "#f4c7d1", name: "Peony", room: "Bedroom" },
+        { id: uid(), color: "#c9516f", name: "Raspberry", room: "Front door" },
+        { id: uid(), color: "#e9dcc6", name: "Birch", room: "Hallway" },
+        { id: uid(), color: "#a9bfa4", name: "Sage", room: "Kitchen" }
+      ],
+      ideas: [
+        { id: uid(), title: "Scalloped lampshade for the reading corner", link: "" },
+        { id: uid(), title: "Pegboard wall for craft supplies", link: "" }
+      ]
+    };
+  }
+
+  var state;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
+  if (!state) state = examples();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(s) { return document.querySelector(s); }
+  function nice(date) { return new Date(date + "T00:00:00").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }); }
+
+  // Birthdays repeat every year, so find the next one
+  function nextBirthday(date) {
+    if (!date) return "";
+    var d = new Date(date + "T00:00:00"), n = new Date(today.getFullYear(), d.getMonth(), d.getDate());
+    if (n < today) n = new Date(today.getFullYear() + 1, d.getMonth(), d.getDate());
+    return iso(n);
+  }
+
+  function dueLabel(date) {
+    if (!date) return "";
+    var d = new Date(date + "T00:00:00"), diff = Math.round((d - today) / DAY);
+    if (diff < 0) return '<span class="due">' + nice(date) + "</span>";
+    var txt = diff === 0 ? "Today" : diff === 1 ? "Tomorrow" : diff < 7 ? "In " + diff + " days" : nice(date);
+    return '<span class="due' + (diff <= 2 ? " soon" : "") + '">' + txt + "</span>";
+  }
+
+  /* Week ahead */
+  function renderWeek() {
+    var names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], wrap = $("#sched");
+    var saved = state.week[weekKey];
+    wrap.innerHTML = "";
+    names.forEach(function (n, i) {
+      var d = new Date(monday.getTime() + i * DAY);
+      var el = document.createElement("div");
+      el.className = "day" + (i === dow ? " today" : "");
+      el.innerHTML = '<label class="dn" for="day-' + i + '">' + n + "<span>" + d.getDate() + "</span></label>";
+      var ta = document.createElement("textarea");
+      ta.id = "day-" + i; ta.rows = 4;
+      ta.value = saved ? (saved[i] || "") : (state.weekSeed ? state.weekSeed[i] : "");
+      ta.addEventListener("input", function () {
+        if (!state.week[weekKey]) state.week[weekKey] = Array.prototype.map.call(wrap.querySelectorAll("textarea"), function (t) { return t.value; });
+        state.week[weekKey][i] = ta.value; save();
+        $("#schedMsg").textContent = "Saved.";
+      });
+      el.appendChild(ta); wrap.appendChild(el);
+    });
+  }
+
+  /* To-dos by area */
+  function renderTodos() {
+    var lanes = $("#lanes"); lanes.innerHTML = "";
+    LANES.forEach(function (l) {
+      var items = state.todos.filter(function (q) { return q.lane === l.id; });
+      var box = document.createElement("div");
+      box.className = "lane"; box.style.setProperty("--c", l.c);
+      box.innerHTML = "<h3>" + l.name + "</h3>" + (items.length ? "" : '<div class="empty">Nothing yet.</div>');
+      var ul = document.createElement("ul"); ul.className = "list";
+      items.forEach(function (q) {
+        var li = document.createElement("li");
+        li.className = "item" + (q.done ? " done" : ""); li.style.gridTemplateColumns = "auto minmax(0,1fr) auto";
+        li.innerHTML = '<input type="checkbox" class="check" aria-label="Done"' + (q.done ? " checked" : "") + '><span class="t"><span>' + esc(q.text) + '</span></span><button class="x" aria-label="Remove">×</button>';
+        li.querySelector(".check").addEventListener("change", function (e) { q.done = e.target.checked; save(); renderTodos(); });
+        li.querySelector(".x").addEventListener("click", function () { state.todos = state.todos.filter(function (x) { return x !== q; }); save(); renderTodos(); });
+        ul.appendChild(li);
+      });
+      box.appendChild(ul); lanes.appendChild(box);
+    });
+  }
+  $("#todoLane").innerHTML = LANES.map(function (l) { return '<option value="' + l.id + '">' + l.name + "</option>"; }).join("");
+  $("#todoForm").addEventListener("submit", function (e) {
+    e.preventDefault(); var t = $("#todoText").value.trim(); if (!t) return;
+    state.todos.push({ id: uid(), lane: $("#todoLane").value, text: t, done: false });
+    $("#todoText").value = ""; save(); renderTodos();
+  });
+
+  /* Lists */
+  function sub(key, it) {
+    if (key === "projects") return esc(it.room);
+    if (key === "shopping") return esc(it.note);
+    if (key === "measures") return esc(it.size);
+    if (key === "appts") return esc(it.where);
+    if (key === "moves") return esc(it.type) + (it.date ? " · " + nice(it.date) : "");
+    if (key === "birthdays") return it.date ? new Date(it.date + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "long" }) : "";
+    if (key === "ideas" && it.link) { var safe = /^https?:\/\//i.test(it.link) ? it.link : "https://" + it.link; return '<a href="' + esc(safe) + '" target="_blank" rel="noopener">Open link</a>'; }
+    return "";
+  }
+  function renderList(key) {
+    var ul = $("#list-" + key); if (!ul) return;
+    var items = state[key].slice();
+    var when = function (it) { return key === "birthdays" ? nextBirthday(it.date) : it.date; };
+    if (key !== "moves" && key !== "shopping" && key !== "measures" && key !== "ideas") items.sort(function (a, b) { return (when(a) || "9999").localeCompare(when(b) || "9999"); });
+    if (key === "moves") items.sort(function (a, b) { return (b.date || "").localeCompare(a.date || ""); });
+    ul.innerHTML = items.length ? "" : '<li class="empty">Nothing here yet. Add one below.</li>';
+    items.forEach(function (it) {
+      var li = document.createElement("li");
+      var hasStatus = !!STATUS[key], ticks = CHECKED[key] === 1;
+      li.className = "item" + ((ticks && it.done) || (hasStatus && it.s === "done") ? " done" : "");
+      var lead = ticks ? '<input type="checkbox" class="check" aria-label="Done"' + (it.done ? " checked" : "") + ">" : "<span></span>";
+      var s = sub(key, it);
+      var title = esc(it.title) + (s ? "<small>" + s + "</small>" : "");
+      var right = hasStatus ? '<button class="pill" data-s="' + it.s + '" title="Click to change">' + LABEL[it.s] + "</button>" : "";
+      var d = when(it);
+      li.innerHTML = lead + '<span class="t"><span>' + title + "</span></span>" + (d && key !== "moves" ? dueLabel(d) : "<span></span>") + '<span style="display:flex;gap:8px;align-items:center">' + right + '<button class="x" aria-label="Remove">×</button></span>';
+      if (ticks) li.querySelector(".check").addEventListener("change", function (e) { it.done = e.target.checked; save(); renderAll(); });
+      if (hasStatus) li.querySelector(".pill").addEventListener("click", function () {
+        var opts = STATUS[key]; it.s = opts[(opts.indexOf(it.s) + 1) % opts.length]; save(); renderAll();
+      });
+      li.querySelector(".x").addEventListener("click", function () { state[key] = state[key].filter(function (x) { return x !== it; }); save(); renderAll(); });
+      ul.appendChild(li);
+    });
+  }
+  document.querySelectorAll("form[data-add]").forEach(function (f) {
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var key = f.dataset.add, it = { id: uid() };
+      Array.prototype.forEach.call(f.elements, function (el) { if (el.name) it[el.name] = el.value.trim(); });
+      if (key === "moves" && !it.date) it.date = iso(today);
+      if (STATUS[key]) it.s = STATUS[key][0];
+      if (CHECKED[key] === 1) it.done = false;
+      state[key].push(it); f.reset(); save(); renderAll();
+    });
+  });
+
+  /* Moving this week */
+  function renderDots() {
+    var names = ["M", "T", "W", "T", "F", "S", "S"];
+    $("#dots").innerHTML = names.map(function (n, i) {
+      var d = iso(new Date(monday.getTime() + i * DAY));
+      var on = state.moves.some(function (g) { return g.date === d; });
+      return '<div class="' + (on ? "on" : "") + '">' + n + "</div>";
+    }).join("");
+  }
+
+  /* Colours */
+  function renderSwatches() {
+    var box = $("#swatches");
+    box.innerHTML = state.swatches.length ? "" : '<p class="empty">No colours yet.</p>';
+    state.swatches.forEach(function (w) {
+      var el = document.createElement("div"); el.className = "swatch";
+      el.innerHTML = '<div class="col" style="background:' + esc(w.color) + '"></div><div class="nm">' + esc(w.name || "Untitled") + "<small>" + esc(w.room || w.color) + '</small></div><button class="x" aria-label="Remove">×</button>';
+      el.querySelector(".x").addEventListener("click", function () { state.swatches = state.swatches.filter(function (x) { return x !== w; }); save(); renderSwatches(); });
+      box.appendChild(el);
+    });
+  }
+  $("#swatchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    state.swatches.push({ id: uid(), color: $("#swColor").value, name: $("#swName").value.trim(), room: $("#swRoom").value.trim() });
+    $("#swName").value = ""; $("#swRoom").value = ""; save(); renderSwatches();
+  });
+
+  /* Coming up */
+  function renderUpcoming() {
+    var rows = [];
+    state.projects.forEach(function (p) { if (p.date && p.s !== "done") rows.push({ date: p.date, t: p.title, k: "Home project" }); });
+    state.appts.forEach(function (a) { if (a.date && a.s !== "done") rows.push({ date: a.date, t: a.title, k: "Appointment" }); });
+    state.birthdays.forEach(function (b) { if (b.date) rows.push({ date: nextBirthday(b.date), t: b.title + "'s birthday", k: "Birthday" }); });
+    state.plans.forEach(function (p) { if (p.date && !p.done) rows.push({ date: p.date, t: p.title, k: "Family & friends" }); });
+    rows = rows.filter(function (r) { return r.date >= iso(today); }).sort(function (a, b) { return a.date.localeCompare(b.date); });
+    $("#upcoming").innerHTML = rows.length ? rows.slice(0, 5).map(function (r) {
+      return '<li class="item" style="grid-template-columns:minmax(0,1fr) auto"><span class="t"><span>' + esc(r.t) + "<small>" + esc(r.k) + "</small></span></span>" + dueLabel(r.date) + "</li>";
+    }).join("") : '<li class="empty">Nothing with a date yet.</li>';
+  }
+
+  function renderAll() {
+    ["projects", "shopping", "measures", "moves", "appts", "birthdays", "plans", "ideas"].forEach(renderList);
+    renderDots(); renderSwatches(); renderUpcoming();
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-act]"); if (!a) return;
+    if (a.dataset.act === "reset") {
+      if (a.dataset.armed) {
+        state = { week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [] };
+        save(); renderWeek(); renderTodos(); renderAll();
+        a.textContent = "Start fresh"; delete a.dataset.armed;
+      } else { a.dataset.armed = "1"; a.textContent = "Click again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
+    }
+  });
+
+  /* Tabs */
+  var VIEWS = ["week", "home", "wellbeing", "people", "ideas"];
+  function route() {
+    var v = (location.hash || "#week").slice(1); if (VIEWS.indexOf(v) < 0) v = "week";
+    VIEWS.forEach(function (n) { document.getElementById("view-" + n).hidden = n !== v; });
+    document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", t.getAttribute("href") === "#" + v ? "true" : "false"); });
+  }
+  window.addEventListener("hashchange", route);
+
+  renderWeek(); renderTodos(); renderAll(); route();
+})();
+</script>
+</body>
+</html>

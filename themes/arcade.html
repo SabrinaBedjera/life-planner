@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life Planner · Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Press+Start+2P&display=swap">
+<style>
+/* Arcade: deliberately dark-only. Black and graphite panels, neon cyan / magenta / lime / amber accents, HUD corners, faint grid. Layout: header with XP bar earned from ticked items, five tabs (Week, Uni, Work & money, Life, Goals), each a stack of panels. Everything is editable and saves in the viewer's browser. */
+:root {
+  --bg: #0b0c10; --panel: #15171d; --panel-2: #1d2028; --fg: #e8ecf2; --muted: #8b93a3; --line: #2a2e38;
+  --cyan: #22e4ff; --magenta: #ff3dbb; --lime: #8dff4f; --amber: #ffc53d; --red: #ff5a5a; --grey: #9aa2b1;
+  --f-display: "Chakra Petch", "Rajdhani", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-pixel: "Press Start 2P", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background-color: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 56px; display: flex; flex-direction: column; gap: 18px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+.hud { position: relative; }
+.hud::before, .hud::after { content: ""; position: absolute; width: 14px; height: 14px; border: 2px solid var(--c, var(--cyan)); pointer-events: none; }
+.hud::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.hud::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+
+/* Header */
+.mast { background: var(--panel); border: 1px solid var(--line); padding: 22px 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; --c: var(--magenta); }
+.eyebrow { font-family: var(--f-pixel); font-size: 9px; letter-spacing: .08em; color: var(--lime); margin: 0 0 12px; line-height: 1.6; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(34px, 6.5vw, 54px); line-height: 1; margin: 0; text-transform: uppercase; letter-spacing: .02em; }
+h1 span { color: var(--cyan); text-shadow: 0 0 18px rgba(34,228,255,.55); }
+.player { display: grid; gap: 8px; flex: 0 1 300px; min-width: 0; }
+.player .row { display: flex; justify-content: space-between; gap: 8px; font-family: var(--f-pixel); font-size: 9px; color: var(--muted); }
+.player .row b { color: var(--lime); font-weight: 400; }
+.xp { height: 12px; background: var(--panel-2); border: 1px solid var(--line); }
+.xp i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--magenta), var(--cyan)); box-shadow: 0 0 12px rgba(255,61,187,.5); transition: width .4s; }
+.note { font-size: 12px; color: var(--muted); }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px; }
+.tab { flex: none; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 15px; padding: 9px 16px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); text-decoration: none; }
+.tab:hover { color: var(--fg); border-color: var(--grey); }
+.tab[aria-selected="true"] { color: var(--bg); background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,228,255,.45); }
+
+/* Panels */
+.view { display: flex; flex-direction: column; gap: 18px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--c, var(--cyan)); padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.panel h2 { margin: 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 20px; color: var(--c, var(--cyan)); }
+.hint { font-size: 12.5px; color: var(--muted); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+/* Controls */
+.field { background: var(--panel-2); border: 1px solid var(--line); padding: 7px 10px; min-width: 0; width: 100%; }
+.field:focus { border-color: var(--cyan); outline: none; box-shadow: 0 0 0 2px rgba(34,228,255,.25); }
+select.field { width: auto; }
+textarea.field { resize: vertical; }
+.btn { appearance: none; background: transparent; border: 1px solid var(--c, var(--cyan)); color: var(--c, var(--cyan)); padding: 7px 14px; cursor: pointer; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 13px; }
+.btn:hover { background: var(--c, var(--cyan)); color: var(--bg); }
+.btn.ghost { border-color: var(--line); color: var(--muted); }
+.btn.ghost:hover { background: var(--panel-2); color: var(--fg); }
+.x { appearance: none; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1; }
+.x:hover { color: var(--red); }
+.addrow { display: flex; flex-wrap: wrap; gap: 8px; }
+.addrow .field { flex: 1 1 140px; width: auto; }
+.addrow .field.sm { flex: 0 1 150px; }
+.saved { font-size: 12px; color: var(--lime); min-height: 1em; }
+
+/* Week grid */
+.sched { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.day { background: var(--panel-2); border: 1px solid var(--line); padding: 8px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.day.today { border-color: var(--lime); box-shadow: 0 0 12px rgba(141,255,79,.25); }
+.day .dn { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; }
+.day .dn span { font-family: var(--f-pixel); font-size: 8px; color: var(--muted); font-weight: 400; }
+.day.today .dn, .day.today .dn span { color: var(--lime); }
+.day textarea { background: var(--bg); border: 1px solid transparent; padding: 6px 8px; font-size: 13px; min-height: 92px; resize: vertical; width: 100%; }
+.day textarea:focus { border-color: var(--lime); outline: none; }
+
+/* Lists */
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.item:last-child { border-bottom: 0; }
+.item .t { min-width: 0; overflow-wrap: anywhere; }
+.item .t small { display: block; color: var(--muted); font-size: 12.5px; }
+.item.done .t > span { text-decoration: line-through; color: var(--muted); }
+.check { appearance: none; width: 18px; height: 18px; border: 2px solid var(--c, var(--cyan)); background: transparent; cursor: pointer; display: grid; place-items: center; margin: 0; }
+.check:checked { background: var(--c, var(--cyan)); box-shadow: 0 0 8px var(--c, var(--cyan)); }
+.check:checked::after { content: "✓"; color: var(--bg); font-size: 12px; font-weight: 700; line-height: 1; }
+.empty { color: var(--muted); font-size: 13.5px; padding: 6px 0; }
+.lanes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.lane { background: var(--panel-2); border: 1px solid var(--line); border-left: 3px solid var(--c); padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.lane h3 { margin: 0; font-family: var(--f-pixel); font-size: 9px; font-weight: 400; color: var(--c); line-height: 1.6; }
+.lane .item { padding: 6px 0; }
+
+.pill { font-family: var(--f-pixel); font-size: 8px; line-height: 1; padding: 6px 8px; border: 1px solid currentColor; white-space: nowrap; background: transparent; cursor: pointer; text-transform: uppercase; }
+.pill[data-s="todo"], .pill[data-s="saved"], .pill[data-s="backlog"], .pill[data-s="planned"], .pill[data-s="interested"], .pill[data-s="met"] { color: var(--grey); border-style: dashed; }
+.pill[data-s="doing"], .pill[data-s="applied"], .pill[data-s="playing"] { color: var(--cyan); }
+.pill[data-s="interview"] { color: var(--amber); }
+.pill[data-s="done"], .pill[data-s="offer"], .pill[data-s="finished"], .pill[data-s="went"], .pill[data-s="joined"], .pill[data-s="followed"] { color: var(--lime); }
+.pill[data-s="no"], .pill[data-s="dropped"], .pill[data-s="left"] { color: var(--red); }
+.due { font-family: var(--f-pixel); font-size: 8px; color: var(--muted); white-space: nowrap; }
+.due.soon { color: var(--amber); } .due.late { color: var(--red); }
+
+/* Money */
+.meter { height: 14px; background: var(--panel-2); border: 1px solid var(--line); }
+.meter i { display: block; height: 100%; background: var(--lime); box-shadow: 0 0 10px rgba(141,255,79,.4); transition: width .3s; }
+.meter.over i { background: var(--red); box-shadow: 0 0 10px rgba(255,90,90,.5); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--panel-2); border: 1px solid var(--line); padding: 10px 12px; }
+.stat .n { font-family: var(--f-display); font-weight: 700; font-size: 24px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: 12px; color: var(--muted); }
+
+/* Gym streak */
+.streak { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.streak div { text-align: center; padding: 8px 0; border: 1px solid var(--line); background: var(--panel-2); font-family: var(--f-pixel); font-size: 8px; color: var(--muted); }
+.streak div.on { border-color: var(--lime); color: var(--bg); background: var(--lime); box-shadow: 0 0 10px rgba(141,255,79,.4); }
+
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.foot code { font-size: 12.5px; color: var(--cyan); background: var(--panel-2); padding: 1px 6px; border: 1px solid var(--line); }
+
+@media (max-width: 900px) { .sched { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .two, .lanes { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) {
+  .sched { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .item { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .item .due { grid-column: 2; grid-row: 2; }
+  .mast { padding: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .xp i, .meter i { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast hud">
+    <div>
+      <p class="eyebrow">PLAYER 1 · UNI EDITION</p>
+      <h1>Life <span>Planner</span></h1>
+    </div>
+    <div class="player" aria-label="Progress">
+      <div class="row"><span id="lvl">LVL 1</span><b id="xpText">0 XP</b></div>
+      <div class="xp" aria-hidden="true"><i id="xpBar"></i></div>
+      <span class="note">Tick things off to earn XP. Example content, yours to change.</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <a class="tab" role="tab" href="#week">Week</a>
+    <a class="tab" role="tab" href="#uni">Uni</a>
+    <a class="tab" role="tab" href="#work">Work</a>
+    <a class="tab" role="tab" href="#social">Social</a>
+    <a class="tab" role="tab" href="#gym">Gym</a>
+  </nav>
+
+  <!-- WEEK -->
+  <section class="view" id="view-week" role="tabpanel">
+    <div class="panel hud" style="--c: var(--lime)">
+      <div class="panel-head"><h2>Week ahead</h2><span class="hint">Type in any day · saves as you go</span></div>
+      <div class="sched" id="sched"></div>
+      <span class="saved" id="schedMsg"></span>
+    </div>
+    <div class="panel" style="--c: var(--amber)">
+      <div class="panel-head"><h2>Coming up</h2><span class="hint">Deadlines, applications and club stuff, next 4</span></div>
+      <ul class="list" id="upcoming"></ul>
+    </div>
+    <div class="panel" style="--c: var(--cyan)">
+      <div class="panel-head"><h2>This week's quests</h2><span class="hint">Tick off = +10 XP</span></div>
+      <div class="lanes" id="lanes"></div>
+      <form class="addrow" id="questForm">
+        <select class="field sm" id="questLane" aria-label="Category"></select>
+        <input class="field" id="questText" placeholder="Add a quest for this week" aria-label="New quest">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- UNI -->
+  <section class="view" id="view-uni" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--cyan)">
+      <div class="panel-head"><h2>Deadlines &amp; exams</h2><span class="hint">Tap the status to change it · submitted = +25 XP</span></div>
+      <ul class="list" id="list-deadlines"></ul>
+      <form class="addrow" data-add="deadlines">
+        <input class="field" name="title" placeholder="Assignment or exam" aria-label="Assignment or exam" required>
+        <input class="field sm" name="module" placeholder="Module" aria-label="Module">
+        <input class="field sm" name="date" type="date" aria-label="Due date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="view" id="view-work" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--amber)">
+      <div class="panel-head"><h2>Jobs &amp; internships</h2><span class="hint">Part-time, summer, placements · tap status to update</span></div>
+      <ul class="list" id="list-jobs"></ul>
+      <form class="addrow" data-add="jobs">
+        <input class="field" name="title" placeholder="Role" aria-label="Role" required>
+        <input class="field sm" name="org" placeholder="Where" aria-label="Company">
+        <input class="field sm" name="date" type="date" aria-label="Deadline or next step">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- GYM -->
+  <section class="view" id="view-gym" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--lime)">
+      <div class="panel-head"><h2>Gym</h2><span class="hint">Log a session = +15 XP</span></div>
+      <div class="streak" id="streak" aria-label="Sessions this week"></div>
+      <ul class="list" id="list-gym"></ul>
+      <form class="addrow" data-add="gym">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <select class="field sm" name="type" aria-label="Session type"><option>Push</option><option>Pull</option><option>Legs</option><option>Full body</option><option>Run</option><option>Sport</option></select>
+        <input class="field" name="title" placeholder="Notes (PB? how it felt)" aria-label="Notes">
+        <button class="btn" type="submit">Log</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SOCIAL -->
+  <section class="view" id="view-social" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--magenta)">
+      <div class="panel-head"><h2>Clubs &amp; societies</h2><span class="hint">Tap status to update · joining one = +20 XP</span></div>
+      <ul class="list" id="list-clubs"></ul>
+      <form class="addrow" data-add="clubs">
+        <input class="field" name="title" placeholder="Club or society" aria-label="Club or society" required>
+        <input class="field sm" name="role" placeholder="Your role" aria-label="Your role">
+        <input class="field sm" name="date" type="date" aria-label="Next meet-up">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="panel" style="--c: var(--amber)">
+      <div class="panel-head"><h2>Responsibilities</h2><span class="hint">Things you've said you'll do for a club · done = +15 XP</span></div>
+      <ul class="list" id="list-duties"></ul>
+      <form class="addrow" data-add="duties">
+        <input class="field" name="title" placeholder="What you need to do" aria-label="Responsibility" required>
+        <input class="field sm" name="club" placeholder="For which club" aria-label="Club">
+        <input class="field sm" name="date" type="date" aria-label="Due">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+
+  <div class="foot">
+    <span>Saves in this browser only. Use the same browser each time, or ask an AI to help you move it.</span>
+    <button class="btn ghost" type="button" data-act="reset">Start fresh</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "life-planner-arcade-v1";
+  var DAY = 864e5;
+  function iso(d) { return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); }
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  function plus(n) { return iso(new Date(today.getTime() + n * DAY)); }
+  var dow = (today.getDay() + 6) % 7;
+  var monday = new Date(today.getTime() - dow * DAY);
+  var weekKey = iso(monday);
+  var uid = function () { return Math.random().toString(36).slice(2, 9); };
+
+  var LANES = [
+    { id: "uni", name: "UNI", c: "var(--cyan)" },
+    { id: "work", name: "WORK", c: "var(--amber)" },
+    { id: "gym", name: "GYM", c: "var(--lime)" },
+    { id: "social", name: "SOCIAL", c: "var(--magenta)" }
+  ];
+  var STATUS = {
+    deadlines: ["todo", "doing", "done"],
+    jobs: ["saved", "applied", "interview", "offer", "no"],
+    games: ["backlog", "playing", "finished", "dropped"],
+    social: ["planned", "went"],
+    clubs: ["interested", "joined", "left"],
+    people: ["met", "followed"]
+  };
+  var LABEL = { todo: "To do", doing: "On it", done: "Submitted", saved: "Saved", applied: "Applied", interview: "Interview", offer: "Offer", no: "No", backlog: "Backlog", playing: "Playing", finished: "Finished", dropped: "Dropped", planned: "Planned", went: "Done", interested: "Interested", joined: "Joined", left: "Left", met: "Met", followed: "Followed up" };
+
+  function examples() {
+    return {
+      week: {}, weekSeed: ["9am lecture\nGym after", "Library 2–5\nStart essay plan", "Shift 5–10pm", "Seminar\nFive-a-side", "Hand in lab report\nNight out", "Lie in\nRanked games", "Call home\nPlan next week"],
+      focus: "Get the essay plan done early",
+      quests: [
+        { id: uid(), lane: "uni", text: "Read chapter 4 before seminar", done: true },
+        { id: uid(), lane: "uni", text: "Email tutor about extension", done: false },
+        { id: uid(), lane: "work", text: "Update CV for summer internships", done: false },
+        { id: uid(), lane: "gym", text: "3 sessions this week", done: false },
+        { id: uid(), lane: "social", text: "Go to the climbing society taster", done: false },
+        { id: uid(), lane: "social", text: "Say yes to one plan this week", done: false }
+      ],
+      reflect: "",
+      deadlines: [
+        { id: uid(), title: "Lab report", module: "Physics 101", date: plus(3), s: "doing" },
+        { id: uid(), title: "Essay: 2,000 words", module: "History", date: plus(10), s: "todo" },
+        { id: uid(), title: "Midterm exam", module: "Maths", date: plus(17), s: "todo" }
+      ],
+      modules: [
+        { id: uid(), title: "Physics 101", note: "Labs on Thursdays" },
+        { id: uid(), title: "Maths", note: "Problem sheets due Mondays" },
+        { id: uid(), title: "History", note: "Seminar reading is heavy" }
+      ],
+      jobs: [
+        { id: uid(), title: "Weekend barista", org: "Campus café", date: "", s: "offer" },
+        { id: uid(), title: "Summer internship", org: "Tech company", date: plus(21), s: "saved" },
+        { id: uid(), title: "Student ambassador", org: "Uni", date: plus(6), s: "applied" }
+      ],
+      budget: 80,
+      spends: [
+        { id: uid(), title: "Food shop", amount: 32.5 },
+        { id: uid(), title: "Bus pass top-up", amount: 10 }
+      ],
+      gym: [
+        { id: uid(), date: iso(monday), type: "Push", title: "Bench felt strong" }
+      ],
+      games: [
+        { id: uid(), title: "That co-op game with the flat", s: "playing" },
+        { id: uid(), title: "Long RPG for the holidays", s: "backlog" },
+        { id: uid(), title: "Learn guitar basics", s: "backlog" }
+      ],
+      social: [
+        { id: uid(), title: "Gig with flatmates", date: plus(5), s: "planned" },
+        { id: uid(), title: "Five-a-side then food", date: plus(2), s: "planned" }
+      ],
+      clubs: [
+        { id: uid(), title: "Five-a-side football", role: "Member", date: plus(2), s: "joined" },
+        { id: uid(), title: "Gaming society", role: "Social rep", date: plus(4), s: "joined" },
+        { id: uid(), title: "Climbing society", role: "", date: plus(1), s: "interested" }
+      ],
+      duties: [
+        { id: uid(), title: "Book the room for games night", club: "Gaming society", date: plus(3), done: false },
+        { id: uid(), title: "Post the social on the group chat", club: "Gaming society", date: plus(1), done: false },
+        { id: uid(), title: "Pay subs", club: "Five-a-side football", date: plus(7), done: false }
+      ],
+      goals: [
+        { id: uid(), area: "Uni", title: "No all-nighters before deadlines", done: false },
+        { id: uid(), area: "Money", title: "Stay under budget 4 weeks in a row", done: false },
+        { id: uid(), area: "Gym", title: "Train 3x a week all term", done: false },
+        { id: uid(), area: "Social", title: "Join two clubs and actually keep going", done: false }
+      ],
+      bonus: 0
+    };
+  }
+
+  var state;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
+  if (!state) state = examples();
+  ["clubs", "duties"].forEach(function (k) { if (!state[k]) state[k] = examples()[k]; });
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} renderXP(); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function $(s) { return document.querySelector(s); }
+
+  /* XP: earned only from things ticked off here */
+  function xp() {
+    var n = 0;
+    state.quests.forEach(function (q) { if (q.done) n += 10; });
+    state.deadlines.forEach(function (d) { if (d.s === "done") n += 25; });
+    state.jobs.forEach(function (j) { if (j.s !== "saved") n += 10; });
+    state.gym.forEach(function () { n += 15; });
+    state.clubs.forEach(function (c) { if (c.s === "joined") n += 20; });
+    state.duties.forEach(function (d) { if (d.done) n += 15; });
+    return n;
+  }
+  function renderXP() {
+    var n = xp(), lvl = Math.floor(n / 100) + 1;
+    $("#lvl").textContent = "LVL " + lvl; $("#xpText").textContent = n + " XP";
+    $("#xpBar").style.width = (n % 100) + "%";
+  }
+
+  /* Due-date label */
+  function dueLabel(date) {
+    if (!date) return "";
+    var d = new Date(date + "T00:00:00"), diff = Math.round((d - today) / DAY);
+    var cls = diff < 0 ? "late" : diff <= 3 ? "soon" : "";
+    var txt = diff < 0 ? Math.abs(diff) + "D LATE" : diff === 0 ? "TODAY" : diff === 1 ? "TOMORROW" : "IN " + diff + "D";
+    return '<span class="due ' + cls + '">' + txt + "</span>";
+  }
+
+  /* Week ahead */
+  function renderWeek() {
+    var names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], wrap = $("#sched");
+    var saved = state.week[weekKey];
+    wrap.innerHTML = "";
+    names.forEach(function (n, i) {
+      var d = new Date(monday.getTime() + i * DAY);
+      var el = document.createElement("div");
+      el.className = "day" + (i === dow ? " today" : "");
+      el.innerHTML = '<label class="dn" for="day-' + i + '">' + n + "<span>" + d.getDate() + "/" + (d.getMonth() + 1) + "</span></label>";
+      var ta = document.createElement("textarea");
+      ta.id = "day-" + i; ta.rows = 4;
+      ta.value = saved ? (saved[i] || "") : (state.weekSeed ? state.weekSeed[i] : "");
+      ta.addEventListener("input", function () {
+        if (!state.week[weekKey]) state.week[weekKey] = Array.prototype.map.call(wrap.querySelectorAll("textarea"), function (t) { return t.value; });
+        state.week[weekKey][i] = ta.value; save();
+        $("#schedMsg").textContent = "Saved.";
+      });
+      el.appendChild(ta); wrap.appendChild(el);
+    });
+  }
+
+  /* Quests by lane */
+  function renderQuests() {
+    var lanes = $("#lanes"); lanes.innerHTML = "";
+    LANES.forEach(function (l) {
+      var items = state.quests.filter(function (q) { return q.lane === l.id; });
+      var box = document.createElement("div");
+      box.className = "lane"; box.style.setProperty("--c", l.c);
+      box.innerHTML = "<h3>" + l.name + "</h3>" + (items.length ? "" : '<div class="empty">Nothing yet.</div>');
+      var ul = document.createElement("ul"); ul.className = "list";
+      items.forEach(function (q) {
+        var li = document.createElement("li");
+        li.className = "item" + (q.done ? " done" : ""); li.style.gridTemplateColumns = "auto minmax(0,1fr) auto";
+        li.innerHTML = '<input type="checkbox" class="check" aria-label="Done"' + (q.done ? " checked" : "") + '><span class="t"><span>' + esc(q.text) + '</span></span><button class="x" aria-label="Remove">×</button>';
+        li.querySelector(".check").addEventListener("change", function (e) { q.done = e.target.checked; save(); renderQuests(); });
+        li.querySelector(".x").addEventListener("click", function () { state.quests = state.quests.filter(function (x) { return x !== q; }); save(); renderQuests(); });
+        ul.appendChild(li);
+      });
+      box.appendChild(ul); lanes.appendChild(box);
+    });
+  }
+  $("#questLane").innerHTML = LANES.map(function (l) { return '<option value="' + l.id + '">' + l.name.charAt(0) + l.name.slice(1).toLowerCase() + "</option>"; }).join("");
+  $("#questForm").addEventListener("submit", function (e) {
+    e.preventDefault(); var t = $("#questText").value.trim(); if (!t) return;
+    state.quests.push({ id: uid(), lane: $("#questLane").value, text: t, done: false });
+    $("#questText").value = ""; save(); renderQuests();
+  });
+
+  /* Generic lists */
+  function sub(key, it) {
+    if (key === "deadlines") return esc(it.module);
+    if (key === "jobs") return esc(it.org);
+    if (key === "modules") return esc(it.note);
+    if (key === "clubs") return esc(it.role || "") + (it.date ? (it.role ? " · " : "") + "next meet-up" : "");
+    if (key === "duties") return esc(it.club);
+    if (key === "people") return esc(it.met);
+    if (key === "gym") return esc(it.type) + (it.date ? " · " + new Date(it.date + "T00:00:00").toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" }) : "");
+    if (key === "spends") return "";
+    return "";
+  }
+  function renderList(key) {
+    var ul = $("#list-" + key); if (!ul) return;
+    var items = state[key].slice();
+    if (key === "deadlines" || key === "social" || key === "jobs" || key === "duties" || key === "clubs") items.sort(function (a, b) { return (a.date || "9999").localeCompare(b.date || "9999"); });
+    if (key === "gym") items.sort(function (a, b) { return (b.date || "").localeCompare(a.date || ""); });
+    ul.innerHTML = items.length ? "" : '<li class="empty">Nothing here yet. Add one below.</li>';
+    items.forEach(function (it) {
+      var li = document.createElement("li");
+      var hasStatus = !!STATUS[key], isGoal = key === "goals" || key === "duties";
+      li.className = "item" + ((isGoal && it.done) || (hasStatus && /^(done|offer|finished|went|left)$/.test(it.s)) ? " done" : "");
+      var lead = isGoal ? '<input type="checkbox" class="check" aria-label="Done"' + (it.done ? " checked" : "") + ">" : "<span></span>";
+      var title = key === "spends" ? esc(it.title) + "<small>" + Number(it.amount).toFixed(2) + "</small>" : esc(it.title) + (sub(key, it) ? "<small>" + sub(key, it) + "</small>" : "");
+      if (key === "goals") title = esc(it.title) + "<small>" + esc(it.area) + "</small>";
+      var right = hasStatus ? '<button class="pill" data-s="' + it.s + '">' + LABEL[it.s] + "</button>" : "";
+      li.innerHTML = lead + '<span class="t"><span>' + title + "</span></span>" + (it.date && key !== "gym" ? dueLabel(it.date) : "<span></span>") + '<span style="display:flex;gap:8px;align-items:center">' + right + '<button class="x" aria-label="Remove">×</button></span>';
+      if (isGoal) li.querySelector(".check").addEventListener("change", function (e) { it.done = e.target.checked; save(); renderList(key); });
+      if (hasStatus) li.querySelector(".pill").addEventListener("click", function () {
+        var opts = STATUS[key]; it.s = opts[(opts.indexOf(it.s) + 1) % opts.length]; save(); renderAll();
+      });
+      li.querySelector(".x").addEventListener("click", function () { state[key] = state[key].filter(function (x) { return x !== it; }); save(); renderAll(); });
+      ul.appendChild(li);
+    });
+  }
+  document.querySelectorAll("form[data-add]").forEach(function (f) {
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var key = f.dataset.add, it = { id: uid() };
+      Array.prototype.forEach.call(f.elements, function (el) { if (el.name) it[el.name] = el.value.trim(); });
+      if (key === "spends") it.amount = parseFloat(it.amount) || 0;
+      if (key === "gym" && !it.date) it.date = iso(today);
+      if (STATUS[key]) it.s = STATUS[key][0];
+      if (key === "goals" || key === "duties") it.done = false;
+      state[key].push(it); f.reset(); save(); renderAll();
+    });
+  });
+
+  /* Money */
+  function renderMoney() {
+    var spent = state.spends.reduce(function (a, s) { return a + (Number(s.amount) || 0); }, 0);
+    var b = Number(state.budget) || 0, left = b - spent;
+    $("#budget").value = state.budget;
+    $("#mSpent").textContent = spent.toFixed(2);
+    $("#mLeft").textContent = left.toFixed(2);
+    $("#mLeft").style.color = left < 0 ? "var(--red)" : "var(--lime)";
+    $("#mCount").textContent = state.spends.length;
+    var pct = b ? Math.min(100, spent / b * 100) : 0;
+    $("#meter").classList.toggle("over", left < 0);
+    $("#meter i").style.width = pct + "%";
+  }
+
+  /* Gym streak for this week */
+  function renderStreak() {
+    var names = ["M", "T", "W", "T", "F", "S", "S"], el = $("#streak");
+    el.innerHTML = names.map(function (n, i) {
+      var d = iso(new Date(monday.getTime() + i * DAY));
+      var on = state.gym.some(function (g) { return g.date === d; });
+      return '<div class="' + (on ? "on" : "") + '">' + n + "</div>";
+    }).join("");
+  }
+
+  /* Coming up */
+  function renderUpcoming() {
+    var rows = [];
+    state.deadlines.forEach(function (d) { if (d.date && d.s !== "done") rows.push({ date: d.date, t: d.title, k: "Uni · " + (d.module || "") }); });
+    state.jobs.forEach(function (j) { if (j.date && j.s !== "no" && j.s !== "offer") rows.push({ date: j.date, t: j.title, k: "Work · " + (j.org || "") }); });
+    state.clubs.forEach(function (c) { if (c.date && c.s !== "left") rows.push({ date: c.date, t: c.title, k: "Club meet-up" }); });
+    state.duties.forEach(function (d) { if (d.date && !d.done) rows.push({ date: d.date, t: d.title, k: "Club job · " + (d.club || "") }); });
+    rows.sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var ul = $("#upcoming");
+    ul.innerHTML = rows.length ? rows.slice(0, 4).map(function (r) {
+      return '<li class="item" style="grid-template-columns:minmax(0,1fr) auto"><span class="t"><span>' + esc(r.t) + "<small>" + esc(r.k) + "</small></span></span>" + dueLabel(r.date) + "</li>";
+    }).join("") : '<li class="empty">Nothing with a date yet.</li>';
+  }
+
+  function renderAll() {
+    ["deadlines", "jobs", "gym", "clubs", "duties"].forEach(renderList);
+    renderStreak(); renderUpcoming(); renderXP();
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-act]"); if (!a) return;
+    if (a.dataset.act === "reset") {
+      if (a.dataset.armed) {
+        state = { week: {}, weekSeed: null, focus: "", quests: [], reflect: "", deadlines: [], modules: [], jobs: [], budget: 0, spends: [], gym: [], games: [], social: [], clubs: [], duties: [], people: [], goals: [], bonus: 0 };
+        save(); renderWeek(); renderQuests(); renderAll();
+        a.textContent = "Start fresh"; delete a.dataset.armed;
+      } else { a.dataset.armed = "1"; a.textContent = "Tap again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
+    }
+  });
+
+  /* Tabs via hash */
+  var VIEWS = ["week", "uni", "work", "social", "gym"];
+  function route() {
+    var v = (location.hash || "#week").slice(1); if (VIEWS.indexOf(v) < 0) v = "week";
+    VIEWS.forEach(function (n) { document.getElementById("view-" + n).hidden = n !== v; });
+    document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", t.getAttribute("href") === "#" + v ? "true" : "false"); });
+  }
+  window.addEventListener("hashchange", route);
+
+  renderWeek(); renderQuests(); renderAll(); route();
+})();
+</script>
+
+</body></html>
