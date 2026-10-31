@@ -385,6 +385,12 @@ body { background-color: var(--paper); background-image: radial-gradient(circle 
 .swatch .nm small { text-transform: none; font-size: 13px; }
 .swatch .dot { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line); }
 @media (max-width: 560px) { .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* No floor strip: the furniture stands on the bottom edge of the header */
+.mast::after { display: none; }
+.vignette .v-rug { bottom: 0; }
+.v-chair { bottom: 8px; }
+.v-table { bottom: -2px; }
+.v-olive { bottom: 0; }
 </style>
 </head>
 <body>
