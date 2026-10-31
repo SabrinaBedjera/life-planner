@@ -68,23 +68,9 @@ Attach the file the same way and use the same message. If the AI can show a live
 - "Make the text bigger."
 - "Change the pink to lavender."
 
-## Run your whole life admin with Claude (optional)
-
-If you use Claude a lot, you can set up one Claude project as a personal hub, with one conversation per topic.
-
-1. **One Claude project.** Create a project and paste the text from [`project-instructions.md`](project-instructions.md) into its instructions. Edit the areas and topics to fit your life.
-2. **One thread per topic.** Name each thread `Area · Topic`, for example `Career · Resume` or `Health · Exercise`, so Claude always knows the latest status.
-3. **Refresh on request.** Ask Claude to "refresh my dashboard". It reads each thread's latest status and rebuilds a summary page using [`dashboard.html`](dashboard.html) as the layout.
-
-![Summary dashboard preview](preview.png)
-
-**Tags on the summary page:** `ACTIVE` (working on it now) · `NEXT` (up soon) · `TIME-BOUND` (has a deadline) · `LATER` (parked on purpose) · `DONE`.
-
 ## Files
 
 - `themes/girly-pop.html`, `themes/arcade.html`, `themes/studio.html`: the planners. Each works on its own.
-- `dashboard.html`: a one-page summary layout for the Claude project setup.
-- `project-instructions.md`: starter instructions to paste into a Claude project.
 
 The example people, jobs and places in the files are made up.
 
