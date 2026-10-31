@@ -563,6 +563,50 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
 .lcd .lane p.saved { color: #8a7898; }
 .lcd .lane input[type=checkbox] { accent-color: #c2186b; }
 @media (max-width: 640px) { .lcd { padding: 10px 10px 28px; } .lcd-screen { padding: 10px 12px; } .lcd .lane { grid-template-columns: 92px minmax(0, 1fr); gap: 8px; } .lcd .lane h3 { font-size: 20px; } .lcd .lane .checklist li, .lcd .lane .checklist span, .lcd .lane p { font-size: 19px; } }
+
+/* Week lanes on an old-school colour phone screen: thin frame, pixel status bar, title bar and softkeys */
+.phone { border-radius: 16px; padding: 3px; background: linear-gradient(180deg, #4a4452, #2a2630); box-shadow: 0 0 0 1px #cbbfd6, 0 14px 26px -16px rgba(42,15,34,.5); }
+.phone-screen { position: relative; border-radius: 13px; overflow: hidden; padding: 0 0 0; color: #3a1f4b; font-family: var(--font-lcd);
+  background: linear-gradient(180deg, #f6eefb 0%, #ebdff5 100%); }
+.phone-screen::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: .5;
+  background: repeating-linear-gradient(0deg, rgba(90,60,110,.07) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(90,60,110,.05) 0 1px, transparent 1px 3px); }
+.phone-screen::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2; box-shadow: inset 0 0 24px rgba(80,40,100,.18); border-radius: 13px; }
+.phone-status { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; padding: 6px 14px 4px; font-size: 20px; line-height: 1; color: #3a1f4b; }
+.ps-sig { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+.ps-sig i { width: 4px; background: #3a1f4b; }
+.ps-sig i:nth-child(1) { height: 4px; } .ps-sig i:nth-child(2) { height: 7px; } .ps-sig i:nth-child(3) { height: 10px; } .ps-sig i:nth-child(4) { height: 14px; }
+.ps-time { letter-spacing: .04em; }
+.ps-bat { justify-self: end; display: flex; gap: 2px; padding: 2px; border: 2px solid #3a1f4b; height: 14px; position: relative; margin-right: 4px; }
+.ps-bat::after { content: ""; position: absolute; right: -5px; top: 3px; width: 3px; height: 4px; background: #3a1f4b; }
+.ps-bat i { width: 5px; background: #3a1f4b; }
+.phone-title { display: flex; justify-content: space-between; align-items: center; padding: 4px 14px; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: #fff;
+  background: linear-gradient(180deg, #ef5ba3 0%, #c2186b 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
+.phone .lanes { display: flex; flex-direction: column; gap: 0; padding: 6px 14px 8px; position: relative; z-index: 1; }
+.phone .lane { display: grid; grid-template-columns: 130px minmax(0, 1fr); align-items: baseline; gap: 12px; background: none; border: 0; border-bottom: 1px dashed rgba(90,60,110,.25); border-radius: 0; padding: 6px 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.phone .lane:last-child { border-bottom: 0; }
+.phone .lane h3 { display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin: 0; font-family: var(--font-lcd); font-size: 24px; font-weight: 400; letter-spacing: .02em; text-transform: uppercase; color: #c2186b; }
+.phone .lane h3::before { content: ""; width: 10px; height: 10px; background: var(--ic, #c2186b); }
+.phone .lane:nth-child(1) { --ic: #c2186b; } .phone .lane:nth-child(2) { --ic: #1b6b52; } .phone .lane:nth-child(3) { --ic: #6b3fb0; } .phone .lane:nth-child(4) { --ic: #e0782f; } .phone .lane:nth-child(5) { --ic: #7a7486; }
+.phone .lane .checklist { margin: 0; }
+.phone .lane .checklist li, .phone .lane .checklist span, .phone .lane p { font-family: var(--font-lcd); font-size: 22px; line-height: 1.15; color: #3a1f4b; }
+.phone .lane p.saved { color: #8a7898; font-size: 22px; }
+.phone .lane input[type=checkbox] { accent-color: #c2186b; }
+.phone-keys { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 4px 14px 6px; font-size: 20px; color: #3a1f4b; border-top: 2px solid rgba(90,60,110,.2); background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(200,180,220,.35)); }
+.phone-keys span:last-child { justify-self: end; }
+.phone-keys b { font-weight: 400; padding: 0 14px; border: 2px solid #3a1f4b; border-radius: 4px; line-height: 1.1; }
+@media (max-width: 640px) {
+  .phone .lane { grid-template-columns: 92px minmax(0, 1fr); gap: 8px; }
+  .phone .lane h3 { font-size: 20px; }
+  .phone .lane .checklist li, .phone .lane .checklist span, .phone .lane p, .phone .lane p.saved { font-size: 19px; }
+}
+
+.phone .lane-body { min-width: 0; }
+.phone .lane-add { display: flex; align-items: center; gap: 10px; margin: 2px 0 0; }
+.phone .lane-add input[type=checkbox] { margin: 0 2px; width: 16px; height: 16px; flex: none; opacity: .7; }
+.phone .lane-input { flex: 1; min-width: 0; background: transparent; border: 0; border-bottom: 1px dotted rgba(90,60,110,.35); padding: 2px 0; font-family: var(--font-lcd); font-size: 22px; color: #3a1f4b; outline: none; }
+.phone .lane-input::placeholder { color: #a594b4; }
+.phone .lane-input:focus { border-bottom: 1px solid #c2186b; background: rgba(255,255,255,.35); }
+@media (max-width: 640px) { .phone .lane-input { font-size: 19px; } }
 </style>
 </head>
 <body>
@@ -620,8 +664,15 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     <div class="card">
       <div class="card-head"><h2 id="weekTitle">This week</h2><span class="hint">Schedule items land here automatically, sorted by category</span></div>
       <div class="row"><label class="saved" for="focus" style="flex:none">This week's focus</label><input class="field" id="focus" placeholder="e.g. Finish the general résumé" style="flex:1 1 260px"><button class="btn small" data-act="save-focus">Save</button></div>
-      <div class="lcd"><div class="lcd-screen"><div class="lcd-top" aria-hidden="true"><span>THIS WEEK</span><span class="lcd-icons">▮▮▮▯ ♥</span></div>
+      <div class="phone"><div class="phone-screen">
+        <div class="phone-status" aria-hidden="true">
+          <span class="ps-sig"><i></i><i></i><i></i><i></i></span>
+          <span class="ps-time" id="psTime"></span>
+          <span class="ps-bat"><i></i><i></i><i></i></span>
+        </div>
+        <div class="phone-title" aria-hidden="true"><span id="psDay">This week</span><span>&#9829;</span></div>
         <div class="lanes" id="lanes"></div>
+        <div class="phone-keys" aria-hidden="true"><span>Menu</span><b>OK</b><span>Back</span></div>
       </div></div>
       <form class="row" id="itemForm">
         <select class="field" id="newLane" aria-label="Area"><option value="body">Health</option><option value="career" selected>Career</option><option value="people">Social</option><option value="creative">Creative</option></select>
@@ -909,9 +960,9 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
   ];
   // Sort a schedule line into a lane by keywords. First match wins, in this order.
   const LANE_WORDS = [
-    ["career", ["resume", "résumé", "cv", "apply", "application", "linkedin", "interview", "job", "cover letter", "recruiter", "networking", "coffee chat", "portfolio", "website", "lab project", "dashboard", "github", "nfc", "pacific", "nightingale", "python"]],
+    ["career", ["resume", "résumé", "cv", "apply", "application", "linkedin", "interview", "job", "cover letter", "recruiter", "networking", "coffee chat", "portfolio", "website", "lab project", "github", "python"]],
     ["body", ["run", "jog", "yoga", "pilates", "gym", "strength", "workout", "physio", " pt", "pt ", "walk", "hike", "swim", "stretch", "doctor", "rest", "sleep", "meditat", "exercise", "training", "pickleball", "tennis", "badminton", "climb", "bike", "cycl", "spin", "soccer", "skiing", "skate", "dance", "barre", "5k", "10k", "km"]],
-    ["creative", ["noir pole", "noire pole", "colouring", "coloring", "novella", "zeros and ones", "writing", "write", "draw", "illustrat", "story", "paint", "art "]],
+    ["creative", ["colouring", "coloring", "novella", "writing", "write", "draw", "illustrat", "story", "paint", "art "]],
     ["people", ["friend", "concert", "dinner", "lunch", "brunch", "drinks", "party", "birthday", "family", "mom", "dad", "brother", "sister", "date night", "movie", "show", "game night", "visit", "wedding", "call with", "coffee with", "hang"]],
   ];
   const LANE_RX = LANE_WORDS.map(([lane, words]) => [lane, words.map((w) => new RegExp("(^|[^a-zà-ÿ0-9])" + w.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"))]);
@@ -1081,6 +1132,8 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     const sch = (weekDoc() && weekDoc().schedule) || {};
     const today = todayISO();
     const active = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.day : null;
+    // While typing in a day, leave the boxes alone so the cursor stays put; the lanes below still refresh
+    if (active && $("sched").contains(document.activeElement) && $("sched").children.length) return;
     $("sched").innerHTML = DAYS.map((d, i) => {
       const iso = addDays(WEEK, i), dt = parse(iso);
       const val = state.schedDraft[d] !== undefined ? state.schedDraft[d] : (sch[d] || "");
@@ -1112,7 +1165,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     // drop drafts that are now stored (unless the person kept typing meanwhile)
     Object.keys(snapshot).forEach((d) => { if (state.schedDraft[d] === snapshot[d]) delete state.schedDraft[d]; });
     $("schedMsg").textContent = live() ? "Saved" : "Saved for this visit";
-    if (!typing()) render(true); else { renderMeta(); state.pendingRender = true; }
+    if (!typing() || $("sched").contains(document.activeElement)) render(true); else { renderMeta(); state.pendingRender = true; }
   }
   document.addEventListener("input", (e) => {
     const t = e.target;
@@ -1120,7 +1173,7 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     state.schedDraft[t.dataset.day] = t.value;
     $("schedMsg").textContent = "Saving…";
     clearTimeout(schedTimer);
-    schedTimer = setTimeout(saveSchedule, 900);
+    schedTimer = setTimeout(saveSchedule, 600);
   });
 
   function renderWeek() {
@@ -1131,13 +1184,15 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     const li = (it) => `<li class="${it.done ? "done" : ""}"><label for="wi-${esc(it.id)}"><input type="checkbox" id="wi-${esc(it.id)}" data-act="toggle-item" data-id="${esc(it.id)}" ${it.done ? "checked" : ""}><span>${esc(it.text)}</span></label></li>`;
     const wk = weekWorkouts(WEEK), wt = weekWorkoutTarget();
     const pulled = dueThisWeek();
+    const act = document.activeElement, keep = act && act.classList && act.classList.contains("lane-input") ? { lane: act.closest("form").dataset.lane, v: act.value } : null;
     $("lanes").innerHTML = LANES.filter((ln) => ln.k !== "other" || items.some((it) => it.lane === "other")).map((ln) => {
       const its = items.filter((it) => (it.lane || "career") === ln.k);
       const pl = pulled.filter((x) => x.lane === ln.k);
       const auto = "";
-      const empty = !its.length && !auto ? `<p class="saved" style="margin:0">Nothing planned. That's fine.</p>` : "";
-      return `<div class="lane"><h3><span>${ln.l}</span></h3>${auto}${its.length ? `<ul class="checklist">${its.map(li).join("")}</ul>` : ""}${empty}</div>`;
+      const add = `<form class="lane-add" data-lane="${ln.k}"><input type="checkbox" disabled tabindex="-1" aria-hidden="true"><input class="lane-input" placeholder="Add something…" aria-label="Add to ${ln.l}" autocomplete="off"></form>`;
+      return `<div class="lane"><h3><span>${ln.l}</span></h3><div class="lane-body">${auto}${its.length ? `<ul class="checklist">${its.map(li).join("")}</ul>` : ""}${add}</div></div>`;
     }).join("");
+    if (keep) { const f = document.querySelector(`.lane-add[data-lane="${keep.lane}"] .lane-input`); if (f) { f.value = keep.v; f.focus(); } }
     const a = weekActions(weekDoc());
     const fEl = $("focus"); if (document.activeElement !== fEl) fEl.value = (weekDoc() && weekDoc().focus) || "";
     const r = (weekDoc() && weekDoc().reflection) || {};
@@ -1868,6 +1923,14 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     }
     arr.push({ ...obj, id: "local-" + Date.now() }); msgEl.textContent = "Added for this visit (example data isn't saved)."; render(true); return true;
   }
+  // Type straight into a lane: the empty checkbox line at the bottom of each one
+  document.addEventListener("submit", async (e) => {
+    const f = e.target.closest && e.target.closest(".lane-add"); if (!f) return;
+    e.preventDefault(); const inp = f.querySelector(".lane-input"), txt = inp.value.trim(); if (!txt) return;
+    inp.value = "";
+    await saveWeek({ items: [...weekItems(), { id: "i" + Date.now(), text: txt, done: false, lane: f.dataset.lane }] }); render(true);
+    const again = document.querySelector(`.lane-add[data-lane="${f.dataset.lane}"] .lane-input`); if (again) again.focus();
+  });
   $("itemForm").addEventListener("submit", async (e) => {
     e.preventDefault(); const txt = $("newItem").value.trim(); if (!txt) return;
     await saveWeek({ items: [...weekItems(), { id: "i" + Date.now(), text: txt, done: false, lane: $("newLane").value }] }); $("newItem").value = ""; render(true);
@@ -2017,6 +2080,19 @@ document.getElementById("freshBtn").addEventListener("click", (e) => {
   b.textContent = "Start fresh"; delete b.dataset.armed;
 });
 document.getElementById("exampleBtn").addEventListener("click", () => { if (window.lifePlannerDB) window.lifePlannerDB.resetExamples(); });
+</script>
+<script>
+/* Phone status bar clock and the week in the title bar */
+(function () {
+  function tick() {
+    var d = new Date(), t = d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" }).replace(/\s?[AP]M$/i, "");
+    var mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7));
+    var a = document.getElementById("psTime"), c = document.getElementById("psDay");
+    if (a) a.textContent = t;
+    if (c) c.textContent = "Week of " + mon.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+  tick(); setInterval(tick, 20000);
+})();
 </script>
 </body>
 </html>
