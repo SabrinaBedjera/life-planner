@@ -2,3 +2,7 @@
 %btn%:hover { background: #ff4d00; border-color: #111; filter: none; }
 %btn%:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #ff4d00; }
 %tab%:hover { background: #ffcc00; }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:streetwear/eightball); }
+#sub-jobs::after { background-image: url(asset:streetwear/cup); }
+#sub-life::after { background-image: url(asset:streetwear/dice); }

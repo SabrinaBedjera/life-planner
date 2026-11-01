@@ -32,3 +32,5 @@
 .phone .lane h3 { font-size: calc(15px * var(--t-lcd-scale, 1)); }
 .phone .lane .checklist li, .phone .lane .checklist span, .phone .lane p, .phone .lane p.saved, .phone .lane-input { font-size: calc(15px * var(--t-lcd-scale, 1)); }
 .phone .lane { grid-template-columns: minmax(84px, max-content) minmax(0, 1fr); padding: 5px 0; }
+/* tab-row sticker: themes set their own images; hide Girly Pop's when a theme has none */
+.subtabs::after { background-image: none; }

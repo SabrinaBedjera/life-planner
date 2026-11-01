@@ -1,2 +1,6 @@
 %btn%:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #6b3b1f; }
 %tab%:hover { background: #f7e3bb; }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:groovy/daisy); }
+#sub-jobs::after { background-image: url(asset:groovy/sun); }
+#sub-life::after { background-image: url(asset:groovy/wave); }

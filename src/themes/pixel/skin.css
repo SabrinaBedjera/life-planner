@@ -1,3 +1,7 @@
 %head% h2::before { content: "\2665  "; color: var(--t-accent); font-size: .8em; }
 %btn%:active { box-shadow: 1px 1px 0 #2f5a23; transform: translate(2px, 2px); }
 %tab%[aria-selected="true"] { box-shadow: 3px 3px 0 #5a3420; }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:pixel/corgi); }
+#sub-jobs::after { background-image: url(asset:pixel/cat); }
+#sub-life::after { background-image: url(asset:pixel/bunny); }
