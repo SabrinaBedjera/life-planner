@@ -40,6 +40,26 @@ Each planner is one file that works on its own, even with no internet. The three
 - Want the examples back? **Restore default template design** adds the example content again without touching anything you've made.
 - If a change ever fails to save (for example, the browser's storage is full or blocked in a private window), a yellow message pops up so you can export a backup straight away.
 
+## Get a newer version
+
+Your planner file never updates itself. That's on purpose: it never connects to the internet, so nothing you type can leave your computer. The version you have is shown at the bottom of your planner (for example, "Life Planner version 2.0.0").
+
+To move to a newer version:
+
+1. In your current planner, click **Export backup** and save the file somewhere private.
+2. Download the new planner file from `planners/` (see [Use it in your browser](#use-it-in-your-browser-easiest)).
+3. Open the new file and click **Import backup**, then pick your backup.
+4. Check everything's there. If anything looks wrong, **Undo last import** puts it back.
+
+If you open the new file **in the same browser** as the old one, your planner is usually already there, because both versions use the same saved data. The backup is your safety net either way.
+
+### What's new in 2.0
+
+- Every planner can show every tab: pick yours with **✦ Customize**.
+- Nine themes, from Girly Pop to 70s Groove, that you can switch between any time.
+- Backups now cover everything, and you can move your planner between Girly Pop, Arcade and Studio.
+- Works fully offline: fonts, pictures and charts are inside the file.
+
 ## Choose your tabs
 
 Tap the **✦ Customize** button in the bottom-right corner, then **Tabs**.

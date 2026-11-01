@@ -116,7 +116,7 @@ let stale = 0;
 for (const f of readdirSync(join(src, "planners"))) {
   const planner = json(src, "planners", f);
   const build = {
-    planner, packOrder, themeOrder, assets,
+    version: json(root, "package.json").version, planner, packOrder, themeOrder, assets,
     packs: Object.fromEntries(packOrder.map((id) => [id, { meta: packs[id].meta, html: packs[id].html }])),
     css: Object.fromEntries(packOrder.map((id) => [id, packs[id].css])),
     themed: Object.fromEntries(packOrder.map((id) => [id, themedFor(id)])),

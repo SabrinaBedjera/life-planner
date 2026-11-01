@@ -353,6 +353,8 @@ console.log("\nbackups");
     check(tallest > 0 && tallest < 80, `${id}: footer buttons fit their text on a phone (${Math.round(tallest)}px tall)`);
     const label = await shadow(page, `return [...root.querySelectorAll("button")].some((b) => b.textContent.trim() === "Restore default template design");`);
     check(label, `${id}: the restore button says "Restore default template design"`);
+    const ver = await shadow(page, `const v = root.querySelector(".lp-version"); return v && v.offsetParent ? v.textContent : "";`);
+    check(/^Life Planner version \d+\.\d+\.\d+$/.test(ver), `${id}: the footer shows which version this is`);
     await page.close();
   }
   const { page } = await openIn(ctx, "planners", "girly-pop");
