@@ -1,0 +1,65 @@
+{
+  "id": "arcade",
+  "name": "Arcade",
+  "short": "arcade",
+  "title": "Life Planner · Arcade",
+  "viewSelector": "section.view",
+  "viewId": "view-",
+  "nav": "nav.tabs",
+  "navItem": "a.tab",
+  "header": "header.mast",
+  "map": {
+    "card": ".panel",
+    "head": ".panel-head",
+    "btn": ".btn",
+    "field": ".field",
+    "tab": ".tab",
+    "nav": ".tabs",
+    "list": ".list",
+    "item": ".item",
+    "hint": ".hint",
+    "chip": ".chip",
+    "header": ".mast",
+    "title": ".mast h1",
+    "foot": ".foot",
+    "wrap": ".wrap",
+    "quote": ".quote",
+    "ext": ".quote"
+  },
+  "views": [
+    {
+      "id": "week",
+      "label": "Week",
+      "area": "plan",
+      "desc": "Week ahead, what's coming up, energy check-in and weekly quests with XP."
+    },
+    {
+      "id": "uni",
+      "label": "Uni",
+      "area": "work",
+      "desc": "Study sessions with a weekly target, plus deadlines and exams."
+    },
+    {
+      "id": "work",
+      "label": "Work",
+      "area": "work",
+      "desc": "Part-time jobs, internships and applications, with a status for each."
+    },
+    {
+      "id": "social",
+      "label": "Social",
+      "area": "people",
+      "desc": "Clubs, societies and the things you've said you'll do for them."
+    },
+    {
+      "id": "gym",
+      "label": "Gym",
+      "area": "health",
+      "desc": "Log gym sessions and runs, with a weekly streak."
+    }
+  ],
+  "navMode": "flat",
+  "footBtn": "btn ghost",
+  "backupPrepend": false,
+  "footSpot": ".foot > span:last-child"
+}

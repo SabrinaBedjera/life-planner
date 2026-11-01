@@ -1,0 +1,3 @@
+%head% h2, %card% h2 { font-style: italic; }
+%head% h2::before { content: "\2766  "; color: var(--t-accent-2); font-style: normal; font-size: .8em; }
+%btn%:active { transform: translateY(2px); box-shadow: 0 1px 0 #56733a; }

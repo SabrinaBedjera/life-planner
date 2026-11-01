@@ -1,0 +1,27 @@
+%page% .lpm-d93 { background: #c0c0c0; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf, 4px 4px 0 rgba(0,0,0,.35); padding: 3px; }
+%page% .d-bar { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(90deg, #000080, #1084d0); color: #fff; font: 600 15px "Pixelify Sans", Tahoma, sans-serif; padding: 3px 4px 3px 6px; }
+%page% .d-bar img { width: 16px; vertical-align: -3px; }
+%page% .d-btns { display: flex; gap: 2px; }
+%page% .d-btns i { font-style: normal; width: 18px; height: 16px; display: grid; place-items: center; background: #c0c0c0; color: #000; font-size: 12px; line-height: 1; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf; }
+%page% .d-body { display: flex; align-items: center; gap: 18px; padding: 18px 18px 16px; }
+%page% .d-pc { width: clamp(70px, 13vw, 140px); flex: none; filter: drop-shadow(3px 4px 0 rgba(0,0,0,.25)); }
+%page% .d-text { flex: 1; min-width: 0; }
+%page% .d-desk { position: relative; flex: none; width: 210px; height: 120px; }
+%page% .d-desk img { position: absolute; filter: drop-shadow(3px 4px 0 rgba(0,0,0,.25)); }
+%page% .d-boom { width: 150px; right: 0; bottom: 0; }
+%page% .d-cube { width: 54px; left: 0; bottom: 4px; transform: rotate(-8deg); }
+%page% .d-cursor { width: 34px; right: 30px; top: 0; }
+@media (max-width: 860px) { %page% .d-desk { display: none; } }
+%page% .lpm-d93 .lpm-title { font-size: clamp(36px, 7vw, 64px); color: #000; text-shadow: 3px 3px 0 #fff; }
+%page% .d-prompt { margin: 8px 0 0; font: 22px/1 "VT323", monospace; color: #000080; }
+%page% .d-prompt b { animation: d93blink 1s steps(1) infinite; }
+@keyframes d93blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { %page% .d-prompt b { animation: none; } }
+%page% .d-icons { left: calc(50% - 640px); top: 40px; display: grid; gap: 22px; width: 96px; }
+%page% .d-icons span { display: grid; justify-items: center; gap: 4px; color: #fff; font: 14px Tahoma, Verdana, sans-serif; text-align: center; text-shadow: 1px 1px 0 #000; }
+%page% .d-icons img { width: 56px; height: 48px; object-fit: contain; filter: drop-shadow(2px 3px 0 rgba(0,0,0,.3)); }
+%page% #lp-decor > img { filter: drop-shadow(4px 5px 0 rgba(0,0,0,.3)); }
+%page% .dd-mug { width: 76px; top: 300px; right: calc(50% - 636px); }
+%page% .dd-phone { width: 110px; top: 620px; right: calc(50% - 662px); transform: rotate(-6deg); }
+%page% .dd-books { width: 96px; top: 960px; right: calc(50% - 650px); }
+%page% .lpc-fab { font-family: "Pixelify Sans", Tahoma, sans-serif; }

@@ -1,0 +1,35 @@
+/* Studio pack under another theme */
+:host { --paper: var(--t-bg); --card: var(--t-card); --ink: var(--t-ink); --muted: var(--t-muted); --line: var(--t-line);
+  --blush: var(--t-chip); --rose: var(--t-accent); --rose-dark: var(--t-accent); --pinky: var(--t-accent-3); --birch: var(--t-card-2); --birch-dark: var(--t-accent-4); --oak: var(--t-accent-4);
+  --sage: var(--t-card-2); --sage-dark: var(--t-accent-2); --olive: var(--t-accent-2); --olive-dark: var(--t-accent-2); --sky: var(--t-card-2);
+  --forest: var(--t-accent-2); --forest-2: var(--t-accent-2); --mustard: var(--t-accent-4); --terracotta: var(--t-accent); --wood: var(--t-accent-4);
+  --f-head: var(--t-font-display); --f-body: var(--t-font-body); --f-display: var(--t-font-display); }
+.mast { display: none; }
+.deco, .vignette { display: none; }
+.panel.has-deco .panel-head, .panel.has-deco:has(.deco.sm) .panel-head, .panel.has-deco:has(.deco.xs) .panel-head { padding-right: 0; min-height: 0; }
+.panel::before { background: var(--t-accent); }
+.step { background: var(--t-chip); color: var(--t-chip-ink); }
+/* Studio's own light surfaces follow the theme too, so dark themes stay readable */
+.day { background: var(--t-card-2); border-color: var(--t-line); }
+.day.today { background: var(--t-card); border-color: var(--t-accent); box-shadow: inset 0 0 0 1px var(--t-accent); }
+.day textarea { background: var(--t-field); color: var(--t-field-ink); }
+.check { background: var(--t-field); border-color: var(--t-ink); }
+.check:checked::after { color: var(--t-accent-ink); }
+.check:checked { background: var(--t-accent); border-color: var(--t-accent); }
+.lane { background: linear-gradient(var(--t-accent), var(--t-accent)) top / 100% 6px no-repeat, var(--t-card-2); border-color: var(--t-line); }
+.mood { background: var(--t-card-2); color: var(--t-ink); border-color: var(--t-line); }
+.mood[aria-pressed="true"] { background: var(--t-accent); border-color: var(--t-accent); color: var(--t-accent-ink); }
+.dots div { border-color: var(--t-line); }
+.dots div.on, #mdots div.on { background: var(--t-accent-2); border-color: var(--t-accent-2); color: var(--t-accent-ink); }
+.newbar { background: var(--t-card-2); color: var(--t-ink); border: var(--t-card-border); box-shadow: none; }
+.newbar span { color: var(--t-ink); }
+.newbar select { background: var(--t-field); color: var(--t-field-ink); }
+.slot { background: var(--t-card-2); border-color: var(--t-line); }
+.slot.filled { background: var(--t-card); }
+.quote { background: var(--t-card); border: var(--t-card-border); box-shadow: var(--t-card-shadow); color: var(--t-ink); }
+.quote::before { color: var(--t-accent); }
+.page { background: repeating-linear-gradient(var(--t-field) 0 33px, var(--t-line) 33px 34px); color: var(--t-field-ink); }
+.swatch, .cover { background: var(--t-card-2); }
+.swatch .x { background: var(--t-card); }
+.item .open { color: var(--t-ink); }
+.edition { background: var(--t-accent-2); color: var(--t-accent-ink); }

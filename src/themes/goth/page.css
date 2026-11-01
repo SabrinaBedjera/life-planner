@@ -1,0 +1,17 @@
+%page% .lpm-goth { position: relative; text-align: center; padding: 26px 16px 22px; border: 1px solid #4a3b57; border-radius: 6px; background: radial-gradient(600px 220px at 50% 0, rgba(196,162,239,.16), transparent 70%), #17121e; box-shadow: 0 0 0 1px #0b0810, 0 18px 40px rgba(0,0,0,.5); outline: 1px solid rgba(217,178,106,.35); outline-offset: -8px; overflow: hidden; }
+%page% .lpm-goth .lpm-title { font-family: "UnifrakturMaguntia", "Old English Text MT", serif; text-transform: none; letter-spacing: .01em; font-weight: 400; color: #e6cf98; font-size: clamp(46px, 9vw, 86px); text-shadow: 0 0 22px rgba(217,178,106,.35); }
+%page% .g-phases { margin: 0 0 6px; color: #c4a2ef; letter-spacing: .6em; font-size: 14px; }
+%page% .g-sub { margin: 10px 0 0; font-family: "EB Garamond", serif; font-style: italic; color: #b3a6bd; font-size: 18px; }
+%page% .lpm-goth > img { position: absolute; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.55)); }
+%page% .g-candles { left: 18px; bottom: -6px; height: clamp(96px, 15vw, 168px); }
+%page% .g-rose { left: clamp(70px, 11vw, 120px); bottom: -10px; width: clamp(56px, 8vw, 92px); transform: rotate(-14deg); }
+%page% .g-mirror { right: 26px; top: 14px; height: clamp(90px, 15vw, 170px); }
+%page% .g-crystal { right: clamp(84px, 12vw, 140px); bottom: -4px; width: clamp(56px, 8vw, 96px); }
+%page% #lp-decor img { filter: drop-shadow(0 8px 14px rgba(0,0,0,.55)); }
+%page% .gd-hat { width: 104px; top: 230px; right: calc(50% - 650px); transform: rotate(8deg); }
+%page% .gd-moth { width: 86px; top: 520px; left: calc(50% - 640px); transform: rotate(-12deg); }
+%page% .gd-lantern { width: 74px; top: 780px; right: calc(50% - 630px); }
+%page% .gd-books { width: 92px; top: 1060px; left: calc(50% - 648px); }
+%page% .gd-bottle { width: 50px; top: 1340px; right: calc(50% - 616px); transform: rotate(6deg); }
+%page% .gd-keys { width: 74px; top: 1560px; left: calc(50% - 632px); transform: rotate(-18deg); }
+@media (max-width: 760px) { %page% .g-rose { display: none; } %page% .g-candles { height: 84px; left: 6px; } %page% .g-mirror { height: 80px; right: 10px; } %page% .g-crystal { display: none; } %page% .lpm-goth { padding-inline: 70px; } }

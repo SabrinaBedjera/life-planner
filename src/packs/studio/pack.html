@@ -1,0 +1,333 @@
+<div class="wrap">
+  <header class="mast">
+    <div class="mast-copy">
+      <h1><span class="h-life">Life</span> <span class="h-plan">Planner</span></h1>
+    </div>
+    <button class="btn ghost custom-open" type="button" data-act="customize">Make it yours</button>
+    <!-- A cosy corner: armchair, lamp, plants and a basket -->
+    <div class="vignette" aria-hidden="true">
+      <img class="v-art" src="asset:studio/v-art" alt="">
+      <img class="v-rug" src="asset:studio/v-rug" alt="">
+      <img class="v-chair" src="asset:studio/v-chair" alt="">
+      <img class="v-table" src="asset:studio/v-table" alt="">
+      <img class="v-olive" src="asset:studio/v-olive" alt="">
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <a class="tab" role="tab" href="#week">This week</a>
+    <a class="tab" role="tab" href="#home">Home projects</a>
+    <a class="tab" role="tab" href="#wellbeing">Wellbeing</a>
+    <a class="tab" role="tab" href="#people">Family &amp; friends</a>
+    <a class="tab" role="tab" href="#ideas">Inspiration</a>
+    <a class="tab" role="tab" href="#books">Books</a>
+    <a class="tab" role="tab" href="#watch">My channel</a>
+  </nav>
+
+  <!-- THIS WEEK -->
+  <section class="view" id="view-week" role="tabpanel">
+    <figure class="quote" id="quoteDay"></figure>
+    <div class="panel has-deco" style="--c: var(--blush)">
+        <img class="deco " src="asset:studio/deco" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">1</span>The week ahead</h2><span class="hint">Click a day and type. It saves by itself.</span></div>
+      <div class="sched" id="sched"></div>
+      <span class="saved" id="schedMsg"></span>
+    </div>
+    <div class="two">
+      <div class="panel has-deco" style="--c: var(--sage)">
+        <img class="deco sm" src="asset:studio/sm" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">2</span>To do this week</h2></div>
+        <div class="lanes" id="lanes"></div>
+        <form class="addrow" id="todoForm">
+          <select class="field sm" id="todoLane" aria-label="Area"></select>
+          <input class="field" id="todoText" placeholder="Add something for this week" aria-label="New to-do">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel has-deco" style="--c: var(--birch)">
+        <img class="deco xs" src="asset:studio/xs" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">3</span>Coming up</h2><span class="hint">The next 5 things with a date</span></div>
+        <ul class="list" id="upcoming"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME PROJECTS -->
+  <section class="view" id="view-home" role="tabpanel" hidden>
+    <div class="panel has-deco" style="--c: var(--blush)">
+        <img class="deco " src="asset:studio/deco-2" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">1</span>Projects around the house</h2><span class="hint">Click the label to move it along: idea, measuring, shopping, building, done</span></div>
+      <ul class="list" id="list-projects"></ul>
+      <form class="addrow" data-add="projects">
+        <input class="field" name="title" placeholder="Project, e.g. New shelves in the hallway" aria-label="Project" required>
+        <input class="field sm" name="room" placeholder="Room" aria-label="Room">
+        <input class="field sm" name="date" type="date" aria-label="Target date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="two">
+      <div class="panel has-deco" style="--c: var(--birch)">
+        <img class="deco " src="asset:studio/deco-3" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">2</span>Shopping list</h2></div>
+        <ul class="list" id="list-shopping"></ul>
+        <form class="addrow" data-add="shopping">
+          <input class="field" name="title" placeholder="Item" aria-label="Item" required>
+          <input class="field sm" name="note" placeholder="Size or note" aria-label="Size or note">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--sky)">
+        <div class="panel-head"><h2><span class="step">3</span>Measurements</h2><span class="hint">So you never have to measure twice</span></div>
+        <ul class="list" id="list-measures"></ul>
+        <form class="addrow" data-add="measures">
+          <input class="field" name="title" placeholder="What, e.g. Bedroom alcove" aria-label="What" required>
+          <input class="field sm" name="size" placeholder="Size, e.g. 92 × 40 cm" aria-label="Size">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- WELLBEING -->
+  <section class="view" id="view-wellbeing" role="tabpanel" hidden>
+    <div class="panel has-deco" style="--c: var(--sage)">
+        <img class="deco sm" src="asset:studio/v-olive" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">1</span>Movement</h2><span class="hint">Walks, swims, stretching, gardening: it all counts</span></div>
+      <div class="dots" id="dots" aria-label="Days you moved this week"></div>
+      <ul class="list" id="list-moves"></ul>
+      <form class="addrow" data-add="moves">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <select class="field sm" name="type" aria-label="Activity"><option>Walk</option><option>Swim</option><option>Yoga</option><option>Stretch</option><option>Gardening</option><option>Dance</option><option>Other</option></select>
+        <input class="field" name="title" placeholder="Notes, e.g. 30 min by the river" aria-label="Notes">
+        <button class="btn" type="submit">Log it</button>
+      </form>
+    </div>
+    <div class="panel has-deco" style="--c: var(--pinky)">
+        <img class="deco sm" src="asset:studio/xs" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">2</span>Meditation</h2><span class="hint">A few quiet minutes count</span></div>
+      <div class="dots" id="mdots" aria-label="Days you meditated this week"></div>
+      <div class="quick" id="quickMed"><span>Log today:</span><button class="btn ghost" type="button" data-min="5">5 min</button><button class="btn ghost" type="button" data-min="10">10 min</button><button class="btn ghost" type="button" data-min="20">20 min</button><span class="saved" id="medTotal"></span></div>
+      <ul class="list" id="list-medits"></ul>
+      <form class="addrow" data-add="medits">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <select class="field sm" name="mins" aria-label="Minutes"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select>
+        <input class="field" name="title" placeholder="Notes, e.g. Morning breathing in the garden" aria-label="Notes">
+        <button class="btn" type="submit">Log it</button>
+      </form>
+    </div>
+    <div class="panel has-deco" style="--c: var(--blush)">
+        <img class="deco sm" src="asset:studio/sm-2" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">3</span><span id="jTitle">Today's page</span></h2><span class="hint">Write as much or as little as you like. It saves by itself.</span></div>
+      <p class="prompt" id="jPrompt"></p>
+      <div class="jbar">
+        <input class="field" type="date" id="jDate" aria-label="Which day">
+        <button class="btn ghost" type="button" id="jToday">Back to today</button>
+      </div>
+      <div class="moods" id="jMoods" role="group" aria-label="How I feel"></div>
+      <textarea class="page" id="jText" aria-label="Journal page" placeholder="Dear diary..."></textarea>
+      <span class="saved" id="jMsg"></span>
+    </div>
+    <div class="two">
+      <div class="panel has-deco" style="--c: var(--sage)">
+        <img class="deco sm" src="asset:studio/sm-3" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">4</span>Three good things</h2><span class="hint">Small things count</span></div>
+        <div class="good" id="jGood"></div>
+      </div>
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">5</span>Past pages</h2><span class="hint">Click a day to read it again</span></div>
+        <ul class="list" id="jPast"></ul>
+      </div>
+    </div>
+    <div class="panel has-deco" style="--c: var(--sky)">
+        <img class="deco sm" src="asset:studio/sm-4" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">6</span>Appointments</h2><span class="hint">Doctor, dentist, hairdresser, eye test</span></div>
+      <ul class="list" id="list-appts"></ul>
+      <form class="addrow" data-add="appts">
+        <input class="field" name="title" placeholder="Appointment" aria-label="Appointment" required>
+        <input class="field sm" name="where" placeholder="Where or time" aria-label="Where or time">
+        <input class="field sm" name="date" type="date" aria-label="Date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAMILY & FRIENDS -->
+  <section class="view" id="view-people" role="tabpanel" hidden>
+    <div class="two">
+      <div class="panel has-deco" style="--c: var(--blush)">
+        <img class="deco sm" src="asset:studio/sm-5" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">1</span>Birthdays</h2></div>
+        <ul class="list" id="list-birthdays"></ul>
+        <form class="addrow" data-add="birthdays">
+          <input class="field" name="title" placeholder="Name" aria-label="Name" required>
+          <input class="field sm" name="date" type="date" aria-label="Birthday">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel has-deco" style="--c: var(--birch)">
+        <img class="deco sm" src="asset:studio/v-table" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">2</span>Calls &amp; visits</h2><span class="hint">Tick when done</span></div>
+        <ul class="list" id="list-plans"></ul>
+        <form class="addrow" data-add="plans">
+          <input class="field" name="title" placeholder="e.g. Call Anna" aria-label="Plan" required>
+          <input class="field sm" name="date" type="date" aria-label="When">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSPIRATION -->
+  <section class="view" id="view-ideas" role="tabpanel" hidden>
+    <div class="panel has-deco" style="--c: var(--blush)">
+        <img class="deco sm" src="asset:studio/v-art" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">1</span>Flowers &amp; colours I love</h2><span class="hint">Pick a flower and its colour, or add your own photo</span></div>
+      <div class="swatches" id="swatches"></div>
+      <form class="addrow" id="swatchForm">
+        <select class="field sm" id="swFlower" aria-label="Flower"><option>Tulip</option><option>Peony</option><option>Rose</option><option>Daisy</option><option>Hydrangea</option><option>Lavender</option></select>
+        <input class="field" type="color" id="swColor" value="#e8a0b4" aria-label="Colour">
+        <input class="field" id="swName" placeholder="Name, e.g. Blush peony" aria-label="Name">
+        <input class="field sm" id="swRoom" placeholder="For which room" aria-label="Room">
+        <label class="btn ghost filebtn">Photo<input type="file" id="swPhoto" accept="image/*" hidden></label>
+        <button class="btn" type="submit">Add</button>
+      </form>
+      <span class="saved" id="swMsg"></span>
+    </div>
+    <div class="panel" style="--c: var(--pinky)">
+      <div class="panel-head"><h2><span class="step">2</span>Favourite quotes</h2><span class="hint">One shows on your homepage each day</span></div>
+      <ul class="list" id="list-quotes"></ul>
+      <form class="addrow" data-add="quotes">
+        <input class="field" name="title" placeholder="A quote you love" aria-label="Quote" required>
+        <input class="field sm" name="by" placeholder="Who said it" aria-label="Who said it">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="panel has-deco" style="--c: var(--sage)">
+        <img class="deco sm" src="asset:studio/sm-6" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">3</span>Ideas &amp; finds</h2><span class="hint">Things you saw and loved. Paste a link if you have one.</span></div>
+      <ul class="list" id="list-ideas"></ul>
+      <form class="addrow" data-add="ideas">
+        <input class="field" name="title" placeholder="Idea, e.g. Pink lamp for the reading corner" aria-label="Idea" required>
+        <input class="field sm" name="link" placeholder="Link (optional)" aria-label="Link">
+        <button class="btn" type="submit">Save</button>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- BOOKS -->
+  <section class="view" id="view-books" role="tabpanel" hidden>
+    <div class="panel has-deco" style="--c: var(--pinky)">
+        <img class="deco sm" src="asset:studio/sm" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">1</span>Add a book</h2><span class="hint">Add a photo of the cover if you like</span></div>
+      <form class="addrow" id="bookForm">
+        <input class="field" id="bTitle" placeholder="Title" aria-label="Book title" required>
+        <input class="field sm" id="bAuthor" placeholder="Author" aria-label="Author">
+        <select class="field sm" id="bShelf" aria-label="Shelf"><option value="toread">To read</option><option value="reading">Reading now</option><option value="read">Read</option></select>
+        <label class="btn ghost filebtn">Cover photo<input type="file" id="bCover" accept="image/*" hidden></label>
+        <button class="btn" type="submit">Add</button>
+      </form>
+      <span class="saved" id="bMsg"></span>
+    </div>
+    <div class="panel" style="--c: var(--sage)">
+      <div class="panel-head"><h2><span class="step">2</span>Reading now</h2></div>
+      <div class="shelf" id="shelf-reading"></div>
+    </div>
+    <div class="panel" style="--c: var(--birch)">
+      <div class="panel-head"><h2><span class="step">3</span>To read</h2></div>
+      <div class="shelf" id="shelf-toread"></div>
+    </div>
+    <div class="panel" style="--c: var(--blush)">
+      <div class="panel-head"><h2><span class="step">4</span>Read</h2><span class="hint" id="readCount"></span></div>
+      <div class="shelf" id="shelf-read"></div>
+    </div>
+  </section>
+
+  <!-- YOUTUBE -->
+  <section class="view" id="view-watch" role="tabpanel" hidden>
+    <div class="newbar"><b>My channel</b><span>I post on</span><select class="field sm" id="postDay" aria-label="Posting day"><option value="0">Mondays</option><option value="1">Tuesdays</option><option value="2">Wednesdays</option><option value="3">Thursdays</option><option value="4">Fridays</option><option value="5">Saturdays</option><option value="6">Sundays</option></select><span>Season:</span><select class="field sm" id="season" aria-label="Season"><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option><option>Holidays</option></select><span class="nextup" id="nextUp"></span></div>
+    <div class="panel has-deco" style="--c: var(--pinky)">
+      <img class="deco sm" src="asset:studio/sm-7" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">1</span>Posting calendar</h2><span class="hint">Your next four upload days</span></div>
+      <div class="slots" id="slots"></div>
+    </div>
+    <div class="panel" style="--c: var(--sage)">
+      <div class="panel-head"><h2><span class="step">2</span>Video pipeline</h2><span class="hint">Click the label to move it along: idea, filming, editing, scheduled, posted</span></div>
+      <ul class="list" id="list-uploads"></ul>
+      <form class="addrow" data-add="uploads">
+        <input class="field" name="title" placeholder="Video title, e.g. 30 new home finds this winter" aria-label="Video title" required>
+        <input class="field sm" name="note" placeholder="Note, e.g. film at the store" aria-label="Note">
+        <input class="field sm" name="date" type="date" aria-label="Upload date">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="panel has-deco" style="--c: var(--mustard)">
+        <img class="deco " src="asset:studio/deco-4" alt="" aria-hidden="true">
+      <div class="panel-head"><h2><span class="step">3</span>Watch later</h2><span class="hint">Paste the link so it's one click away. Tick when watched.</span></div>
+      <ul class="list" id="list-watch"></ul>
+      <form class="addrow" data-add="watch">
+        <input class="field" name="title" placeholder="Video, e.g. 30 new home finds this winter" aria-label="Video" required>
+        <input class="field sm" name="channel" placeholder="Channel" aria-label="Channel">
+        <input class="field sm" name="link" placeholder="Link (optional)" aria-label="Link">
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="two">
+      <div class="panel" style="--c: var(--sky)">
+        <div class="panel-head"><h2><span class="step">4</span>Favourite channels</h2></div>
+        <ul class="list" id="list-channels"></ul>
+        <form class="addrow" data-add="channels">
+          <input class="field" name="title" placeholder="Channel name" aria-label="Channel name" required>
+          <input class="field sm" name="topic" placeholder="About, e.g. Decor" aria-label="What it's about">
+          <input class="field sm" name="link" placeholder="Link (optional)" aria-label="Link">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="panel has-deco" style="--c: var(--blush)">
+        <img class="deco sm" src="asset:studio/sm-8" alt="" aria-hidden="true">
+        <div class="panel-head"><h2><span class="step">5</span>Finds to feature</h2><span class="hint">Click the label: spotted, want it, bought</span></div>
+        <ul class="list" id="list-tries"></ul>
+        <form class="addrow" data-add="tries">
+          <input class="field" name="title" placeholder="e.g. Rattan basket for the blankets" aria-label="Find" required>
+          <input class="field sm" name="price" placeholder="Price" aria-label="Price">
+          <input class="field sm" name="from" placeholder="Seen in which video" aria-label="Seen in which video">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Saves in this browser only. Use the same browser on the same computer each time.</span>
+    <span class="foot-btns"><button class="btn ghost" type="button" data-act="customize">Make it yours</button><button class="btn ghost" type="button" onclick="LPBackup.restoreSamples()">Restore default template design</button><button class="btn ghost" type="button" data-act="reset">Start fresh</button></span>
+  </div>
+</div>
+
+<!-- MAKE IT YOURS -->
+<dialog id="customize" aria-labelledby="cTitle">
+  <form method="dialog" class="cbox">
+    <div class="chead"><h2 id="cTitle">Make it yours</h2><button class="x" value="close" aria-label="Close">×</button></div>
+    <p class="hint">Changes show straight away and save in this browser.</p>
+
+    <fieldset><legend>Title</legend>
+      <div class="crow"><input class="field" id="cT1" aria-label="First line of the title" maxlength="20"><input class="field" id="cT2" aria-label="Second line of the title" maxlength="20"></div>
+    </fieldset>
+
+    <fieldset><legend>Colours</legend>
+      <div class="crow"><span class="clabel">Main colour</span><div class="presets" id="cMainP"></div><input class="field" type="color" id="cMain" aria-label="Main colour"></div>
+      <div class="crow"><span class="clabel">Highlight colour</span><div class="presets" id="cHiP"></div><input class="field" type="color" id="cHi" aria-label="Highlight colour"></div>
+    </fieldset>
+
+    <fieldset><legend>Header</legend>
+      <div class="crow"><span class="clabel">Background</span><select class="field" id="cBg" aria-label="Header background"><option value="pink">Pink gingham</option><option value="sage">Sage gingham</option><option value="lilac">Lilac gingham</option><option value="cream">Plain cream</option><option value="blush">Plain blush</option></select></div>
+      <div class="crow"><span class="clabel">Picture</span><label class="btn ghost filebtn">Use my own photo<input type="file" id="cPhoto" accept="image/*" hidden></label><button class="btn ghost" type="button" id="cPhotoReset">Back to the cosy room</button></div>
+    </fieldset>
+
+    <fieldset><legend>Tabs</legend>
+      <p class="hint">Rename any tab here. To show or hide tabs, use Customize.</p>
+      <div id="cTabs" class="ctabs"></div>
+    </fieldset>
+
+    <div class="cfoot"><button class="btn ghost" type="button" id="cReset">Undo all my changes</button><button class="btn" value="close">Done</button></div>
+  </form>
+</dialog>

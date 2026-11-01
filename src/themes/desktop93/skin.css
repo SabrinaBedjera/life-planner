@@ -1,0 +1,9 @@
+%card% { padding-top: 0; }
+%head% { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; margin: 3px -1px 0; padding: 4px 8px; align-items: center; }
+%head% h2 { color: #fff; font-size: 17px; letter-spacing: 0; }
+%head% %hint% { color: #dfe8ff; }
+%head%::after { content: "_ \25A1 \00D7"; font: 600 12px Tahoma, sans-serif; color: #000; background: #c0c0c0; padding: 0 5px; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf; white-space: pre; }
+%field% { box-shadow: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; }
+%btn%:active, %tab%[aria-selected="true"] { box-shadow: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; }
+%tab%[aria-selected="true"] { background: repeating-conic-gradient(#e8e8e8 0 25%, #ffffff 0 50%) 0 0/2px 2px; }
+%chip% { box-shadow: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; border-radius: 0; }

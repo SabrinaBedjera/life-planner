@@ -1,0 +1,77 @@
+{
+  "id": "studio",
+  "name": "Studio",
+  "short": "studio",
+  "title": "Life Planner · Studio",
+  "viewSelector": "section.view",
+  "viewId": "view-",
+  "nav": "nav.tabs",
+  "navItem": "a.tab",
+  "header": "header.mast",
+  "map": {
+    "card": ".panel",
+    "head": ".panel-head",
+    "btn": ".btn",
+    "field": ".field",
+    "tab": ".tab",
+    "nav": ".tabs",
+    "list": ".list",
+    "item": ".list li",
+    "hint": ".hint",
+    "chip": ".chip",
+    "header": ".mast",
+    "title": ".mast h1",
+    "foot": ".foot",
+    "wrap": ".wrap",
+    "quote": ".quote",
+    "ext": ".quote"
+  },
+  "views": [
+    {
+      "id": "week",
+      "label": "This week",
+      "area": "plan",
+      "desc": "The week ahead, a to-do list and the next things with a date."
+    },
+    {
+      "id": "home",
+      "label": "Home projects",
+      "area": "home",
+      "desc": "Projects around the house, a shopping list and saved measurements."
+    },
+    {
+      "id": "wellbeing",
+      "label": "Wellbeing",
+      "area": "health",
+      "desc": "Movement, meditation, a daily journal page, three good things and appointments."
+    },
+    {
+      "id": "people",
+      "label": "Family & friends",
+      "area": "people",
+      "desc": "Birthdays, plus calls and visits to tick off."
+    },
+    {
+      "id": "ideas",
+      "label": "Inspiration",
+      "area": "creative",
+      "desc": "Favourite flowers and colours, quotes and things you saw and loved."
+    },
+    {
+      "id": "books",
+      "label": "Books",
+      "area": "home",
+      "desc": "Reading now, to read and read, with optional cover photos."
+    },
+    {
+      "id": "watch",
+      "label": "My channel",
+      "area": "creative",
+      "desc": "A posting calendar, video pipeline, watch-later list and favourite channels."
+    }
+  ],
+  "navMode": "flat",
+  "footBtn": "btn ghost",
+  "backupPrepend": false,
+  "footSpot": ".foot-btns"
+}

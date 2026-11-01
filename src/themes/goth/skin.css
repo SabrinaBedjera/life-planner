@@ -1,0 +1,4 @@
+%card% { outline: 1px solid rgba(217,178,106,.22); outline-offset: -6px; }
+%head% h2::before { content: "\2726  "; color: var(--t-accent-4); font-size: .7em; vertical-align: .15em; }
+%btn%:hover { background: var(--t-accent-4); color: #14101a; filter: none; }
+%tab%[aria-selected="true"] { box-shadow: 0 0 18px rgba(196,162,239,.45); }
