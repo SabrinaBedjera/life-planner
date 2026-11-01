@@ -1,31 +1,24 @@
 # Life Planner
 
-A free, pretty planner for your week, your goals and the things you care about. Pick a look, download one file and open it. No account, no install and no coding needed.
-
-![The three Life Planner looks: Girly Pop, Arcade and Studio](themes/previews/all-themes.png)
+A free, pretty planner for your week, your goals and the things you care about. Pick the planner for your stage of life, download one file and open it. No account, no install and no coding needed.
 
 ## Pick a planner
 
-| Girly Pop | Arcade | Studio |
-|---|---|---|
-| ![Girly Pop preview](themes/previews/girly-pop.png) | ![Arcade preview](themes/previews/arcade.png) | ![Studio preview](themes/previews/studio.png) |
-| Grown-up 2000s glam: dusty pink, cut-out letters, sparkles and an old-school phone screen for your weekly to-dos. Starts with a job search, goals, fitness and creative projects. | Dark grey gaming style with neon colours. Earn XP by ticking things off and get a game or anime quote each day. Starts with classes, deadlines, work, clubs and the gym. | Cosy and design-loving: pink gingham, sage and oak, with big easy-to-read text. Starts with home projects, wellbeing, family and friends, inspiration, books and a video channel. |
-| [`planners/girly-pop.html`](planners/girly-pop.html) | [`planners/arcade.html`](planners/arcade.html) | [`planners/studio.html`](planners/studio.html) |
+There are three planners, one for each stage of life. Each one starts with the tabs and examples that person needs.
 
-Each planner is one file that works on its own, even with no internet. The three only differ in how they **start**: their look, their tabs and their example content. Every planner can show every tab and wear every theme, so pick the one that feels closest and make it yours.
-
-### How they start
-
-| | Girly Pop | Arcade | Studio |
+| | Working Professionals | Students | Parents |
 |---|---|---|---|
-| **Best for** | Career changers and busy planners | Students | Home, hobbies and family life |
-| **Feel** | Pink, playful, glam | Dark, neon, game-like | Soft, calm, easy to read |
-| **Tabs** | This week, Goals, Roles, Insights, People, Lab projects, Profile, Fitness, Creative | Week, Uni, Work, Social, Gym | This week, Home projects, Wellbeing, Family & friends, Inspiration, Books, My channel |
-| **Stand-out features** | Job tracker with fit scores and charts, goals with a week-by-week roadmap, fitness log, creative projects | XP bar, quote of the day, study sessions, deadlines, clubs, an energy check-in with ideas for low days | Daily quote, mood journal, book shelf with covers, home project tracker, posting calendar |
+| **Built for** | Building a career: job hunting, goals and staying on top of a busy week | School or uni life: classes, deadlines, part-time work, clubs and friends | Running a home and family: projects around the house, wellbeing and the people you love |
+| **What's inside** | A weekly plan, goals with a week-by-week roadmap, a job tracker with fit scores and charts, networking contacts, side projects, a profile, a fitness log and creative projects | A weekly plan, study sessions, deadlines and coming-up dates, shifts at work, clubs and friends, a gym log, an energy check-in with ideas for low days, and XP for ticking things off | A weekly plan with a daily quote, home project tracker, wellbeing and a mood journal, family and friends, inspiration, a book shelf, and a planner for a hobby or video channel |
+| **File** | [`planners/girly-pop.html`](planners/girly-pop.html) | [`planners/arcade.html`](planners/arcade.html) | [`planners/studio.html`](planners/studio.html) |
+
+Each planner is one file that works on its own, even with no internet. They only differ in how they **start**. Any planner can switch on any tab and wear any of the 15 themes, so pick the one closest to your life and make it yours.
+
+![The Working Professionals, Students and Parents planners](themes/previews/all-themes.png)
 
 ## Use it in your browser (easiest)
 
-1. Click the file for the planner you want in the table above, for example `planners/studio.html`.
+1. Click the file for the planner you want in the table above, for example `planners/arcade.html` for Students.
 2. Click the **Download raw file** button (the arrow pointing down, near the top right of the file).
 3. Find the file in your Downloads folder and double-click it. It opens in your web browser.
 4. Start typing. Everything saves by itself.
@@ -65,7 +58,7 @@ If you open the new file **in the same browser** as the old one, your planner is
 
 - Every planner can show every tab: pick yours with **✦ Customize**.
 - Eight themes, from Girly Pop to 70s Groove, that you can switch between any time.
-- Backups now cover everything, and you can move your planner between Girly Pop, Arcade and Studio.
+- Backups now cover everything, and you can move your planner between all three planners.
 - Works fully offline: fonts, pictures and charts are inside the file.
 
 ## Choose your tabs
@@ -82,7 +75,9 @@ Tap the **✦ Customize** button in the bottom-right corner, then **Tabs**.
 
 Tap **✦ Customize**, then **Themes**, and pick a card. Each card shows a small preview of that look.
 
-![All fifteen themes on the Studio planner](docs/theme-gallery.jpg)
+![All fifteen themes on the Parents planner](docs/theme-gallery.jpg)
+
+Each planner starts in its own theme (Working Professionals in Girly Pop, Students in Arcade, Parents in Studio), and you can switch to any of these:
 
 | Theme | The feel |
 |---|---|
@@ -109,13 +104,13 @@ Tap **✦ Customize**, then **Themes**, and pick a card. Each card shows a small
 
 Your planner lives only in the browser where you use it. Clearing your browser history or "site data", or switching to a new computer, starts you from empty. A backup file keeps it safe.
 
-- **Export backup** (in Girly Pop: **Backup & export**, then **Everything (JSON backup)**) downloads one `.json` file with everything in your planner, including the tabs you added and your theme. The footer shows when you last made one.
+- **Export backup** (in Working Professionals: **Backup & export**, then **Everything (JSON backup)**) downloads one `.json` file with everything in your planner, including the tabs you added and your theme. The footer shows when you last made one.
 - **Import backup** brings a backup back, on the same computer or a new one. Before anything changes it shows what's in the file and lets you pick:
   - **Add to what I have**: keeps everything you have and adds anything from the backup that's missing.
   - **Replace with backup**: your planner becomes the backup; anything the backup doesn't cover stays as it is (tap twice to confirm).
   - **Cancel**: nothing changes.
 - Every import first saves a copy of your planner as it was, so **Undo last import** puts it back exactly.
-- **Moving between planners**: a backup from one planner can be imported into another. For example, import a Girly Pop backup into Arcade and Girly Pop's tabs appear in Arcade with your content in them. Your theme and tab choices stay as they are.
+- **Moving between planners**: a backup from one planner can be imported into another. For example, import a Working Professionals backup into Students and its tabs appear in Students with your content in them. Your theme and tab choices stay as they are.
 - Backups made with older versions of the planners still import.
 
 Your backup file holds everything you typed, so keep it somewhere private, and never upload it anywhere public.
