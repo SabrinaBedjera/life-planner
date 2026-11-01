@@ -621,3 +621,16 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
     radial-gradient(1200px 600px at 85% -10%, var(--bg-2), transparent 60%);
 }
 .lp-root { margin: 8px; background: none; }
+
+/* Floating razr phone in the header and a sneaker in the right margin */
+.s-razr { width: 92px; right: 40px; top: -12px; transform: rotate(14deg); }
+.g-sneaker { width: 132px; top: 560px; right: calc(50% - 500px - 150px); transform: rotate(-8deg); }
+@media (min-width: 900px) and (max-width: 1239px) { .s-razr { right: 120px; width: 80px; } }
+@media (min-width: 641px) and (max-width: 899px) { .s-razr { right: 6px; top: 6px; width: 60px; } }
+@media (max-width: 640px) { .s-razr { right: 0; top: 0; width: 48px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .s-razr { animation: razrbob 4s ease-in-out infinite; }
+  @keyframes razrbob { 50% { transform: rotate(10deg) translateY(-6px); } }
+  .g-sneaker { animation: bob2 5.2s ease-in-out infinite .4s; }
+}
+.lp-more .menu { width: max-content; max-width: calc(100vw - 32px); } .lp-more .menu .btn { white-space: nowrap; }

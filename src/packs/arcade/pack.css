@@ -167,3 +167,10 @@ textarea.field { resize: vertical; }
 /* The original page kept the browser's 8px page margin and painted its background edge to edge */
 :host { display: flow-root; min-height: 100vh; background-color: var(--bg); background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 28px 28px; }
 .lp-root { margin: 8px; background: none; }
+
+/* Footer: one "More options" menu instead of a row of buttons */
+.lp-more { position: relative; }
+.lp-more > summary { list-style: none; cursor: pointer; }
+.lp-more > summary::-webkit-details-marker { display: none; }
+.lp-more .lp-menu { position: absolute; right: 0; bottom: calc(100% + 6px); z-index: 20; display: flex; flex-direction: column; gap: 6px; padding: 8px; width: max-content; max-width: calc(100vw - 32px); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+.lp-more .lp-menu .btn { text-align: left; white-space: nowrap; }

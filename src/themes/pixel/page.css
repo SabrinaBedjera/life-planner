@@ -1,0 +1,29 @@
+%page% .lpm-pixel { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 16px 24px; border: 4px solid #5a3420; border-radius: 4px; background: linear-gradient(#cdeaf7, #eaf6fb 60%, #fffaf0 60%); box-shadow: 6px 6px 0 #5a3420; image-rendering: auto; }
+%page% .lpm-pixel img { pointer-events: none; filter: drop-shadow(3px 3px 0 rgba(90,52,32,.25)); }
+%page% .px-cottage { width: clamp(110px, 17vw, 200px); }
+%page% .px-text { text-align: center; min-width: 0; }
+%page% .px-tree { width: clamp(90px, 13vw, 150px); }
+%page% .px-sign { position: absolute; width: clamp(60px, 7vw, 86px); right: clamp(130px, 17vw, 200px); top: 6px; }
+%page% .lpm-pixel .lpm-title { font-size: clamp(36px, 7.5vw, 70px); color: #8a4a2b; margin: 0; line-height: 1.02; text-shadow: 3px 3px 0 #f2c38f; }
+%page% .px-kicker { margin: 0 0 6px; font: 600 16px/1 "Pixelify Sans", monospace; color: #4f8f3a; }
+%page% .px-sub { margin: 8px 0 0; font: 600 16px "Nunito Sans", system-ui, sans-serif; color: #7a5a43; }
+%page% #lp-decor img { filter: drop-shadow(3px 3px 0 rgba(90,52,32,.2)); }
+%page% .pxd-windmill { width: 104px; top: 220px; left: calc(50% - 662px); }
+%page% .pxd-corgi { width: 88px; top: 240px; right: calc(50% - 646px); }
+%page% .pxd-can { width: 92px; top: 450px; right: calc(50% - 650px); }
+%page% .pxd-cat { width: 100px; top: 470px; left: calc(50% - 656px); }
+%page% .pxd-carrots { width: 84px; top: 660px; left: calc(50% - 646px); }
+%page% .pxd-bunny { width: 88px; top: 650px; right: calc(50% - 646px); }
+%page% .pxd-jar { width: 64px; top: 860px; right: calc(50% - 628px); }
+%page% .pxd-sheep { width: 92px; top: 860px; left: calc(50% - 650px); }
+%page% .pxd-greenhouse { width: 110px; top: 1060px; left: calc(50% - 664px); }
+%page% .pxd-chicken { width: 88px; top: 1070px; right: calc(50% - 646px); }
+%page% .pxd-lantern { width: 58px; top: 1280px; left: calc(50% - 620px); }
+%page% .pxd-cow { width: 104px; top: 1280px; right: calc(50% - 660px); }
+%page% .pxd-signpost { width: 74px; top: 1480px; right: calc(50% - 634px); }
+%page% .pxd-mug { width: 76px; top: 1480px; left: calc(50% - 636px); }
+%page% .pxd-books { width: 86px; top: 1680px; left: calc(50% - 646px); }
+%page% .pxd-pie { width: 92px; top: 1690px; right: calc(50% - 650px); }
+%page% .pxd-compass { width: 70px; top: 1880px; left: calc(50% - 632px); }
+%page% .lpc-fab { font-family: "Pixelify Sans", monospace; }
+@media (max-width: 760px) { %page% .lpm-pixel { grid-template-columns: 72px 1fr 60px; padding: 14px 10px; gap: 8px; } %page% .px-cottage { width: 72px; } %page% .px-tree { width: 60px; } %page% .px-sign { display: none; } }

@@ -388,12 +388,9 @@
     toastEl = h("div", { "class": "lpc-toast", role: "status", hidden: true });
     document.body.appendChild(toastEl);
     document.body.appendChild(h("button", { type: "button", "class": "lpc-fab", "aria-label": "Customize tabs and theme", onclick: function () { openCustomize(); } }, [h("span", { "aria-hidden": "true", text: "✦" }), " Customize"]));
-    // a button in the planner's own footer too
+    // the version line at the bottom of the planner
     var c = ctxs[P.primary], foot = c.root.querySelector(PACKS[P.primary].meta.map.foot);
     if (foot) {
-      var btn = h("button", { type: "button", "class": PACKS[P.primary].meta.footBtn || "btn", "data-lp-customize": "", text: "Customize tabs & theme", onclick: function () { openCustomize(); } });
-      var spot = foot.querySelector(PACKS[P.primary].meta.footSpot || "nothing");
-      if (spot) spot.insertBefore(btn, spot.firstChild); else foot.insertBefore(btn, foot.firstChild);
       if (B.version) foot.appendChild(h("span", { "class": "lp-version", style: "order:99;flex-basis:100%;font-size:12px;opacity:.75;margin-top:4px", text: "Life Planner version " + B.version }));
     }
   }

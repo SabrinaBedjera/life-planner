@@ -1,0 +1,26 @@
+%page% .lpm-study { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 18px 26px; border: 1px solid #e2d8ec; border-radius: 22px; background: radial-gradient(420px 200px at 20% 0, rgba(186,170,222,.30), transparent 70%), radial-gradient(420px 200px at 90% 100%, rgba(240,200,190,.32), transparent 70%), #fffdf8; box-shadow: 0 1px 0 #e2d8ec, 0 14px 34px rgba(80,70,120,.12); }
+%page% .lpm-study img { pointer-events: none; filter: drop-shadow(0 6px 10px rgba(80,70,120,.18)); }
+%page% .st-pennant { width: clamp(90px, 14vw, 170px); transform: rotate(-8deg); }
+%page% .st-text { text-align: center; min-width: 0; }
+%page% .st-books { width: clamp(100px, 15vw, 180px); }
+%page% .st-crest { position: absolute; width: clamp(48px, 6vw, 72px); right: clamp(130px, 18vw, 220px); top: 10px; transform: rotate(8deg); }
+%page% .lpm-study .lpm-title { font-size: clamp(36px, 7.5vw, 70px); color: #2f3a63; margin: 0; line-height: 1.02; }
+%page% .st-kicker { margin: 0 0 6px; font: 500 13px/1 "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: #7c69b3; }
+%page% .st-sub { margin: 8px 0 0; font: italic 500 18px "Fraunces", Georgia, serif; color: #6a6680; }
+%page% #lp-decor img { filter: drop-shadow(0 6px 10px rgba(80,70,120,.18)); }
+%page% .std-laptop { width: 116px; top: 230px; left: calc(50% - 666px); }
+%page% .std-coffee { width: 96px; top: 240px; right: calc(50% - 652px); }
+%page% .std-globe { width: 84px; top: 480px; right: calc(50% - 640px); }
+%page% .std-headphones { width: 84px; top: 470px; left: calc(50% - 642px); }
+%page% .std-notebook { width: 88px; top: 720px; left: calc(50% - 646px); transform: rotate(-6deg); }
+%page% .std-calc { width: 70px; top: 730px; right: calc(50% - 630px); transform: rotate(6deg); }
+%page% .std-pen { width: 92px; top: 960px; right: calc(50% - 648px); }
+%page% .std-clip { width: 84px; top: 970px; left: calc(50% - 642px); transform: rotate(-4deg); }
+%page% .std-bookrow { width: 88px; top: 1210px; left: calc(50% - 646px); }
+%page% .std-tape { width: 84px; top: 1210px; right: calc(50% - 642px); }
+%page% .std-glasses { width: 112px; top: 1440px; right: calc(50% - 664px); transform: rotate(-6deg); }
+%page% .std-bottle { width: 48px; top: 1440px; left: calc(50% - 614px); }
+%page% .std-backpack { width: 96px; top: 1660px; left: calc(50% - 652px); }
+%page% .std-cap { width: 104px; top: 1660px; right: calc(50% - 660px); }
+%page% .lpc-fab { font-family: "Fraunces", Georgia, serif; }
+@media (max-width: 760px) { %page% .lpm-study { grid-template-columns: 64px 1fr 72px; padding: 16px 10px; gap: 8px; } %page% .st-pennant { width: 64px; } %page% .st-books { width: 72px; } %page% .st-crest { display: none; } }

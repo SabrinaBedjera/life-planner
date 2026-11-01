@@ -6,3 +6,5 @@
 %page% .lpd-gp-cherries { width: 96px; top: 640px; left: calc(50% - 640px); transform: rotate(-10deg); }
 %page% .lpd-gp-heart { width: 70px; top: 320px; right: calc(50% - 620px); transform: rotate(12deg); }
 %page% .lpd-gp-martini { width: 96px; top: 980px; right: calc(50% - 640px); transform: rotate(6deg); }
+%page% .lpm-razr { position: absolute; right: -6px; top: -8px; width: clamp(48px, 8vw, 84px); transform: rotate(14deg); filter: drop-shadow(0 8px 10px rgba(42,15,34,.28)); z-index: 1; }
+@media (max-width: 640px) { %page% .lpm-razr { width: 38px; right: -4px; top: -16px; } %page% .lpm-disco { width: 48px; } }

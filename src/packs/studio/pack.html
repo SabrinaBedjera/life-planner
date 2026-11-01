@@ -3,7 +3,6 @@
     <div class="mast-copy">
       <h1><span class="h-life">Life</span> <span class="h-plan">Planner</span></h1>
     </div>
-    <button class="btn ghost custom-open" type="button" data-act="customize">Make it yours</button>
     <!-- A cosy corner: armchair, lamp, plants and a basket -->
     <div class="vignette" aria-hidden="true">
       <img class="v-art" src="asset:studio/v-art" alt="">
@@ -299,7 +298,7 @@
 
   <div class="foot">
     <span>Saves in this browser only. Use the same browser on the same computer each time.</span>
-    <span class="foot-btns"><button class="btn ghost" type="button" data-act="customize">Make it yours</button><button class="btn ghost" type="button" onclick="LPBackup.restoreSamples()">Restore default template design</button><button class="btn ghost" type="button" data-act="reset">Start fresh</button></span>
+    <details class="lp-more"><summary class="btn ghost">More options</summary><div class="lp-menu"><button class="btn ghost" type="button" onclick="LPBackup.restoreSamples()">Restore default template design</button><button class="btn ghost" type="button" data-act="reset">Start fresh</button></div></details>
   </div>
 </div>
 

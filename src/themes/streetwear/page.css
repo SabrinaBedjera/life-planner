@@ -4,10 +4,10 @@
 %page% .lpm-street .lpm-title { font-size: clamp(54px, 12vw, 120px); line-height: .86; color: #111; -webkit-text-stroke: 0; text-shadow: 5px 5px 0 #ff4d00; }
 %page% .s-tag { position: absolute; right: clamp(150px, 16vw, 200px); bottom: 22px; z-index: 1; font: 400 clamp(20px, 3.4vw, 30px) "Permanent Marker", cursive; color: #2b59ff; transform: rotate(-7deg); }
 %page% .lpm-street > img { position: absolute; pointer-events: none; filter: drop-shadow(5px 5px 0 rgba(17,17,17,.9)); }
-%page% .s-vinyl { right: -40px; bottom: -60px; width: clamp(110px, 18vw, 190px); }
+%page% .s-vinyl { right: 14px; bottom: 12px; width: clamp(110px, 18vw, 190px); }
 %page% .s-disco { right: clamp(56px, 7vw, 86px); top: 34px; width: clamp(64px, 9vw, 100px); }
 %page% .s-star { right: 6px; top: 34px; width: clamp(44px, 6vw, 64px); transform: rotate(10deg); }
-@media (max-width: 640px) { %page% .s-tag, %page% .s-disco, %page% .s-star { display: none; } %page% .s-vinyl { width: 96px; right: -30px; bottom: -36px; } }
+@media (max-width: 640px) { %page% .s-tag, %page% .s-disco { display: none; } %page% .s-star { width: 36px; top: 30px; right: 8px; } %page% .lpm-street { padding-right: 76px; } %page% .lpm-street .lpm-title { font-size: 40px; } %page% .s-vinyl { width: 64px; right: 8px; bottom: 10px; } }
 %page% #lp-decor img { filter: drop-shadow(5px 5px 0 rgba(17,17,17,.85)); }
 %page% .sd-skate { width: 70px; top: 300px; left: calc(50% - 630px); transform: rotate(-14deg); }
 %page% .sd-phones { width: 92px; top: 280px; right: calc(50% - 650px); transform: rotate(8deg); }

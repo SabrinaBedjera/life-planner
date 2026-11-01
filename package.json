@@ -1,6 +1,6 @@
 {
   "name": "life-planner",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Developer tools for Life Planner. You don't need any of this to use a planner: just download a file from planners/ and open it.",
   "type": "module",

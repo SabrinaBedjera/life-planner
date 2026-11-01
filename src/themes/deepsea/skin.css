@@ -1,0 +1,4 @@
+%head% h2::before { content: "\25CF  "; color: var(--t-accent); font-size: .6em; vertical-align: .2em; text-shadow: 0 0 8px var(--t-accent); }
+%btn%:hover { filter: brightness(1.08); }
+%btn%:active { box-shadow: 0 1px 0 #6b470c; transform: translateY(2px); }
+%tab%[aria-selected="true"] { box-shadow: 0 0 18px rgba(47,211,208,.5); }

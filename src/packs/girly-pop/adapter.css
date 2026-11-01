@@ -1,6 +1,7 @@
 /* Girly Pop pack under another theme */
 :host { --bg: var(--t-bg); --bg-2: var(--t-card-2); --surface: var(--t-card); --surface-2: var(--t-card-2); --fg: var(--t-ink); --muted: var(--t-muted); --line: var(--t-line);
   --accent: var(--t-accent); --accent-soft: var(--t-chip); --on-accent: var(--t-accent-ink); --good: var(--t-good); --bad: var(--t-bad); --warn: var(--t-warn); --info: var(--t-accent-2);
+  --good-soft: color-mix(in srgb, var(--t-good) 20%, var(--t-card)); --warn-soft: color-mix(in srgb, var(--t-warn) 20%, var(--t-card)); --bad-soft: color-mix(in srgb, var(--t-bad) 20%, var(--t-card)); --info-soft: color-mix(in srgb, var(--t-accent-2) 20%, var(--t-card));
   --mint: var(--t-accent-3); --mint-ink: var(--t-ink); --blush: var(--t-chip); --emerald: var(--t-accent-2); --emerald-2: var(--t-accent-2); --lime: var(--t-accent-3); --gold: var(--t-accent-4);
   --lcd: var(--t-card-2); --lcd-ink: var(--t-ink); --tick-off: var(--t-line);
   --font-display: var(--t-font-display); --font-body: var(--t-font-body); --font-mono: var(--t-font-mono); --font-lcd: var(--t-font-mono); }
@@ -25,3 +26,9 @@
 .phone .lane input[type=checkbox] { accent-color: var(--t-accent); }
 .phone-keys { border-top-color: var(--t-line); background: var(--t-card-2); }
 .phone .lane { grid-template-columns: minmax(92px, max-content) minmax(0, 1fr); }
+/* Normal-sized type in the phone list (the original pixel font runs small, other fonts don't) */
+.phone-status, .phone-keys { font-size: calc(14px * var(--t-lcd-scale, 1)); }
+.phone-title { font-size: calc(15px * var(--t-lcd-scale, 1)); }
+.phone .lane h3 { font-size: calc(15px * var(--t-lcd-scale, 1)); }
+.phone .lane .checklist li, .phone .lane .checklist span, .phone .lane p, .phone .lane p.saved, .phone .lane-input { font-size: calc(15px * var(--t-lcd-scale, 1)); }
+.phone .lane { grid-template-columns: minmax(84px, max-content) minmax(0, 1fr); padding: 5px 0; }

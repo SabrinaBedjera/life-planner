@@ -1,0 +1,32 @@
+%page% .lpm-spa { position: relative; display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 14px; padding: 16px 24px; border: 1px solid #eadfd9; border-radius: 30px; background: radial-gradient(420px 200px at 15% 0, rgba(240,205,205,.5), transparent 70%), radial-gradient(420px 200px at 90% 100%, rgba(196,214,186,.45), transparent 70%), #fffcfa; box-shadow: 0 1px 0 #eadfd9, 0 16px 36px rgba(120,90,85,.10); overflow: hidden; }
+%page% .lpm-spa img { pointer-events: none; filter: drop-shadow(0 6px 10px rgba(120,90,85,.16)); display: block; position: relative; }
+%page% .spa-towels { width: clamp(110px, 17vw, 200px); }
+%page% .spa-text { text-align: center; min-width: 0; position: relative; }
+%page% .spa-stones { width: clamp(90px, 12vw, 150px); }
+%page% .spa-candle { position: relative; width: clamp(56px, 7vw, 86px); }
+%page% .spa-candle img { width: 100%; }
+%page% .spa-glow { position: absolute; left: 50%; top: 4%; width: 70%; aspect-ratio: 1; translate: -50% -20%; border-radius: 50%; background: radial-gradient(rgba(255,200,120,.55), transparent 65%); animation: spaflicker 2.6s ease-in-out infinite; }
+@keyframes spaflicker { 0%, 100% { opacity: .55; scale: 1; } 40% { opacity: .9; scale: 1.08; } 70% { opacity: .65; scale: .96; } }
+%page% .spa-breath { position: absolute; left: 50%; top: 50%; width: 260px; height: 260px; translate: -50% -50%; border-radius: 50%; background: radial-gradient(rgba(233,195,196,.45), transparent 70%); animation: spabreath 8s ease-in-out infinite; pointer-events: none; }
+@keyframes spabreath { 0%, 100% { scale: .8; opacity: .5; } 50% { scale: 1.15; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { %page% .spa-glow, %page% .spa-breath { animation: none; } }
+%page% .lpm-spa .lpm-title { font-size: clamp(40px, 8vw, 78px); color: #7d4f52; margin: 0; line-height: 1; }
+%page% .spa-kicker { margin: 0 0 4px; font: 500 13px/1 "DM Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #6f8a64; }
+%page% .spa-sub { margin: 6px 0 0; font: italic 600 19px "Cormorant Garamond", Georgia, serif; color: #7a6d6a; }
+%page% #lp-decor img { filter: drop-shadow(0 6px 10px rgba(120,90,85,.16)); }
+%page% .spd-jade { width: 92px; top: 220px; left: calc(50% - 650px); }
+%page% .spd-serum { width: 46px; top: 240px; right: calc(50% - 610px); }
+%page% .spd-plant { width: 100px; top: 450px; right: calc(50% - 656px); }
+%page% .spd-tea { width: 96px; top: 470px; left: calc(50% - 652px); }
+%page% .spd-salt { width: 72px; top: 690px; left: calc(50% - 632px); }
+%page% .spd-diff { width: 62px; top: 700px; right: calc(50% - 622px); }
+%page% .spd-mat { width: 112px; top: 910px; right: calc(50% - 662px); }
+%page% .spd-bottle { width: 50px; top: 910px; left: calc(50% - 612px); }
+%page% .spd-note { width: 80px; top: 1110px; left: calc(50% - 638px); transform: rotate(-6deg); }
+%page% .spd-mask { width: 96px; top: 1120px; right: calc(50% - 652px); }
+%page% .spd-lav { width: 104px; top: 1320px; right: calc(50% - 658px); }
+%page% .spd-bowl { width: 90px; top: 1320px; left: calc(50% - 648px); }
+%page% .spd-sc { width: 96px; top: 1520px; left: calc(50% - 652px); }
+%page% .spd-succ { width: 84px; top: 1520px; right: calc(50% - 644px); }
+%page% .lpc-fab { font-family: "Karla", system-ui, sans-serif; }
+@media (max-width: 760px) { %page% .lpm-spa { grid-template-columns: 72px 1fr 44px; padding: 14px 10px; gap: 8px; } %page% .spa-towels { width: 72px; } %page% .spa-candle { width: 44px; } %page% .lpm-spa .spa-stones { display: none; } %page% .spa-breath { width: 180px; height: 180px; } }

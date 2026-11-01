@@ -21,7 +21,7 @@ Each planner is one file that works on its own, even with no internet. The three
 | **Best for** | Career changers and busy planners | Students | Home, hobbies and family life |
 | **Feel** | Pink, playful, glam | Dark, neon, game-like | Soft, calm, easy to read |
 | **Tabs** | This week, Goals, Roles, Insights, People, Lab projects, Profile, Fitness, Creative | Week, Uni, Work, Social, Gym | This week, Home projects, Wellbeing, Family & friends, Inspiration, Books, My channel |
-| **Stand-out features** | Job tracker with fit scores and charts, goals with a week-by-week roadmap, fitness log, creative projects | XP bar, quote of the day, study sessions, deadlines, clubs, an energy check-in with ideas for low days | Daily quote, mood journal, book shelf with covers, home project tracker, posting calendar, a "Make it yours" button to change the title and tab names |
+| **Stand-out features** | Job tracker with fit scores and charts, goals with a week-by-week roadmap, fitness log, creative projects | XP bar, quote of the day, study sessions, deadlines, clubs, an energy check-in with ideas for low days | Daily quote, mood journal, book shelf with covers, home project tracker, posting calendar |
 
 ## Use it in your browser (easiest)
 
@@ -42,7 +42,7 @@ Each planner is one file that works on its own, even with no internet. The three
 
 ## Get a newer version
 
-Your planner file never updates itself. That's on purpose: it never connects to the internet, so nothing you type can leave your computer. The version you have is shown at the bottom of your planner (for example, "Life Planner version 2.0.0").
+Your planner file never updates itself. That's on purpose: it never connects to the internet, so nothing you type can leave your computer. The version you have is shown at the bottom of your planner (for example, "Life Planner version 2.1.0").
 
 To move to a newer version:
 
@@ -53,10 +53,18 @@ To move to a newer version:
 
 If you open the new file **in the same browser** as the old one, your planner is usually already there, because both versions use the same saved data. The backup is your safety net either way.
 
+### What's new in 2.1
+
+- Seven new themes: Mission Control, RPG, Deep Sea, Study Club, Pixel, Cat Cafe and Spa, each with its own sticker art and a little animation.
+- Dark Academia is gone (it was too close to Witchy). If you were using it, your planner switches back to its own theme and your content stays.
+- Goth / Witchy is now called Witchy, and Desktop 93 is now Desktop.
+- The ✦ Customize button sits at the top right, and the footer is tidier, with less-used actions under **More options**.
+- Smaller text in the weekly phone list, and cleaner sticker cut-outs in every theme.
+
 ### What's new in 2.0
 
 - Every planner can show every tab: pick yours with **✦ Customize**.
-- Nine themes, from Girly Pop to 70s Groove, that you can switch between any time.
+- Eight themes, from Girly Pop to 70s Groove, that you can switch between any time.
 - Backups now cover everything, and you can move your planner between Girly Pop, Arcade and Studio.
 - Works fully offline: fonts, pictures and charts are inside the file.
 
@@ -74,18 +82,24 @@ Tap the **✦ Customize** button in the bottom-right corner, then **Tabs**.
 
 Tap **✦ Customize**, then **Themes**, and pick a card. Each card shows a small preview of that look.
 
-![All nine themes on the Studio planner](docs/theme-gallery.jpg)
+![All fifteen themes on the Studio planner](docs/theme-gallery.jpg)
 
 | Theme | The feel |
 |---|---|
 | Girly Pop | Y2K glam: chrome pinks, sparkles and stickers |
 | Arcade | Dark neon HUD, pixel fonts and XP bars |
 | Studio | Cosy Scandi home: gingham, birch and sage |
-| Goth / Witchy | Candlelight, moon phases, crystals and blackletter |
+| Witchy | Candlelight, moon phases, crystals and blackletter |
 | Cottagecore | Wildflowers, teatime, gingham bows and stitched edges |
-| Desktop 93 | Retro computer desk: bevelled windows, floppy disks, teal screen |
+| Desktop | Retro computer desk: bevelled windows, floppy disks, teal screen |
 | Streetwear | Bold type, hard shadows, stickers and safety orange |
-| Dark Academia | Leather, candlelight, brass and old library books |
+| Mission Control | Deep-space navy, launch orange, radar screens and mission patches |
+| RPG | Quest log on parchment: gold trim, potions, treasure and a compass |
+| Deep Sea | Bioluminescent blues, brass portholes, jellyfish and rising bubbles |
+| Study Club | Watercolour library: lavender notebooks, navy crests and lattes |
+| Pixel | Cosy pixel-art farm: cottages, cherry blossoms and sleepy pets |
+| Cat Cafe | Latte tones, blush pink, sleepy cats and fresh pastries |
+| Spa | Soft blush and sage, candlelight and jade rollers |
 | 70s Groove | Sunshine stripes, daisies and big round shapes |
 
 - Switching only changes the look. Your content and your tabs stay exactly the same, and you can switch as often as you like.

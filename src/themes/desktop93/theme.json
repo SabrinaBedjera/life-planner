@@ -1,5 +1,5 @@
 {
-  "name": "Desktop 93",
+  "name": "Desktop",
   "blurb": "Retro computer desk: bevelled windows, floppy disks, teal screen.",
   "scheme": "light",
   "swatch": [
@@ -57,6 +57,7 @@
     "font-mono": "\"VT323\", ui-monospace, monospace",
     "display-case": "none",
     "display-weight": "600",
-    "display-tracking": "0"
+    "display-tracking": "0",
+    "lcd-scale": "1.4"
   }
 }

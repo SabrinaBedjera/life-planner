@@ -1,0 +1,21 @@
+%page% .lpm-mission { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 22px 26px; border: 1px solid #36447a; border-radius: 18px; background: radial-gradient(1px 1px at 30px 40px, rgba(255,255,255,.7) 50%, transparent 51%) 0 0/90px 70px, radial-gradient(500px 220px at 50% 120%, rgba(242,107,33,.22), transparent 70%), #141b38; box-shadow: 0 0 0 1px #0a0e1f, 0 18px 40px rgba(0,0,0,.5); }
+%page% .lpm-mission > img, %page% .m-text img { pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); }
+%page% .m-patch { width: clamp(84px, 13vw, 150px); grid-column: 1; grid-row: 1; }
+%page% .m-text { grid-column: 2; grid-row: 1; text-align: center; min-width: 0; }
+%page% .m-radar { grid-column: 3; grid-row: 1; width: clamp(96px, 15vw, 170px); }
+%page% .md-saturn { width: 110px; top: 1660px; left: calc(50% - 664px); transform: rotate(-8deg); }
+%page% .lpm-mission .lpm-title { font-size: clamp(36px, 7.5vw, 72px); color: #f3ead8; margin: 0; text-shadow: 0 3px 0 #9e3c0c, 0 0 26px rgba(242,107,33,.35); line-height: 1.02; }
+%page% .m-count { margin: 0 0 6px; font: 20px/1 "VT323", monospace; color: #5fe3c9; letter-spacing: .08em; text-transform: uppercase; }
+%page% #lp-decor img { filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); }
+%page% .md-helmet { width: 104px; top: 240px; right: calc(50% - 652px); transform: rotate(6deg); }
+%page% .md-badge { width: 112px; top: 300px; left: calc(50% - 664px); transform: rotate(-6deg); }
+%page% .md-station { width: 112px; top: 560px; left: calc(50% - 664px); }
+%page% .md-moon { width: 80px; top: 540px; right: calc(50% - 636px); }
+%page% .md-ship { width: 120px; top: 820px; right: calc(50% - 668px); transform: rotate(-10deg); }
+%page% .md-mars { width: 84px; top: 840px; left: calc(50% - 640px); }
+%page% .md-rover { width: 116px; top: 1110px; right: calc(50% - 666px); }
+%page% .md-satellite { width: 112px; top: 1120px; left: calc(50% - 664px); transform: rotate(-8deg); }
+%page% .md-mug { width: 76px; top: 1400px; right: calc(50% - 632px); }
+%page% .md-idcard { width: 96px; top: 1400px; left: calc(50% - 652px); transform: rotate(-6deg); }
+%page% .lpc-fab { font-family: "Chakra Petch", system-ui, sans-serif; }
+@media (max-width: 760px) { %page% .lpm-mission { grid-template-columns: 64px 1fr 64px; padding: 16px 10px; gap: 8px; } %page% .m-patch, %page% .m-radar { width: 64px; } %page% .m-count { font-size: 15px; } }
