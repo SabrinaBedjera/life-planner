@@ -3,10 +3,10 @@
 %page% .g-phases { margin: 0 0 6px; color: #c4a2ef; letter-spacing: .6em; font-size: 14px; }
 %page% .g-sub { margin: 10px 0 0; font-family: "EB Garamond", serif; font-style: italic; color: #b3a6bd; font-size: 18px; }
 %page% .lpm-goth > img { position: absolute; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.55)); }
-%page% .g-candles { left: 18px; bottom: -6px; height: clamp(96px, 15vw, 168px); }
-%page% .g-rose { left: clamp(70px, 11vw, 120px); bottom: -10px; width: clamp(56px, 8vw, 92px); transform: rotate(-14deg); }
+%page% .g-candles { left: 18px; bottom: 8px; height: clamp(96px, 15vw, 168px); }
+%page% .g-rose { left: clamp(70px, 11vw, 120px); bottom: 8px; width: clamp(56px, 8vw, 92px); transform: rotate(-14deg); }
 %page% .g-mirror { right: 26px; top: 14px; height: clamp(90px, 15vw, 170px); }
-%page% .g-crystal { right: clamp(84px, 12vw, 140px); bottom: -4px; width: clamp(56px, 8vw, 96px); }
+%page% .g-crystal { right: clamp(84px, 12vw, 140px); bottom: 8px; width: clamp(56px, 8vw, 96px); }
 %page% #lp-decor img { filter: drop-shadow(0 8px 14px rgba(0,0,0,.55)); }
 %page% .gd-hat { width: 104px; top: 230px; right: calc(50% - 650px); transform: rotate(8deg); }
 %page% .gd-moth { width: 86px; top: 520px; left: calc(50% - 640px); transform: rotate(-12deg); }

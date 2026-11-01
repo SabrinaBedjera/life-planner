@@ -1,0 +1,5 @@
+%head% h2::before { content: "\25B8  "; color: var(--t-accent); }
+%head% h2 { color: #ffb27a; }
+%btn%:hover { filter: brightness(1.08); }
+%btn%:active { box-shadow: 0 1px 0 #9e3c0c; transform: translateY(2px); }
+%tab%[aria-selected="true"] { box-shadow: 0 0 16px rgba(242,107,33,.45); }

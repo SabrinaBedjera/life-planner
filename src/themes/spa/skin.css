@@ -1,0 +1,3 @@
+%head% h2::before { content: "\273F  "; color: var(--t-accent-2); font-size: .75em; }
+%btn%:hover { filter: brightness(1.06); }
+%tab%[aria-selected="true"] { box-shadow: 0 6px 16px rgba(184,111,117,.22); }

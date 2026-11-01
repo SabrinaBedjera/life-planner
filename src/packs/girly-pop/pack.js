@@ -1236,7 +1236,6 @@
   {
     Promise.resolve(makeLocalDB()).then((db) => {
       state.db = db; window.lifePlannerDB = db;
-      if (db.firstRun) showBanner("Example data to get you started. Type over anything you like: it saves in this browser. Use \u201cStart fresh\u201d at the bottom to clear it.");
       const need = new Set(["jobs", "contacts", "projects", "profile", "weeks", "skills", "workouts", "creative", "targets", "settings"]);
       const arrived = (k) => { need.delete(k); if (!need.size && state.mode === "loading") state.mode = "live"; };
       const onErr = () => showBanner("Live updates stopped. Reload the page to reconnect.");

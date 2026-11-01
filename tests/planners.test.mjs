@@ -86,7 +86,7 @@ for (const id of IDS) {
     check(await page.evaluate(() => document.documentElement.hasAttribute("data-lp-native")), "the original look is used as is");
     check(JSON.stringify(await navLabels(page)) === JSON.stringify(ORIGINAL_TABS[id]), "shows exactly the original tabs: " + (await navLabels(page)).join(", "));
     check(await page.locator(".lpc-fab").isVisible(), "Customize button is visible");
-    check(await shadow(page, `return !!root.querySelector("[data-lp-customize]")`), "Customize is also in the footer");
+    check(await shadow(page, `return !root.querySelector("[data-lp-customize]") && [...root.querySelectorAll(".foot > button, .foot > span > button")].length === 0 && !!root.querySelector(".foot details.lp-more")`), "the footer is tidy: no duplicate Customize button, extra actions live under More options");
     check(!!(await stored(page, KEY(id))) || id !== "arcade", "example content saves under the same key as before (" + KEY(id) + ")" + (id !== "arcade" ? ": this one saves after your first change, as before" : ""));
     check(await page.evaluate(() => [...document.querySelectorAll("script[src], link[href^='http']")].length === 0), "no outside scripts or stylesheets");
     await ctx.close();
@@ -365,6 +365,31 @@ console.log("\nbackups");
   await page.reload(); await page.waitForTimeout(500);
   const themed = await shadow(page, `const t = getComputedStyle(root.querySelector(".phone-title")); return [t.backgroundImage, t.backgroundColor];`);
   check(/gradient/.test(native) && themed[0] === "none" && themed[1] === "rgb(200, 74, 23)", "the weekly phone list uses the theme's colours instead of Girly Pop pink");
+  await ctx.close();
+}
+
+// 2.1 polish: banner gone, Dark Academia retired, Customize at the top, razr back, previews match
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  await ctx.route(/^https?:/, (r) => r.abort());
+  const { page } = await openIn(ctx, "planners", "girly-pop");
+  await page.evaluate((k) => { localStorage.removeItem(k); localStorage.setItem(k + ":settings", JSON.stringify({ theme: "dark-academia", tabs: {} })); }, KEY("girly-pop"));
+  await page.reload(); await page.waitForTimeout(500);
+  const banner = await shadow(page, `return [...root.querySelectorAll(".banner")].some((b) => b.offsetParent && /Example data/.test(b.textContent));`);
+  check(!banner, "no 'Example data' banner on a first visit");
+  check(!THEMES.includes("dark-academia"), "Dark Academia is no longer a theme");
+  check(await page.evaluate(() => document.documentElement.dataset.lpTheme) === "girly-pop", "a saved Dark Academia choice falls back to the planner's own theme");
+  const fab = await page.locator(".lpc-fab").boundingBox();
+  check(fab && fab.y < 60 && fab.x > 1440 - 260, "the Customize button sits at the top right");
+  const razr = await shadow(page, `const r = root.querySelector(".s-razr"); return !!(r && r.offsetParent && r.getBoundingClientRect().width > 20);`);
+  check(razr, "Girly Pop shows the floating pink razr");
+  const read = (t, f) => { try { return readFileSync(join(root, "src", "themes", t, f), "utf8"); } catch { return ""; } };
+  const stray = [];
+  for (const t of THEMES) {
+    const mast = read(t, "mast.html") + read(t, "../../packs/" + t + "/pack.html");
+    for (const m of read(t, "preview.html").matchAll(/asset:([a-z0-9\/-]+)/g)) if (!mast.includes("asset:" + m[1])) stray.push(t + ": " + m[1]);
+  }
+  check(!stray.length, "every theme preview only shows stickers that are in that theme's header" + (stray.length ? " (" + stray.join(", ") + ")" : ""));
   await ctx.close();
 }
 

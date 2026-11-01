@@ -20,14 +20,12 @@ export const FAMILIES = [
   "Archivo+Black", "Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500", "Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700",
   // Cottagecore
   "Cormorant+Garamond:ital,wght@0,600;0,700;1,600", "Quicksand:wght@400;500;600;700", "Caveat:wght@600;700",
-  // Goth / Witchy
+  // Witchy
   "UnifrakturMaguntia", "Cinzel:wght@500;600;700", "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400",
   // Windows 93
   "Pixelify+Sans:wght@400;500;600;700",
   // Streetwear
   "Anton", "Space+Grotesk:wght@400;500;600;700", "Permanent+Marker",
-  // Dark Academia
-  "Playfair+Display:ital,wght@0,500;0,700;0,800;1,500", "Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400",
   // 70s Retro Groove
   "Shrikhand", "Karla:wght@400;500;600;700"
 ];

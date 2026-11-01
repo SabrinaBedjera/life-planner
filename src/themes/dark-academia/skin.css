@@ -1,4 +1,0 @@
-%card% { outline: 1px solid rgba(210,173,92,.25); outline-offset: -5px; }
-%head% h2::before { content: "\2767  "; color: var(--t-accent-4); font-size: .8em; }
-%tab% { font-style: italic; }
-%btn%:hover { background: #8f2f2f; filter: none; }

@@ -1,0 +1,3 @@
+%head% h2::before { content: "\2615  "; font-size: .8em; }
+%btn%:active { box-shadow: 0 1px 0 #8f4552; transform: translateY(2px); }
+%tab%[aria-selected="true"] { box-shadow: 0 6px 16px rgba(185,96,108,.3); }
