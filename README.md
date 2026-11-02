@@ -14,7 +14,7 @@ There are three planners, one for each stage of life. Each one starts with the t
 
 Each planner is one file that works on its own, even with no internet. They only differ in how they **start**. Any planner can switch on any tab and wear any of the 15 themes, so pick the one closest to your life and make it yours.
 
-![The Working Professionals, Students and Parents planners](themes/previews/all-themes.png)
+![The Working Professionals, Students and Parents planners](themes/previews/planners-by-audience.png)
 
 ## Use it in your browser (easiest)
 
