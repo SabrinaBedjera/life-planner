@@ -10,7 +10,7 @@ There are three planners, one for each stage of life. Each one starts with the t
 |---|---|---|---|
 | **Built for** | Building a career: job hunting, goals and staying on top of a busy week | School or uni life: classes, deadlines, part-time work, clubs and friends | Running a home and family: projects around the house, wellbeing and the people you love |
 | **What's inside** | A weekly plan, goals with a week-by-week roadmap, a job tracker with fit scores and charts, networking contacts, side projects, a profile, a fitness log and creative projects | A weekly plan, study sessions, deadlines and coming-up dates, shifts at work, clubs and friends, a gym log, an energy check-in with ideas for low days, and XP for ticking things off | A weekly plan with a daily quote, home project tracker, wellbeing and a mood journal, family and friends, inspiration, a book shelf, and a planner for a hobby or video channel |
-| **File** | [`planners/girly-pop.html`](planners/girly-pop.html) | [`planners/arcade.html`](planners/arcade.html) | [`planners/studio.html`](planners/studio.html) |
+| **File** | [`planners/working-professionals.html`](planners/working-professionals.html) | [`planners/students.html`](planners/students.html) | [`planners/parents.html`](planners/parents.html) |
 
 Each planner is one file that works on its own, even with no internet. They only differ in how they **start**. Any planner can switch on any tab and wear any of the 15 themes, so pick the one closest to your life and make it yours.
 
@@ -18,7 +18,7 @@ Each planner is one file that works on its own, even with no internet. They only
 
 ## Use it in your browser (easiest)
 
-1. Click the file for the planner you want in the table above, for example `planners/arcade.html` for Students.
+1. Click the file for the planner you want in the table above, for example `planners/students.html` for Students.
 2. Click the **Download raw file** button (the arrow pointing down, near the top right of the file).
 3. Find the file in your Downloads folder and double-click it. It opens in your web browser.
 4. Start typing. Everything saves by itself.
@@ -53,6 +53,7 @@ If you open the new file **in the same browser** as the old one, your planner is
 - Goth / Witchy is now called Witchy, and Desktop 93 is now Desktop.
 - The ✦ Customize button sits at the top right, and the footer is tidier, with less-used actions under **More options**.
 - Smaller text in the weekly phone list, and cleaner sticker cut-outs in every theme.
+- The planner files are renamed to match who they're for: `working-professionals.html` (was `girly-pop.html`), `students.html` (was `arcade.html`) and `parents.html` (was `studio.html`). The file you already downloaded keeps working, and the backup steps above move your entries into a new one.
 
 ### What's new in 2.0
 
@@ -146,7 +147,7 @@ Attach the file the same way and use the same message. If the AI can show a live
 
 ## Files
 
-- `planners/girly-pop.html`, `planners/arcade.html`, `planners/studio.html`: the planners to download. Each works on its own.
+- `planners/working-professionals.html`, `planners/students.html`, `planners/parents.html`: the planners to download. Each works on its own.
 - `themes/`: the classic single-look versions of the three planners. They still work, and their backups import into the new planners.
 - `src/`: the shared source the planners are built from (developers only):
   - `src/packs/`: the original planners' tabs, styles and code.

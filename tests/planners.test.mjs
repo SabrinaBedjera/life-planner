@@ -18,7 +18,8 @@ const ORIGINAL_TABS = {
   studio: ["This week", "Home projects", "Wellbeing", "Family & friends", "Inspiration", "Books", "My channel"],
   "girly-pop": ["This week", "Jobs", "Life"]
 };
-const url = (dir, id, hash) => pathToFileURL(join(root, dir, id + ".html")).href + (hash ? "#" + hash : "");
+const FILE = { "girly-pop": "working-professionals", arcade: "students", studio: "parents" };
+const url = (dir, id, hash) => pathToFileURL(join(root, dir, (dir === "planners" ? FILE[id] : id) + ".html")).href + (hash ? "#" + hash : "");
 const KEY = (id) => "life-planner-" + id + "-v1";
 let failures = 0, passes = 0;
 function check(cond, msg) { if (cond) { passes++; console.log("  ok   " + msg); } else { failures++; console.log("  FAIL " + msg); } }
