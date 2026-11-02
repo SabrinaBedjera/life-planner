@@ -3,3 +3,7 @@
 %btn%:hover { filter: brightness(1.08); }
 %btn%:active { box-shadow: 0 1px 0 #9e3c0c; transform: translateY(2px); }
 %tab%[aria-selected="true"] { box-shadow: 0 0 16px rgba(242,107,33,.45); }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:mission/helmet); }
+#sub-jobs::after { background-image: url(asset:mission/rover); }
+#sub-life::after { background-image: url(asset:mission/satellite); }

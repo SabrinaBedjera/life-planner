@@ -2,3 +2,7 @@
 %card%::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--t-accent-3); border: 0; width: auto; }
 %btn%:hover { background: #a2405e; border-color: #a2405e; filter: none; }
 %nav% { background: #fffdfa; border: 1px solid #efdfd8; border-radius: 999px; padding: 6px; gap: 8px; box-shadow: 0 6px 18px -12px rgba(180,80,110,.4); }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:studio/v-olive); }
+#sub-jobs::after { background-image: url(asset:studio/v-art); }
+#sub-life::after { background-image: url(asset:studio/v-chair); }

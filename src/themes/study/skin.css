@@ -1,3 +1,7 @@
 %head% h2::before { content: "\2766  "; color: var(--t-accent-4); font-size: .8em; }
 %btn%:hover { filter: brightness(1.15); }
 %tab%[aria-selected="true"] { box-shadow: 0 6px 16px rgba(124,105,179,.35); }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:study/coffee); }
+#sub-jobs::after { background-image: url(asset:study/globe); }
+#sub-life::after { background-image: url(asset:study/notebook); }

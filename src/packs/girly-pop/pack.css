@@ -634,3 +634,10 @@ h1.collage img { height: auto; max-width: none; width: 780px; }
   .g-sneaker { animation: bob2 5.2s ease-in-out infinite .4s; }
 }
 .lp-more .menu { width: max-content; max-width: calc(100vw - 32px); } .lp-more .menu .btn { white-space: nowrap; }
+
+/* Tab-row sticker: other themes put one sticker per main tab in the gap right of the section chips (Girly Pop keeps its own card stickers) */
+.subtabs { position: relative; z-index: 3; box-sizing: border-box; width: 100%; padding-right: 76px; min-height: 40px; }
+.subtabs::after { content: ""; position: absolute; right: 6px; top: 50%; width: 60px; height: 60px; translate: 0 -50%; background: center / contain no-repeat; pointer-events: none; filter: drop-shadow(0 5px 8px rgba(0,0,0,.22)); }
+@media (prefers-reduced-motion: no-preference) { .subtabs::after { animation: lptabbob 5s ease-in-out infinite; } }
+@keyframes lptabbob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-4px) rotate(4deg); } }
+@media (max-width: 640px) { .subtabs { padding-right: 58px; } .subtabs::after { width: 46px; height: 46px; right: 2px; } }

@@ -7,3 +7,7 @@
 %btn%:active, %tab%[aria-selected="true"] { box-shadow: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; }
 %tab%[aria-selected="true"] { background: repeating-conic-gradient(#e8e8e8 0 25%, #ffffff 0 50%) 0 0/2px 2px; }
 %chip% { box-shadow: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; border-radius: 0; }
+/* tab-row sticker: sits in the space right of the small section tabs, changes with This week / Jobs / Life */
+#sub-week::after { background-image: url(asset:desktop93/floppy); }
+#sub-jobs::after { background-image: url(asset:desktop93/cd); }
+#sub-life::after { background-image: url(asset:desktop93/mug); }
