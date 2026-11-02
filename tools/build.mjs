@@ -1,5 +1,5 @@
 // Builds the three standalone planner downloads from the shared source in src/.
-//   node tools/build.mjs          -> writes planners/<id>.html
+//   node tools/build.mjs          -> writes planners/<file>.html (e.g. students.html)
 //   node tools/build.mjs --check  -> fails if planners/ is out of date
 // Each output is one self-contained HTML file: fonts, pictures, charts and code are all
 // inside it, so it works offline and needs no account, server or install.
@@ -151,7 +151,7 @@ ${kit}
 </body>
 </html>
 `;
-  const out = join(outDir, planner.id + ".html");
+  const out = join(outDir, (planner.file || planner.id) + ".html");
   if (check) { if (!existsSync(out) || read(out) !== html) { console.error(basename(out) + ": out of date, run npm run build"); stale++; } else console.log(basename(out) + ": up to date"); }
   else { writeFileSync(out, html); console.log(`${basename(out)}: ${(html.length / 1024 / 1024).toFixed(2)} MB`); }
 }
