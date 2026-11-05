@@ -1085,10 +1085,6 @@
     await saveWeek({ items: [...weekItems(), { id: "i" + Date.now(), text: txt, done: false, lane: f.dataset.lane }] }); render(true);
     const again = document.querySelector(`.lane-add[data-lane="${f.dataset.lane}"] .lane-input`); if (again) again.focus();
   });
-  $("itemForm").addEventListener("submit", async (e) => {
-    e.preventDefault(); const txt = $("newItem").value.trim(); if (!txt) return;
-    await saveWeek({ items: [...weekItems(), { id: "i" + Date.now(), text: txt, done: false, lane: $("newLane").value }] }); $("newItem").value = ""; render(true);
-  });
   $("addForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const job = { title: $("f-title").value.trim(), company: $("f-company").value.trim(), url: $("f-url").value.trim(), location: $("f-location").value.trim(), region: $("f-region").value, source: $("f-source").value, notes: $("f-notes").value.trim(), status: "pool", check: "not-checked", pros: [], cons: [], gaps: [], log: [{ date: todayISO(), text: "Added" }], visa: "unknown", added: todayISO() };
