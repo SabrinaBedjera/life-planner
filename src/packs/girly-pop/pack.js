@@ -132,7 +132,7 @@
   const state = {
     jobs: [], people: [], projects: [], profile: [], weeks: [], skills: [], workouts: [], creative: [], targets: [], settings: { linkedinStage: 1 },
     mode: "loading", tab: "week", stage: null, region: "All", q: "", sort: "best", pStatus: "All", pq: "",
-    fitAll: false, editing: null, db: null, schedDraft: {},
+    fitAll: false, editing: null, db: null, schedDraft: {}, schedWeek: null,
   };
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -227,27 +227,47 @@
   const weekItems = () => (weekDoc() && weekDoc().items) || defaultItems();
   const weekActions = (w) => Object.assign({ comment: 0, outreach: 0, apply: 0, project: 0 }, (w && w.actions) || {});
 
-  async function saveWeek(patch) {
-    const cur = weekDoc();
-    const base = cur ? { ...cur } : { week: WEEK, items: defaultItems(), actions: weekActions(null), reflection: {} };
+  async function saveWeek(patch, wk) {
+    wk = wk || WEEK;
+    const cur = state.weeks.find((w) => w.id === wk);
+    const base = cur ? { ...cur } : { week: wk, items: defaultItems(), actions: weekActions(null), reflection: {} };
     delete base.id;
     const next = { ...base, ...patch };
-    if (cur) Object.assign(cur, patch); else state.weeks.push({ id: WEEK, ...next });
+    if (cur) Object.assign(cur, patch); else state.weeks.push({ id: wk, ...next });
     if (live()) {
-      try { await state.db.collection("weeks").doc(WEEK).set(next); }
+      try { await state.db.collection("weeks").doc(wk).set(next); }
       catch (e) { showBanner("That change didn't save. Reload the page and try again."); }
     }
   }
 
   const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+  // Which week the schedule card shows (this week unless Prev / Next was pressed)
+  const schedWk = () => state.schedWeek || WEEK;
+  const schedDoc = () => state.weeks.find((w) => w.id === schedWk());
+  function renderSchedNav() {
+    const wk = schedWk(), mon = parse(wk), sun = parse(addDays(wk, 6));
+    const span = mon.getMonth() === sun.getMonth() ? `${mon.toLocaleDateString(undefined, { month: "short", day: "numeric" })}–${sun.getDate()}` : `${fmtShort(wk)} – ${fmtShort(addDays(wk, 6))}`;
+    const diff = Math.round((mon - parse(WEEK)) / 6048e5);
+    $("schedTitle").textContent = diff === 0 ? "This week's schedule" : diff === 1 ? `Next week · ${span}` : diff === -1 ? `Last week · ${span}` : `Week of ${span}`;
+    $("schedNow").hidden = diff === 0;
+  }
+  async function goSchedWeek(wk) {
+    if (schedTimer || Object.keys(state.schedDraft).length) await saveSchedule();
+    state.schedDraft = {}; state.schedWeek = wk === WEEK ? null : wk;
+    if (document.activeElement && $("sched").contains(document.activeElement)) document.activeElement.blur();
+    $("schedMsg").textContent = "";
+    renderSchedule();
+  }
   function renderSchedule() {
-    const sch = (weekDoc() && weekDoc().schedule) || {};
+    renderSchedNav();
+    const wk = schedWk();
+    const sch = (schedDoc() && schedDoc().schedule) || {};
     const today = todayISO();
     const active = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.day : null;
     // While typing in a day, leave the boxes alone so the cursor stays put; the lanes below still refresh
     if (active && $("sched").contains(document.activeElement) && $("sched").children.length) return;
     $("sched").innerHTML = DAYS.map((d, i) => {
-      const iso = addDays(WEEK, i), dt = parse(iso);
+      const iso = addDays(wk, i), dt = parse(iso);
       const val = state.schedDraft[d] !== undefined ? state.schedDraft[d] : (sch[d] || "");
       return `<div class="day${iso === today ? " today" : ""}"><label class="dn" for="day-${d}">${dt.toLocaleDateString(undefined, { weekday: "short" })}<span>${dt.getDate()}</span></label><textarea class="field" id="day-${d}" data-day="${d}" rows="3">${esc(val)}</textarea></div>`;
     }).join("");
@@ -256,24 +276,25 @@
 
   let schedTimer = null;
   async function saveSchedule() {
-    clearTimeout(schedTimer);
-    const saved = (weekDoc() && weekDoc().schedule) || {};
+    clearTimeout(schedTimer); schedTimer = null;
+    const wk = schedWk(), doc = schedDoc();
+    const saved = (doc && doc.schedule) || {};
     const schedule = {};
     DAYS.forEach((d) => { schedule[d] = (state.schedDraft[d] !== undefined ? state.schedDraft[d] : (saved[d] || "")).trim(); });
     // Turn each schedule line into a checklist item in its category; keep ticks on lines that didn't change.
-    const old = weekItems();
+    const old = (doc && doc.items) || defaultItems();
     const kept = old.filter((it) => !String(it.id).startsWith("s-"));
     const prevDone = Object.fromEntries(old.filter((it) => String(it.id).startsWith("s-")).map((it) => [it.id, it.done]));
     const fromSched = [];
     DAYS.forEach((d, i) => {
-      const label = parse(addDays(WEEK, i)).toLocaleDateString(undefined, { weekday: "short" });
+      const label = parse(addDays(wk, i)).toLocaleDateString(undefined, { weekday: "short" });
       schedule[d].split(/\n|;/).map((x) => x.trim()).filter(Boolean).forEach((line) => {
         const id = "s-" + d + "-" + line.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
         fromSched.push({ id, text: `${label}: ${line}`, lane: classify(line), done: !!prevDone[id] });
       });
     });
     const snapshot = { ...state.schedDraft };
-    await saveWeek({ schedule, items: [...kept, ...fromSched] });
+    await saveWeek({ schedule, items: [...kept, ...fromSched] }, wk);
     // drop drafts that are now stored (unless the person kept typing meanwhile)
     Object.keys(snapshot).forEach((d) => { if (state.schedDraft[d] === snapshot[d]) delete state.schedDraft[d]; });
     $("schedMsg").textContent = live() ? "Saved" : "Saved for this visit";
@@ -1018,6 +1039,9 @@
       await saveRoadmap({ ...rm, weeks }); render(true); return;
     }
     if (act === "save-sched") { await saveSchedule(); return; }
+    if (act === "sched-prev") { await goSchedWeek(addDays(schedWk(), -7)); return; }
+    if (act === "sched-next") { await goSchedWeek(addDays(schedWk(), 7)); return; }
+    if (act === "sched-now") { await goSchedWeek(WEEK); return; }
     if (act === "save-focus") { await saveWeek({ focus: $("focus").value.trim() }); render(true); return; }
     if (act === "save-reflection") {
       const reflection = { text: $("r-text").value.trim() };

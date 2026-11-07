@@ -394,6 +394,26 @@ console.log("\nbackups");
   await ctx.close();
 }
 
+// Weekly schedule: Prev / Next buttons show other weeks, and what you type there is kept for that week
+for (const id of IDS) {
+  const { ctx } = await context({ width: 390, height: 900 });
+  const { page, errors } = await openIn(ctx, "planners", id);
+  const days = page.locator("#sched textarea:visible");
+  const nav = (label) => page.locator(".wk-nav:visible button", { hasText: label }).click();
+  const first = await days.first().inputValue();
+  await nav("Next"); await page.waitForTimeout(300);
+  check(/^Next week/.test(await page.locator("#schedTitle:visible").textContent()), id + ": Next shows next week");
+  await days.nth(1).fill("Dentist 3pm"); await page.waitForTimeout(900);
+  await nav("Prev"); await page.waitForTimeout(300);
+  check((await days.first().inputValue()) === first, id + ": Prev goes back to this week unchanged");
+  await page.reload(); await page.waitForTimeout(500);
+  await nav("Next"); await page.waitForTimeout(300);
+  check((await days.nth(1).inputValue()) === "Dentist 3pm", id + ": a note on next week is still there after reloading");
+  await nav("This week"); await page.waitForTimeout(300);
+  check((await days.first().inputValue()) === first && await noSideScroll(page) && !errors.length, id + ": This week returns home with no errors or side scroll" + (errors.length ? " " + errors[0] : ""));
+  await ctx.close();
+}
+
 await browser.close();
 console.log(`\n${passes} passed, ${failures} failed`);
 process.exit(failures ? 1 : 0);

@@ -54,6 +54,8 @@ select.field { width: auto; }
 .btn:hover { background: var(--rose-dark); border-color: var(--rose-dark); }
 .btn.ghost { background: var(--card); color: var(--ink); }
 .btn.ghost:hover { background: var(--blush); }
+.wk-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+.wk-nav .btn { padding: 5px 12px; font-size: 14px; border-radius: 999px; }
 .x { appearance: none; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 24px; padding: 0 6px; line-height: 1; }
 .x:hover { color: var(--rose-dark); }
 .addrow { display: flex; flex-wrap: wrap; gap: 10px; }
