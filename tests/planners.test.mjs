@@ -440,6 +440,34 @@ for (const id of IDS) {
   }
 }
 
+// Studio: edit entries, pick a stage, video checklist, undo, ideas inbox, book thoughts, uploads on the Month calendar
+{
+  const { ctx } = await context({ width: 390, height: 900 });
+  const { page, errors } = await openIn(ctx, "planners", "studio", "watch");
+  const L = page.locator("#list-uploads:visible");
+  await L.locator(".edit").first().click();
+  await L.locator(".editbox input[name=title]").fill("Edited title"); await L.locator(".editbox input[name=date]").fill("2030-01-04");
+  await L.locator(".editbox select[name=s]").selectOption("editing"); await L.locator(".editbox textarea[name=outline]").fill("Shot list");
+  await L.locator(".editbox button[type=submit]").click(); await page.waitForTimeout(150);
+  const row = () => L.locator("li").filter({ hasText: "Edited title" });
+  check((await row().count()) === 1 && (await row().locator("select.pill").inputValue()) === "editing", "studio: a video can be edited in place, date and stage included");
+  await row().locator("select.pill").selectOption("posted"); await row().locator(".step-chip", { hasText: "Film" }).click(); await page.waitForTimeout(150);
+  check((await row().locator("select.pill").inputValue()) === "posted" && (await row().locator(".step-chip[aria-pressed=true]").count()) === 1, "studio: the stage is a dropdown and checklist steps tick on and off");
+  const n = await L.locator("li").count();
+  await L.locator("li").first().locator(".x").click(); await page.locator("#undoToast button").click(); await page.waitForTimeout(150);
+  check((await L.locator("li").count()) === n, "studio: Undo brings back a removed video");
+  await page.locator("#ideaText").fill("Pink bathroom refresh"); await page.locator("#ideaForm button[type=submit]").click();
+  await page.locator("#ideaList li").first().locator(".mk").click(); await page.waitForTimeout(150);
+  check((await L.locator("li").filter({ hasText: "Pink bathroom refresh" }).count()) === 1, "studio: an idea from the inbox becomes a video in the pipeline");
+  await page.evaluate(() => { location.hash = "books"; }); await page.waitForTimeout(300);
+  await page.locator("#shelf-read:visible .thoughts").first().click(); await page.locator("#tdThoughts").fill("Loved the garden.");
+  await page.locator("#bookDlg button[value=save]").click(); await page.reload(); await page.waitForTimeout(600);
+  const saved = await stored(page, KEY("studio"));
+  check(saved.books.some((b) => b.thoughts === "Loved the garden.") && saved.uploads.some((u) => u.title === "Edited title" && u.outline === "Shot list"), "studio: book thoughts and video notes are saved");
+  check(!errors.length, "studio: no errors while editing" + (errors.length ? " " + errors[0] : ""));
+  await ctx.close();
+}
+
 await browser.close();
 console.log(`\n${passes} passed, ${failures} failed`);
 process.exit(failures ? 1 : 0);
