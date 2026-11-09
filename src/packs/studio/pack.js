@@ -592,13 +592,62 @@
     var d = $("#customize"); if (d.showModal) d.showModal(); else d.setAttribute("open", "");
   });
 
+  /* Month calendar: each day is the same text as that day in the week schedule */
+  if (!state.monthFocus) state.monthFocus = {};
+  var monOff = 0, monTimer = null;
+  function monFirst() { var d = new Date(today.getFullYear(), today.getMonth() + monOff, 1); d.setHours(0, 0, 0, 0); return d; }
+  function weekText(mon, i) {
+    var k = iso(mon), saved = state.week[k];
+    return saved ? (saved[i] || "") : (k === weekKey && state.weekSeed ? (state.weekSeed[i] || "") : "");
+  }
+  function renderMonth() {
+    var grid = $("#monGrid"); if (!grid) return;
+    var first = monFirst(), key = iso(first).slice(0, 7);
+    $("#monTitle").textContent = first.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+    var mf = $("#monFocus"); if (document.activeElement !== mf) mf.value = state.monthFocus[key] || "";
+    if (grid.contains(document.activeElement)) return;
+    var start = new Date(first.getTime() - ((first.getDay() + 6) % 7) * DAY);
+    var last = new Date(first.getFullYear(), first.getMonth() + 1, 0), cells = 0;
+    var end = new Date(last.getTime() + (6 - (last.getDay() + 6) % 7) * DAY);
+    grid.innerHTML = "";
+    for (var d = new Date(start); d <= end; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) {
+      var i = (d.getDay() + 6) % 7, mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - i), ds = iso(d);
+      var el = document.createElement("div");
+      el.className = "day mon-day" + (d.getMonth() !== first.getMonth() ? " out" : "") + (ds === iso(today) ? " today" : "");
+      el.innerHTML = '<label class="dn" for="mon-' + ds + '">' + d.getDate() + "<span>" + d.toLocaleDateString(undefined, { weekday: "short" }) + "</span></label>";
+      var ta = document.createElement("textarea");
+      ta.id = "mon-" + ds; ta.dataset.week = iso(mon); ta.dataset.i = i; ta.value = weekText(mon, i);
+      ta.setAttribute("aria-label", d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }));
+      el.appendChild(ta); grid.appendChild(el); cells++;
+    }
+  }
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (t.matches && t.matches("#monGrid textarea")) {
+      var k = t.dataset.week, i = +t.dataset.i;
+      if (!state.week[k]) { var mon = new Date(k + "T00:00:00"); state.week[k] = [0, 1, 2, 3, 4, 5, 6].map(function (n) { return weekText(mon, n); }); }
+      state.week[k][i] = t.value; save(); renderWeek();
+      $("#monMsg").textContent = "Saved.";
+    }
+    if (t.id === "monFocus") {
+      state.monthFocus[iso(monFirst()).slice(0, 7)] = t.value.trim(); save();
+      $("#monMsg").textContent = "Saved.";
+    }
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-mon]"); if (!b) return;
+    var n = Number(b.dataset.mon); monOff = n === 0 ? 0 : monOff + n;
+    $("#monMsg").textContent = ""; renderMonth();
+  });
+
   /* Tabs */
-  var VIEWS = ["week", "home", "wellbeing", "people", "ideas", "books", "watch"];
+  var VIEWS = ["week", "month", "home", "wellbeing", "people", "ideas", "books", "watch"];
   function route() {
     var v = (location.hash || "#week").slice(1); if (v === "journal") v = "wellbeing"; if (VIEWS.indexOf(v) < 0) v = "week";
     var visible = VIEWS.filter(function (n) { var t = document.querySelector('.tab[href="#' + n + '"]:not([data-lp-extra])'); return t && !t.hidden; });
     if (visible.indexOf(v) < 0) v = visible[0] || "week";
     VIEWS.forEach(function (n) { document.getElementById("view-" + n).hidden = n !== v; });
+    if (v === "month") renderMonth();
     document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", t.getAttribute("href") === "#" + v ? "true" : "false"); });
   }
   window.addEventListener("hashchange", route);

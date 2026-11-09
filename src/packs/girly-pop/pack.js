@@ -208,8 +208,8 @@
   }
 
   /* ================= Tabs ================= */
-  const TABS = ["week", "goals", "fitness", "roles", "insights", "people", "projects", "creative", "profile"];
-  const GROUP = { week: "week", goals: "week", roles: "jobs", insights: "jobs", people: "jobs", projects: "jobs", profile: "jobs", fitness: "life", creative: "life" };
+  const TABS = ["week", "month", "goals", "fitness", "roles", "insights", "people", "projects", "creative", "profile"];
+  const GROUP = { week: "week", month: "week", goals: "week", roles: "jobs", insights: "jobs", people: "jobs", projects: "jobs", profile: "jobs", fitness: "life", creative: "life" };
   function setTab(t) {
     state.tab = TABS.includes(t) ? t : "week";
     const g = GROUP[state.tab];
@@ -940,6 +940,7 @@
   function renderCharts() {
     if (state.mode === "loading") return;
     if (state.tab === "goals") renderStrip();
+    if (state.tab === "month") renderMonth();
     if (state.tab === "fitness") renderFitCharts();
     if (state.tab === "insights") {
       const enough = state.jobs.filter(hasApplied).length >= 10;
@@ -948,6 +949,68 @@
       renderFitMap(); renderStats(); renderSankey(); renderGaps(); renderCoverage(); }
   }
   const typing = () => document.activeElement && document.activeElement.matches("textarea, input:not([type=checkbox])");
+  /* ================= Month ================= */
+  // Each day is the same text as that day in the week schedule, so the two views stay in sync
+  const monKey = () => state.monthKey || todayISO().slice(0, 7);
+  const monDraft = {}; const monTimers = {};
+  const monSaved = () => { $("monMsg").textContent = "Saved"; setTimeout(() => { if ($("monMsg").textContent === "Saved") $("monMsg").textContent = ""; }, 1500); };
+  function renderMonth() {
+    if (!$("monGrid")) return;
+    const key = monKey(), first = parse(key + "-01");
+    $("monTitle").textContent = first.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+    const mf = $("monFocus"); if (document.activeElement !== mf) mf.value = ((state.settings && state.settings.monthFocus) || {})[key] || "";
+    if ($("monGrid").contains(document.activeElement)) return;
+    const start = isoLocal(mondayOf(first)), today = todayISO();
+    const last = new Date(first); last.setMonth(last.getMonth() + 1); last.setDate(0);
+    const end = isoLocal(mondayOf(last)), cells = [];
+    for (let d = start; d <= addDays(end, 6); d = addDays(d, 1)) {
+      const wk = isoLocal(mondayOf(parse(d))), day = DAYS[Math.round((parse(d) - parse(wk)) / 864e5)];
+      const doc = state.weeks.find((w) => w.id === wk), val = monDraft[d] !== undefined ? monDraft[d] : ((doc && doc.schedule && doc.schedule[day]) || "");
+      const dt = parse(d);
+      cells.push(`<div class="mon-day${d.slice(0, 7) !== key ? " out" : ""}${d === today ? " today" : ""}"><label class="md-n" for="mon-${d}">${dt.getDate()}<i>${dt.toLocaleDateString(undefined, { weekday: "short" })}</i></label><textarea id="mon-${d}" data-date="${d}" aria-label="${esc(dt.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }))}">${esc(val)}</textarea></div>`);
+    }
+    $("monGrid").innerHTML = cells.join("");
+  }
+  async function saveMonthDay(d) {
+    clearTimeout(monTimers[d]); delete monTimers[d];
+    if (monDraft[d] === undefined) return;
+    const text = monDraft[d].trim(), wk = isoLocal(mondayOf(parse(d))), day = DAYS[Math.round((parse(d) - parse(wk)) / 864e5)];
+    if (wk === schedWk() && state.schedDraft[day] !== undefined) delete state.schedDraft[day];
+    const doc = state.weeks.find((w) => w.id === wk);
+    const schedule = { ...((doc && doc.schedule) || {}), [day]: text };
+    const old = (doc && doc.items) || defaultItems(), prefix = "s-" + day + "-";
+    const prevDone = Object.fromEntries(old.filter((it) => String(it.id).startsWith(prefix)).map((it) => [it.id, it.done]));
+    const label = parse(d).toLocaleDateString(undefined, { weekday: "short" });
+    const fresh = text.split(/\n|;/).map((x) => x.trim()).filter(Boolean).map((line) => {
+      const id = prefix + line.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+      return { id, text: `${label}: ${line}`, lane: classify(line), done: !!prevDone[id] };
+    });
+    const sent = monDraft[d];
+    await saveWeek({ schedule, items: [...old.filter((it) => !String(it.id).startsWith(prefix)), ...fresh] }, wk);
+    if (monDraft[d] === sent) delete monDraft[d];
+    monSaved();
+  }
+  document.addEventListener("input", (e) => {
+    const t = e.target; if (!t.matches) return;
+    if (t.matches("#monGrid textarea")) { const d = t.dataset.date; monDraft[d] = t.value; clearTimeout(monTimers[d]); monTimers[d] = setTimeout(() => saveMonthDay(d), 700); }
+    if (t.id === "monFocus") {
+      clearTimeout(monTimers.focus);
+      monTimers.focus = setTimeout(async () => {
+        const key = monKey(), mf = { ...((state.settings && state.settings.monthFocus) || {}), [key]: t.value.trim() };
+        state.settings = { ...state.settings, monthFocus: mf };
+        if (live()) { try { await state.db.collection("settings").doc("main").update({ monthFocus: mf }); } catch (err) { showBanner("That change didn't save."); return; } }
+        monSaved();
+      }, 600);
+    }
+  });
+  document.addEventListener("focusout", (e) => { const t = e.target; if (t.matches && t.matches("#monGrid textarea") && monDraft[t.dataset.date] !== undefined) { saveMonthDay(t.dataset.date).then(() => { if (!$("monGrid").contains(document.activeElement)) { renderMonth(); render(true); } }); } });
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest && e.target.closest("[data-act^='mon-']"); if (!t) return;
+    const d = parse(monKey() + "-01");
+    if (t.dataset.act === "mon-now") state.monthKey = null;
+    else { d.setMonth(d.getMonth() + (t.dataset.act === "mon-next" ? 1 : -1)); state.monthKey = isoLocal(d).slice(0, 7); }
+    renderMonth();
+  });
   function render(force) {
     if (!force && typing()) { renderMeta(); return; }
     renderWeek(); renderGoals(); renderRoadmap(); renderFitness(); renderPipeline(); renderList(); renderPeople(); renderProjects(); renderProfile(); renderMeta(); renderCharts();

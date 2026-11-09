@@ -25,6 +25,7 @@
   </nav>
   <nav class="subtabs" id="sub-week" aria-label="This week sections" hidden>
     <a class="chip" href="#week" data-tab="week">This week</a>
+    <a class="chip" href="#month" data-tab="month">Month</a>
     <a class="chip" href="#goals" data-tab="goals">Goals</a>
   </nav>
   <nav class="subtabs" id="sub-jobs" aria-label="Jobs sections" hidden>
@@ -72,6 +73,17 @@
       <textarea class="field" id="r-text" rows="5" aria-label="How did the week go?" placeholder="What worked, what felt awkward, any conversations, anything to change next week…"></textarea>
       <div class="row between"><span class="saved" id="reflMsg"></span><button class="btn primary" data-act="save-reflection">Save</button></div>
       <details id="pastWeeks"><summary class="hint" style="cursor:pointer">Past reflections</summary><div id="pastList" class="list" style="margin-top:10px"></div></details>
+    </div>
+  </section>
+
+  <!-- MONTH -->
+  <section class="panel" id="panel-month" role="tabpanel" hidden>
+    <div class="card">
+      <div class="card-head"><h2 id="monTitle">Month</h2><div class="wk-nav" role="group" aria-label="Choose a month"><button type="button" class="btn small" data-act="mon-prev" aria-label="Previous month">‹ Prev</button><button type="button" class="btn small" data-act="mon-now">Today</button><button type="button" class="btn small" data-act="mon-next" aria-label="Next month">Next ›</button></div></div>
+      <label class="focus" for="monFocus"><span class="fstar" aria-hidden="true">★</span><input class="field" id="monFocus" placeholder="This month's focus" aria-label="This month's focus" autocomplete="off"><span class="saved" id="monMsg"></span></label>
+      <div class="mon-head" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="mon-grid" id="monGrid"></div>
+      <span class="hint">Anything you type here also shows in that week's schedule.</span>
     </div>
   </section>
 
