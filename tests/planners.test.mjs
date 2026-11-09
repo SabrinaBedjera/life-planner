@@ -14,8 +14,8 @@ if (shots) mkdirSync(shots, { recursive: true });
 const IDS = ["arcade", "studio", "girly-pop"];
 const THEMES = JSON.parse(readFileSync(join(root, "src", "themes", "order.json"), "utf8"));
 const ORIGINAL_TABS = {
-  arcade: ["Week", "Uni", "Work", "Social", "Gym"],
-  studio: ["This week", "Home projects", "Wellbeing", "Family & friends", "Inspiration", "Books", "My channel"],
+  arcade: ["Week", "Month", "Uni", "Work", "Social", "Gym"],
+  studio: ["This week", "Month", "Home projects", "Wellbeing", "Family & friends", "Inspiration", "Books", "My channel"],
   "girly-pop": ["This week", "Jobs", "Life"]
 };
 const FILE = { "girly-pop": "working-professionals", arcade: "students", studio: "parents" };
@@ -124,7 +124,7 @@ for (const id of IDS) {
     const lib = await page.evaluate(() => LP._lib.map((e) => ({ id: e.id, pack: e.pack, route: e.route, label: e.label })));
     const own = lib.filter((e) => e.pack === id);
     const other = lib.filter((e) => e.pack !== id);
-    check(lib.length === 21, "every planner has the full tab library (" + lib.length + " tabs)");
+    check(lib.length === 24, "every planner has the full tab library (" + lib.length + " tabs)");
     const before = JSON.stringify(await stored(page, KEY(id)));
     await openCustomize(page, "tabs");
     const target = own[1];
@@ -412,6 +412,32 @@ for (const id of IDS) {
   await nav("This week"); await page.waitForTimeout(300);
   check((await days.first().inputValue()) === first && await noSideScroll(page) && !errors.length, id + ": This week returns home with no errors or side scroll" + (errors.length ? " " + errors[0] : ""));
   await ctx.close();
+}
+
+// Month calendar: a month of days you can type in, kept in sync with the week schedule
+for (const id of IDS) {
+  for (const width of [1280, 390]) {
+    const { ctx } = await context({ width, height: 900 });
+    const { page, errors } = await openIn(ctx, "planners", id, "month");
+    const now = new Date(), monthName = now.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+    const title = () => page.locator("#monTitle:visible").textContent();
+    check((await title()) === monthName, `${id} @${width}: Month tab opens on this month`);
+    const dow = (now.getDay() + 6) % 7, iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const cell = page.locator(`#mon-${iso}`);
+    await cell.fill("Book club 7pm"); await page.waitForTimeout(400);
+    await page.locator("#monFocus:visible").fill("Read more"); await page.locator("#monFocus:visible").press("Tab"); await page.waitForTimeout(1200);
+    await page.locator(".wk-nav:visible button", { hasText: "Next" }).click(); await page.waitForTimeout(200);
+    check((await title()) !== monthName, `${id} @${width}: Next moves to another month`);
+    await page.locator(".wk-nav:visible button", { hasText: "Today" }).click(); await page.waitForTimeout(200);
+    await page.reload(); await page.waitForTimeout(600);
+    check((await page.locator(`#mon-${iso}`).inputValue()) === "Book club 7pm" && (await page.locator("#monFocus:visible").inputValue()) === "Read more", `${id} @${width}: a day note and the month focus stay after reloading`);
+    await page.evaluate(() => { location.hash = "week"; }); await page.waitForTimeout(500);
+    const weekText = await page.locator("#sched textarea:visible").nth(dow).inputValue();
+    check(weekText === "Book club 7pm", `${id} @${width}: the same text shows in this week's schedule`);
+    check((width > 400 || await noSideScroll(page)) && !errors.length, `${id} @${width}: no errors` + (width > 400 ? "" : " or side scroll") + (errors.length ? " " + errors[0] : ""));
+    if (shots) await page.screenshot({ path: join(shots, `month-${id}-${width}.png`), fullPage: true });
+    await ctx.close();
+  }
 }
 
 await browser.close();

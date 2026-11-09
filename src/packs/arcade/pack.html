@@ -15,6 +15,7 @@
 
   <nav class="tabs" role="tablist" aria-label="Sections">
     <a class="tab" role="tab" href="#week">Week</a>
+    <a class="tab" role="tab" href="#month">Month</a>
     <a class="tab" role="tab" href="#uni">Uni</a>
     <a class="tab" role="tab" href="#work">Work</a>
     <a class="tab" role="tab" href="#social">Social</a>
@@ -75,6 +76,16 @@
   </section>
 
   <!-- UNI -->
+  <section class="view" id="view-month" role="tabpanel" hidden>
+    <div class="panel hud" style="--c: var(--lime)">
+      <div class="panel-head"><h2><span id="monTitle">Month</span></h2><div class="wk-nav" role="group" aria-label="Choose a month"><button type="button" class="btn ghost small" data-mon="-1" aria-label="Previous month">‹ Prev</button><button type="button" class="btn ghost small" data-mon="0">Today</button><button type="button" class="btn ghost small" data-mon="1" aria-label="Next month">Next ›</button></div></div>
+      <label class="mon-focus" for="monFocus"><span aria-hidden="true">★</span><input class="field" id="monFocus" placeholder="This month's focus" aria-label="This month's focus" autocomplete="off"><span class="saved" id="monMsg"></span></label>
+      <div class="mon-head" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="mon-grid" id="monGrid"></div>
+      <span class="hint">Anything you type here also shows in that week's schedule.</span>
+    </div>
+  </section>
+
   <section class="view" id="view-uni" role="tabpanel" hidden>
     <div class="panel" style="--c: var(--lime)">
       <div class="panel-head"><h2>Study sessions</h2><span class="hint">Tap a box when you finish one · +10 XP each</span></div>

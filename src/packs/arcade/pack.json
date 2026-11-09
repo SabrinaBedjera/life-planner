@@ -34,6 +34,12 @@
       "desc": "Week ahead, what's coming up, energy check-in and weekly quests with XP."
     },
     {
+      "id": "month",
+      "label": "Month",
+      "area": "plan",
+      "desc": "A month calendar you can type in, with a focus for the month. Each day matches that week's schedule."
+    },
+    {
       "id": "uni",
       "label": "Uni",
       "area": "work",

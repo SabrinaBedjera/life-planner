@@ -35,6 +35,13 @@
       "desc": "This week's schedule, a phone-style weekly list, this week's roadmap and a reflection box."
     },
     {
+      "id": "month",
+      "label": "Month",
+      "area": "plan",
+      "group": "week",
+      "desc": "A month calendar you can type in, with a focus for the month. Each day matches that week's schedule."
+    },
+    {
       "id": "goals",
       "label": "Goals",
       "area": "plan",

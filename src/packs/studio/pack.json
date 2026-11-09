@@ -34,6 +34,12 @@
       "desc": "The week ahead, a to-do list and the next things with a date."
     },
     {
+      "id": "month",
+      "label": "Month",
+      "area": "plan",
+      "desc": "A month calendar you can type in, with a focus for the month. Each day matches that week's schedule."
+    },
+    {
       "id": "home",
       "label": "Home projects",
       "area": "home",
