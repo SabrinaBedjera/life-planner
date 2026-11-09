@@ -58,6 +58,8 @@ textarea.field { resize: vertical; }
 .btn:hover { background: var(--c, var(--cyan)); color: var(--bg); }
 .btn.ghost { border-color: var(--line); color: var(--muted); }
 .btn.ghost:hover { background: var(--panel-2); color: var(--fg); }
+.wk-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+.wk-nav .btn { padding: 4px 10px; font-size: 12px; }
 .x { appearance: none; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1; }
 .x:hover { color: var(--red); }
 .addrow { display: flex; flex-wrap: wrap; gap: 8px; }

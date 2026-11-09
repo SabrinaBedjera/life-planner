@@ -179,21 +179,38 @@
   }
 
   /* Week ahead */
+  // Which week the schedule shows: 0 = this week, -1 = last week, 1 = next week, and so on
+  var schedOff = 0;
+  function schedTitle(mon) {
+    if (schedOff === 0) return "The week ahead";
+    var sun = new Date(mon.getTime() + 6 * DAY), o = { month: "short", day: "numeric" };
+    var span = mon.toLocaleDateString(undefined, o) + " – " + sun.toLocaleDateString(undefined, o);
+    return schedOff === -1 ? "Last week · " + span : schedOff === 1 ? "Next week · " + span : "Week of " + span;
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest(".wk-nav [data-wk]"); if (!b) return;
+    var n = Number(b.dataset.wk); schedOff = n === 0 ? 0 : schedOff + n;
+    $("#schedMsg").textContent = ""; renderWeek();
+  });
   function renderWeek() {
     var names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], wrap = $("#sched");
-    var saved = state.week[weekKey];
+    var mon = new Date(monday.getTime() + schedOff * 7 * DAY); mon.setHours(0, 0, 0, 0);
+    var key = iso(mon), isNow = schedOff === 0;
+    var saved = state.week[key];
+    if ($("#schedTitle")) $("#schedTitle").textContent = schedTitle(mon);
+    if ($("#schedNow")) $("#schedNow").hidden = isNow;
     wrap.innerHTML = "";
     names.forEach(function (n, i) {
-      var d = new Date(monday.getTime() + i * DAY);
+      var d = new Date(mon.getTime() + i * DAY);
       var el = document.createElement("div");
-      el.className = "day" + (i === dow ? " today" : "");
+      el.className = "day" + (isNow && i === dow ? " today" : "");
       el.innerHTML = '<label class="dn" for="day-' + i + '">' + n + "<span>" + d.getDate() + "</span></label>";
       var ta = document.createElement("textarea");
       ta.id = "day-" + i; ta.rows = 4;
-      ta.value = saved ? (saved[i] || "") : (state.weekSeed ? state.weekSeed[i] : "");
+      ta.value = saved ? (saved[i] || "") : (isNow && state.weekSeed ? state.weekSeed[i] : "");
       ta.addEventListener("input", function () {
-        if (!state.week[weekKey]) state.week[weekKey] = Array.prototype.map.call(wrap.querySelectorAll("textarea"), function (t) { return t.value; });
-        state.week[weekKey][i] = ta.value; save();
+        if (!state.week[key]) state.week[key] = Array.prototype.map.call(wrap.querySelectorAll("textarea"), function (t) { return t.value; });
+        state.week[key][i] = ta.value; save();
         $("#schedMsg").textContent = "Saved.";
       });
       el.appendChild(ta); wrap.appendChild(el);

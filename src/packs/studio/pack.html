@@ -28,7 +28,7 @@
     <figure class="quote" id="quoteDay"></figure>
     <div class="panel has-deco" style="--c: var(--blush)">
         <img class="deco " src="asset:studio/deco" alt="" aria-hidden="true">
-      <div class="panel-head"><h2><span class="step">1</span>The week ahead</h2><span class="hint">Click a day and type. It saves by itself.</span></div>
+      <div class="panel-head"><h2><span class="step">1</span><span id="schedTitle">The week ahead</span></h2><span class="hint">Click a day and type. It saves by itself.</span><div class="wk-nav" role="group" aria-label="Choose a week"><button type="button" class="btn ghost small" data-wk="-1" aria-label="Previous week">‹ Prev</button><button type="button" class="btn ghost small" data-wk="0" id="schedNow" hidden>This week</button><button type="button" class="btn ghost small" data-wk="1" aria-label="Next week">Next ›</button></div></div>
       <div class="sched" id="sched"></div>
       <span class="saved" id="schedMsg"></span>
     </div>

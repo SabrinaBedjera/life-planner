@@ -24,7 +24,7 @@
   <!-- WEEK -->
   <section class="view" id="view-week" role="tabpanel">
     <div class="panel hud" style="--c: var(--lime)">
-      <div class="panel-head"><h2>Week ahead</h2><span class="hint">Type in any day · saves as you go</span></div>
+      <div class="panel-head"><h2 id="schedTitle">Week ahead</h2><span class="hint">Type in any day · saves as you go</span><div class="wk-nav" role="group" aria-label="Choose a week"><button type="button" class="btn ghost small" data-wk="-1" aria-label="Previous week">‹ Prev</button><button type="button" class="btn ghost small" data-wk="0" id="schedNow" hidden>This week</button><button type="button" class="btn ghost small" data-wk="1" aria-label="Next week">Next ›</button></div></div>
       <div class="sched" id="sched"></div>
       <span class="saved" id="schedMsg"></span>
     </div>
