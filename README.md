@@ -1,6 +1,8 @@
 # Life Planner
 
-A free, pretty planner for your week, your goals and the things you care about. Pick the planner for your stage of life, download one file and open it. No account, no install and no coding needed.
+A free, pretty planner for your week, your goals and the things you care about. Pick the planner for your stage of life and open it on your phone or computer. No account, no install and no coding needed.
+
+**Open a planner now:** [sabrinabedjera.github.io/life-planner](https://sabrinabedjera.github.io/life-planner/)
 
 ## Pick a planner
 
@@ -10,13 +12,32 @@ There are three planners, one for each stage of life. Each one starts with the t
 |---|---|---|---|
 | **Built for** | Building a career: job hunting, goals and staying on top of a busy week | School or uni life: classes, deadlines, part-time work, clubs and friends | Running a home and family: projects around the house, wellbeing and the people you love |
 | **What's inside** | A weekly plan, goals with a week-by-week roadmap, a job tracker with fit scores and charts, networking contacts, side projects, a profile, a fitness log and creative projects | A weekly plan, study sessions, deadlines and coming-up dates, shifts at work, clubs and friends, a gym log, an energy check-in with ideas for low days, and XP for ticking things off | A weekly plan with a daily quote, home project tracker, wellbeing and a mood journal, family and friends, inspiration, a book shelf, and a planner for a hobby or video channel |
+| **Open it** | [Open Working Professionals](https://sabrinabedjera.github.io/life-planner/planners/working-professionals.html) | [Open Students](https://sabrinabedjera.github.io/life-planner/planners/students.html) | [Open Parents](https://sabrinabedjera.github.io/life-planner/planners/parents.html) |
 | **File** | [`planners/working-professionals.html`](planners/working-professionals.html) | [`planners/students.html`](planners/students.html) | [`planners/parents.html`](planners/parents.html) |
 
 Each planner is one file that works on its own, even with no internet. They only differ in how they **start**. Any planner can switch on any tab and wear any of the 15 themes, so pick the one closest to your life and make it yours.
 
 ![The Working Professionals, Students and Parents planners](themes/previews/planners-by-audience.png)
 
-## Use it in your browser (easiest)
+## Use it on your phone (easiest)
+
+1. On your phone, tap the **Open** link for your planner in the table above. It opens like any web page.
+2. Add it to your Home Screen so it's one tap away:
+   - **iPhone (Safari):** tap the Share button (the square with an arrow), then **Add to Home Screen**.
+   - **Android (Chrome):** tap the ⋮ menu, then **Add to Home screen**.
+3. From now on, **always open it from that Home Screen icon**. Start typing. Everything saves by itself.
+
+**Good to know**
+
+- Your planner saves **on your phone only**, inside that icon. Nothing you type is sent anywhere, and there's no account or tracking.
+- The icon and your browser keep separate notes. If you open the planner in your browser instead of the icon, it starts empty. Stick to the icon.
+- On iPhone, a planner you only visit in Safari can get cleared if you don't open it for a week or so. The Home Screen icon keeps your notes. Export a backup now and then either way.
+- New versions show up by themselves the next time you open the link, and your notes stay. See [Get a newer version](#get-a-newer-version).
+- Moving over from a planner you used somewhere else? Export a backup there, then tap **Import backup** at the bottom of the new one and pick the file.
+
+The same links work on a computer too. Just bookmark yours.
+
+## Use it in your browser as a download
 
 1. Click the file for the planner you want in the table above, for example `planners/students.html` for Students.
 2. Click the **Download raw file** button (the arrow pointing down, near the top right of the file).
@@ -35,12 +56,14 @@ Each planner is one file that works on its own, even with no internet. They only
 
 ## Get a newer version
 
-Your planner file never updates itself. That's on purpose: it never connects to the internet, so nothing you type can leave your computer. The version you have is shown at the bottom of your planner (for example, "Life Planner version 2.1.0").
+**If you open your planner from a link** (see [Use it on your phone](#use-it-on-your-phone-easiest)), you always get the newest version. Your notes stay, because they're saved on your device, not in the page. Exporting a backup now and then is still a good idea.
+
+**If you downloaded the file**, it never updates itself. That's on purpose: it never connects to the internet, so nothing you type can leave your computer. The version you have is shown at the bottom of your planner (for example, "Life Planner version 2.1.0").
 
 To move to a newer version:
 
 1. In your current planner, click **Export backup** and save the file somewhere private.
-2. Download the new planner file from `planners/` (see [Use it in your browser](#use-it-in-your-browser-easiest)).
+2. Download the new planner file from `planners/` (see [Use it in your browser as a download](#use-it-in-your-browser-as-a-download)).
 3. Open the new file and click **Import backup**, then pick your backup.
 4. Check everything's there. If anything looks wrong, **Undo last import** puts it back.
 
@@ -64,7 +87,7 @@ If you open the new file **in the same browser** as the old one, your planner is
 
 ## Choose your tabs
 
-Tap the **✦ Customize** button in the bottom-right corner, then **Tabs**.
+Tap the **✦ Customize** button in the top-right corner, then **Tabs**.
 
 - Each tab has a switch. Turn it off to hide the tab, on to bring it back.
 - **Hiding a tab never deletes anything.** Switch it back on and everything is exactly where you left it.
@@ -147,7 +170,8 @@ Attach the file the same way and use the same message. If the AI can show a live
 
 ## Files
 
-- `planners/working-professionals.html`, `planners/students.html`, `planners/parents.html`: the planners to download. Each works on its own.
+- `index.html`: the start page at [sabrinabedjera.github.io/life-planner](https://sabrinabedjera.github.io/life-planner/), linking to the three planners.
+- `planners/working-professionals.html`, `planners/students.html`, `planners/parents.html`: the planners. Open them from the links above or download one. Each works on its own.
 - `themes/`: the classic single-look versions of the three planners. They still work, and their backups import into the new planners.
 - `src/`: the shared source the planners are built from (developers only):
   - `src/packs/`: the original planners' tabs, styles and code.
