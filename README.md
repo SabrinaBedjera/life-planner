@@ -44,9 +44,9 @@ Tap **✦ Customize** at the top right.
 
 ![All fifteen themes on the Parents planner](docs/theme-gallery.jpg)
 
-## Use it with Claude or another AI
+## Optional: use it with AI
 
-You can open your planner in an AI chat and ask it to change things for you. Download the file, start a new chat at [claude.ai](https://claude.ai) (or ChatGPT, Gemini and others), attach it, and paste:
+The planner never needs AI, but if you like, you can open it in an AI chat and ask it to change things for you. Download the file, start a new chat at [claude.ai](https://claude.ai) (or ChatGPT, Gemini and others), attach it, and paste:
 
 ```
 Open this file as an artifact so I can use it here. Then personalise it for me:
