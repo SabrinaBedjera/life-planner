@@ -1,125 +1,65 @@
 # Life Planner
 
-A free, pretty planner for your week, your goals and the things you care about. Pick the planner for your stage of life and open it on your phone or computer. No account, no install and no coding needed.
+A free, pretty planner for your week, your goals and the things you care about. It works on your phone or computer, with no account, no install and no tracking.
 
 **Open a planner now:** [sabrinabedjera.github.io/life-planner](https://sabrinabedjera.github.io/life-planner/)
 
-## Pick a planner
+![The Working Professionals, Students and Parents planners](themes/previews/planners-by-audience.png)
 
-There are three planners, one for each stage of life. Each one starts with the tabs and examples that person needs.
+## Pick a planner
 
 | | Working Professionals | Students | Parents |
 |---|---|---|---|
-| **Built for** | Building a career: job hunting, goals and staying on top of a busy week | School or uni life: classes, deadlines, part-time work, clubs and friends | Running a home and family: projects around the house, wellbeing and the people you love |
-| **What's inside** | A weekly plan, goals with a week-by-week roadmap, a job tracker with fit scores and charts, networking contacts, side projects, a profile, a fitness log and creative projects | A weekly plan, study sessions, deadlines and coming-up dates, shifts at work, clubs and friends, a gym log, an energy check-in with ideas for low days, and XP for ticking things off | A weekly plan with a daily quote, home project tracker, wellbeing and a mood journal, family and friends, inspiration, a book shelf, and a planner for a hobby or video channel |
-| **Open it** | [Open Working Professionals](https://sabrinabedjera.github.io/life-planner/planners/working-professionals.html) | [Open Students](https://sabrinabedjera.github.io/life-planner/planners/students.html) | [Open Parents](https://sabrinabedjera.github.io/life-planner/planners/parents.html) |
-| **File** | [`planners/working-professionals.html`](planners/working-professionals.html) | [`planners/students.html`](planners/students.html) | [`planners/parents.html`](planners/parents.html) |
+| **Built for** | Job hunting, goals and a busy week | Classes, deadlines, shifts, clubs and friends | Home projects, wellbeing, family, books and a hobby channel |
+| **Open it** | [Open](https://sabrinabedjera.github.io/life-planner/planners/working-professionals.html) | [Open](https://sabrinabedjera.github.io/life-planner/planners/students.html) | [Open](https://sabrinabedjera.github.io/life-planner/planners/parents.html) |
+| **Download** | [`working-professionals.html`](planners/working-professionals.html) | [`students.html`](planners/students.html) | [`parents.html`](planners/parents.html) |
 
-Each planner is one file that works on its own, even with no internet. They only differ in how they **start**. Any planner can switch on any tab and wear any of the 15 themes, so pick the one closest to your life and make it yours.
-
-![The Working Professionals, Students and Parents planners](themes/previews/planners-by-audience.png)
+They only differ in how they start. Any planner can turn on any tab and use any of the 15 themes.
 
 ## Two ways to use it
 
 | | **Open the link** (easiest) | **Download the file** |
 |---|---|---|
-| **How** | Tap the **Open** link above. That's it. | Download the `.html` file and open it. |
-| **Best for** | Phones, and anyone who wants it simple | Computers, and anyone who wants it fully offline |
-| **Saving** | Saves by itself as you type. Nothing to click. | Saves by itself as you type. Nothing to click. |
-| **Where your notes are saved** | In your browser, on your device only | In your browser, on your device only |
-| **Keeping a copy** | Tap **Export backup** at the bottom now and then. It saves a small file you can bring back with **Import backup**. | Same: **Export backup** now and then, **Import backup** to bring it back. |
-| **Needs internet** | To open it | Never |
-| **Updates** | Automatic: you always get the newest version | You download the new file yourself |
+| **Best for** | Phones, and keeping it simple | Computers, and working fully offline |
+| **How** | Tap **Open** above, then bookmark it | Open the file, tap **Download raw file**, then double-click it |
+| **Saving** | Saves by itself as you type | Saves by itself as you type |
+| **Updates** | Automatic | Download the new file, then **Import backup** |
 
-Either way, nothing you type is sent anywhere, and there's no account or tracking. Pick one and stick with it, because the link and the file keep separate notes. To switch, use **Export backup** and **Import backup**.
+**On a phone?** You can add the link to your Home Screen so it opens like an app (iPhone: Share button → **Add to Home Screen**; Android: ⋮ menu → **Add to Home screen**). Then always open it from that icon.
 
-## Use it on your phone (easiest)
+## Keep your notes safe
 
-1. On your phone, tap the **Open** link for your planner in the table above. It opens like any web page.
-2. Start typing. Everything saves by itself.
-3. Next time, open the same link and your notes are there. Bookmark it so it's easy to find.
+Your notes are saved only on your device, in the browser (or Home Screen icon) you use. Nothing is ever sent anywhere. That also means clearing your browser data or getting a new phone or computer starts you from empty, and the link, the file and the icon each keep separate notes.
 
-**Optional: put it on your Home Screen** so it opens like an app.
+- **Export backup** (bottom of your planner) saves one small file with everything in it. Do this now and then, and keep the file private.
+- **Import backup** brings it back, on any device or in any planner. It shows what's in the file first, and you choose to add to what you have or replace it. **Undo last import** puts things back.
 
-- **iPhone (Safari):** tap the Share button (the square with an arrow), then **Add to Home Screen**.
-- **Android (Chrome):** tap the ⋮ menu, then **Add to Home screen**.
+## Make it yours
 
-If you do this, always open it from the Home Screen icon, because the icon keeps its own notes, separate from your browser.
+Tap **✦ Customize** at the top right.
 
-**Good to know**
-
-- Your planner saves **on your phone only**. Nothing you type is sent anywhere, and there's no account or tracking.
-- On iPhone, Safari can clear a site's saved notes if you don't open it for a few weeks. The Home Screen icon is safer. Either way, tap **Export backup** now and then.
-- New versions show up by themselves the next time you open the link, and your notes stay. See [Get a newer version](#get-a-newer-version).
-- Moving over from a planner you used somewhere else? Export a backup there, then tap **Import backup** at the bottom of the new one and pick the file.
-
-The same links work on a computer too. Just bookmark yours.
-
-## Use it in your browser as a download
-
-1. Click the file for the planner you want in the table above, for example `planners/students.html` for Students.
-2. Click the **Download raw file** button (the arrow pointing down, near the top right of the file).
-3. Find the file in your Downloads folder and double-click it. It opens in your web browser.
-4. Start typing. Everything saves by itself.
-
-**Good to know**
-
-- Your planner saves **inside that browser on that computer**. Open it the same way each time and your notes will be there.
-- Move the file somewhere safe, like your Documents folder, and add a bookmark so it's one click away.
-- Nothing you type is sent anywhere. There's no account, no tracking and no cloud. It stays on your computer.
-- It works fully offline: the fonts, pictures and charts are all inside the file.
-- Click **Start fresh** at the bottom to clear the example content in the planner's own tabs and make it yours.
-- Want the examples back? **Restore default template design** adds the example content again without touching anything you've made.
-- If a change ever fails to save (for example, the browser's storage is full or blocked in a private window), a yellow message pops up so you can export a backup straight away.
-
-## Get a newer version
-
-**If you open your planner from a link** (see [Use it on your phone](#use-it-on-your-phone-easiest)), you always get the newest version. Your notes stay, because they're saved on your device, not in the page. Exporting a backup now and then is still a good idea.
-
-**If you downloaded the file**, it never updates itself. That's on purpose: it never connects to the internet, so nothing you type can leave your computer. The version you have is shown at the bottom of your planner (for example, "Life Planner version 2.1.0").
-
-To move to a newer version:
-
-1. In your current planner, click **Export backup** and save the file somewhere private.
-2. Download the new planner file from `planners/` (see [Use it in your browser as a download](#use-it-in-your-browser-as-a-download)).
-3. Open the new file and click **Import backup**, then pick your backup.
-4. Check everything's there. If anything looks wrong, **Undo last import** puts it back.
-
-If you open the new file **in the same browser** as the old one, your planner is usually already there, because both versions use the same saved data. The backup is your safety net either way.
-
-### What's new in 2.1
-
-- Seven new themes: Mission Control, RPG, Deep Sea, Study Club, Pixel, Cat Cafe and Spa, each with its own sticker art and a little animation.
-- Dark Academia is gone (it was too close to Witchy). If you were using it, your planner switches back to its own theme and your content stays.
-- Goth / Witchy is now called Witchy, and Desktop 93 is now Desktop.
-- The ✦ Customize button sits at the top right, and the footer is tidier, with less-used actions under **More options**.
-- Smaller text in the weekly phone list, and cleaner sticker cut-outs in every theme.
-- The planner files are renamed to match who they're for: `working-professionals.html` (was `girly-pop.html`), `students.html` (was `arcade.html`) and `parents.html` (was `studio.html`). The file you already downloaded keeps working, and the backup steps above move your entries into a new one.
-
-### What's new in 2.0
-
-- Every planner can show every tab: pick yours with **✦ Customize**.
-- Eight themes, from Girly Pop to 70s Groove, that you can switch between any time.
-- Backups now cover everything, and you can move your planner between all three planners.
-- Works fully offline: fonts, pictures and charts are inside the file.
-
-## Choose your tabs
-
-Tap the **✦ Customize** button in the top-right corner, then **Tabs**.
-
-- Each tab has a switch. Turn it off to hide the tab, on to bring it back.
-- **Hiding a tab never deletes anything.** Switch it back on and everything is exactly where you left it.
-- **Add more tabs** lists the tabs from the other two planners, grouped by area (plans and goals, work and study, health, people, home, creative). Switch one on and it appears in your planner, with its own example content to get you started.
-- You can't hide your very last tab, so your planner is never empty.
-- **Back to the original tabs** goes back to the planner's starting tabs. Your content is kept.
-
-## Switch themes
-
-Tap **✦ Customize**, then **Themes**, and pick a card. Each card shows a small preview of that look.
+- **Tabs:** switch tabs on or off. Hiding a tab never deletes anything. **Add more tabs** brings in tabs from the other planners.
+- **Themes:** pick a look. Switching only changes the look, never your content.
+- **Start fresh** at the bottom clears the example content. **Restore default template design** brings the examples back without touching your own.
 
 ![All fifteen themes on the Parents planner](docs/theme-gallery.jpg)
 
-Each planner starts in its own theme (Working Professionals in Girly Pop, Students in Arcade, Parents in Studio), and you can switch to any of these:
+## Use it with Claude or another AI
+
+You can open your planner in an AI chat and ask it to change things for you. Download the file, start a new chat at [claude.ai](https://claude.ai) (or ChatGPT, Gemini and others), attach it, and paste:
+
+```
+Open this file as an artifact so I can use it here. Then personalise it for me:
+- My name is ___.
+- The areas of my life I want to plan are ___.
+- Change the example content to things that fit my life: ___.
+Keep the same look and keep everything saving in the browser.
+```
+
+Ideas to ask for: "Rename the tabs to Work, Home, Health and Fun", "Add a section for my reading list", "Make the text bigger".
+
+<details>
+<summary><b>All 15 themes</b></summary>
 
 | Theme | The feel |
 |---|---|
@@ -139,78 +79,35 @@ Each planner starts in its own theme (Working Professionals in Girly Pop, Studen
 | Spa | Soft blush and sage, candlelight and jade rollers |
 | 70s Groove | Sunshine stripes, daisies and big round shapes |
 
-- Switching only changes the look. Your content and your tabs stay exactly the same, and you can switch as often as you like.
-- Changed your mind? Tap **Undo** in the little message that pops up, or pick the planner's own theme (marked **Original**) to get its original look back exactly.
+</details>
 
-## Back up your planner
+<details>
+<summary><b>What's new</b></summary>
 
-Your planner lives only in the browser where you use it. Clearing your browser history or "site data", or switching to a new computer, starts you from empty. A backup file keeps it safe.
+**Latest**
+- Open any planner from a link, which is great on a phone.
+- A Month calendar and Prev / Next week buttons in every planner.
+- Parents: edit any entry, a stage dropdown for projects and videos, notes on each book, a video checklist, an ideas inbox and Undo.
 
-- **Export backup** (in Working Professionals: **Backup & export**, then **Everything (JSON backup)**) downloads one `.json` file with everything in your planner, including the tabs you added and your theme. The footer shows when you last made one.
-- **Import backup** brings a backup back, on the same computer or a new one. Before anything changes it shows what's in the file and lets you pick:
-  - **Add to what I have**: keeps everything you have and adds anything from the backup that's missing.
-  - **Replace with backup**: your planner becomes the backup; anything the backup doesn't cover stays as it is (tap twice to confirm).
-  - **Cancel**: nothing changes.
-- Every import first saves a copy of your planner as it was, so **Undo last import** puts it back exactly.
-- **Moving between planners**: a backup from one planner can be imported into another. For example, import a Working Professionals backup into Students and its tabs appear in Students with your content in them. Your theme and tab choices stay as they are.
-- Backups made with older versions of the planners still import.
+**2.1**
+- Seven new themes: Mission Control, RPG, Deep Sea, Study Club, Pixel, Cat Cafe and Spa.
+- Files renamed by who they're for: `working-professionals.html` (was `girly-pop.html`), `students.html` (was `arcade.html`), `parents.html` (was `studio.html`). Old files keep working.
 
-Your backup file holds everything you typed, so keep it somewhere private, and never upload it anywhere public.
+**2.0**
+- Every planner can show every tab and wear every theme. Backups cover everything and move between planners. Works fully offline.
 
-## Use it with Claude or another AI
+The version you have is shown at the bottom of your planner.
 
-You can also open your planner inside an AI chat and ask it to change things for you.
+</details>
 
-**Claude**
+<details>
+<summary><b>For developers</b></summary>
 
-1. Download the file as above.
-2. Start a new chat at [claude.ai](https://claude.ai) and attach the file.
-3. Paste this, then add your own wishes:
+- `index.html`: the start page at [sabrinabedjera.github.io/life-planner](https://sabrinabedjera.github.io/life-planner/).
+- `planners/`: the built planners. Each is one file that works on its own, fully offline.
+- `themes/`: the classic single-look versions. Their backups import into the new planners.
+- `src/`: the shared source. `src/packs/` has each planner's tabs and code, `src/themes/` the themes, `src/shell/` the Customize panel, and `src/fonts/`, `src/assets/`, `src/vendor/` the fonts (SIL Open Font Licence), pictures and chart library.
+- `shared/backup-kit.html`: the backup, import and save-warning code every planner shares.
+- `tools/build.mjs`: builds `planners/` from `src/` (`npm run build`). `tests/`: browser tests (`npm test`).
 
-```
-Open this file as an artifact so I can use it here. Then personalise it for me:
-- My name is ___.
-- The areas of my life I want to plan are ___.
-- Change the example content to things that fit my life: ___.
-Keep the same look and keep everything saving in the browser.
-```
-
-**ChatGPT, Gemini or another AI**
-
-Attach the file the same way and use the same message. If the AI can show a live preview (both ChatGPT and Gemini call it Canvas), ask it to open the file there. If it can only give you code back, ask it for the whole updated file, save it as something like `my-planner.html`, and double-click it to open it in your browser.
-
-**Ideas for things to ask**
-
-- "Rename the tabs to Work, Home, Health and Fun."
-- "Add a section for my reading list."
-- "Make the text bigger."
-- "Change the pink to lavender."
-
-## Files
-
-- `index.html`: the start page at [sabrinabedjera.github.io/life-planner](https://sabrinabedjera.github.io/life-planner/), linking to the three planners.
-- `planners/working-professionals.html`, `planners/students.html`, `planners/parents.html`: the planners. Open them from the links above or download one. Each works on its own.
-- `themes/`: the classic single-look versions of the three planners. They still work, and their backups import into the new planners.
-- `src/`: the shared source the planners are built from (developers only):
-  - `src/packs/`: the original planners' tabs, styles and code.
-  - `src/themes/`: one folder per theme, with its colours, fonts, decorations and gallery preview.
-  - `src/shell/`: the Customize panel, the theme gallery and the code that lets every planner show every tab.
-  - `src/fonts/`, `src/assets/`, `src/vendor/`: fonts (SIL Open Font Licence), pictures and the chart library, built into each file so it works offline.
-- `shared/backup-kit.html`: the backup, import and save-warning code that every planner shares.
-- `tools/build.mjs`: builds `planners/` from `src/`.
-- `tests/`: browser tests.
-
-### For developers
-
-```
-npm install        # only needed for the tests
-npm run build      # rebuild planners/ after changing src/ or shared/
-npm run check      # fails if planners/ is out of date
-npm test           # backup and planner tests in a real browser, offline
-```
-
-Edit the files in `src/`, never the files in `planners/` directly. Each planner keeps its original storage, so updating the file never touches what someone has already typed.
-
-The example people, jobs and places in the files are made up.
-
-Licensed under [MIT](LICENSE). Use it, change it, share it.
+</details>
