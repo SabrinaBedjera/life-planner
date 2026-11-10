@@ -19,19 +19,35 @@ Each planner is one file that works on its own, even with no internet. They only
 
 ![The Working Professionals, Students and Parents planners](themes/previews/planners-by-audience.png)
 
+## Two ways to use it
+
+| | **Open the link** (easiest) | **Download the file** |
+|---|---|---|
+| **How** | Tap the **Open** link above. That's it. | Download the `.html` file and open it. |
+| **Best for** | Phones, and anyone who wants it simple | Computers, and anyone who wants it fully offline |
+| **Where your notes are saved** | In your browser, on your device only | In your browser, on your device only |
+| **Needs internet** | To open it | Never |
+| **Updates** | Automatic: you always get the newest version | You download the new file yourself |
+
+Either way, nothing you type is sent anywhere, and there's no account or tracking. Pick one and stick with it, because the link and the file keep separate notes. To switch, use **Export backup** and **Import backup**.
+
 ## Use it on your phone (easiest)
 
 1. On your phone, tap the **Open** link for your planner in the table above. It opens like any web page.
-2. Add it to your Home Screen so it's one tap away:
-   - **iPhone (Safari):** tap the Share button (the square with an arrow), then **Add to Home Screen**.
-   - **Android (Chrome):** tap the ⋮ menu, then **Add to Home screen**.
-3. From now on, **always open it from that Home Screen icon**. Start typing. Everything saves by itself.
+2. Start typing. Everything saves by itself.
+3. Next time, open the same link and your notes are there. Bookmark it so it's easy to find.
+
+**Optional: put it on your Home Screen** so it opens like an app.
+
+- **iPhone (Safari):** tap the Share button (the square with an arrow), then **Add to Home Screen**.
+- **Android (Chrome):** tap the ⋮ menu, then **Add to Home screen**.
+
+If you do this, always open it from the Home Screen icon, because the icon keeps its own notes, separate from your browser.
 
 **Good to know**
 
-- Your planner saves **on your phone only**, inside that icon. Nothing you type is sent anywhere, and there's no account or tracking.
-- The icon and your browser keep separate notes. If you open the planner in your browser instead of the icon, it starts empty. Stick to the icon.
-- On iPhone, a planner you only visit in Safari can get cleared if you don't open it for a week or so. The Home Screen icon keeps your notes. Export a backup now and then either way.
+- Your planner saves **on your phone only**. Nothing you type is sent anywhere, and there's no account or tracking.
+- On iPhone, Safari can clear a site's saved notes if you don't open it for a few weeks. The Home Screen icon is safer. Either way, tap **Export backup** now and then.
 - New versions show up by themselves the next time you open the link, and your notes stay. See [Get a newer version](#get-a-newer-version).
 - Moving over from a planner you used somewhere else? Export a backup there, then tap **Import backup** at the bottom of the new one and pick the file.
 
