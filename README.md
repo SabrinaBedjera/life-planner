@@ -25,7 +25,9 @@ Each planner is one file that works on its own, even with no internet. They only
 |---|---|---|
 | **How** | Tap the **Open** link above. That's it. | Download the `.html` file and open it. |
 | **Best for** | Phones, and anyone who wants it simple | Computers, and anyone who wants it fully offline |
+| **Saving** | Saves by itself as you type. Nothing to click. | Saves by itself as you type. Nothing to click. |
 | **Where your notes are saved** | In your browser, on your device only | In your browser, on your device only |
+| **Keeping a copy** | Tap **Export backup** at the bottom now and then. It saves a small file you can bring back with **Import backup**. | Same: **Export backup** now and then, **Import backup** to bring it back. |
 | **Needs internet** | To open it | Never |
 | **Updates** | Automatic: you always get the newest version | You download the new file yourself |
 
