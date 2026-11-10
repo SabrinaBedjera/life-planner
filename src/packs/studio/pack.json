@@ -46,6 +46,12 @@
       "desc": "Projects around the house, a shopping list and saved measurements."
     },
     {
+      "id": "meals",
+      "label": "Meals",
+      "area": "home",
+      "desc": "A week of meals, favourite recipes and a grocery list that fills itself from your recipes."
+    },
+    {
       "id": "wellbeing",
       "label": "Wellbeing",
       "area": "health",

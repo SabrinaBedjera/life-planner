@@ -17,6 +17,7 @@
     <a class="tab" role="tab" href="#week">This week</a>
     <a class="tab" role="tab" href="#month">Month</a>
     <a class="tab" role="tab" href="#home">Home projects</a>
+    <a class="tab" role="tab" href="#meals">Meals</a>
     <a class="tab" role="tab" href="#wellbeing">Wellbeing</a>
     <a class="tab" role="tab" href="#people">Family &amp; friends</a>
     <a class="tab" role="tab" href="#ideas">Inspiration</a>
@@ -92,6 +93,37 @@
         <form class="addrow" data-add="measures">
           <input class="field" name="title" placeholder="What, e.g. Bedroom alcove" aria-label="What" required>
           <input class="field sm" name="size" placeholder="Size, e.g. 92 × 40 cm" aria-label="Size">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEALS -->
+  <section class="view" id="view-meals" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--sage)">
+      <div class="panel-head"><h2><span class="step">1</span><span id="mealTitle">This week's meals</span></h2><div class="wk-nav" role="group" aria-label="Choose a week"><button type="button" class="btn ghost small" data-mwk="-1" aria-label="Previous week">‹ Prev</button><button type="button" class="btn ghost small" data-mwk="0" id="mealNow" hidden>This week</button><button type="button" class="btn ghost small" data-mwk="1" aria-label="Next week">Next ›</button></div></div>
+      <div class="meal-grid" id="mealGrid"></div>
+    </div>
+    <div class="two meals-two">
+      <div class="panel" style="--c: var(--pinky)">
+        <div class="panel-head"><h2><span class="step">2</span>Favourite recipes</h2></div>
+        <div class="recipes" id="recipeList"></div>
+        <form class="recipe-form" id="recipeForm">
+          <input class="field" name="title" placeholder="Recipe name" aria-label="Recipe name" required>
+          <input class="field sm" name="time" placeholder="Time, e.g. 40 min" aria-label="Time">
+          <input class="field" name="link" placeholder="Link (optional)" aria-label="Link">
+          <textarea class="field wide" name="ingredients" rows="3" placeholder="Ingredients, one per line" aria-label="Ingredients"></textarea>
+          <div class="erow"><label class="btn ghost filebtn">Photo<input type="file" id="rPhoto" accept="image/*" hidden></label><button class="btn" type="submit">Add recipe</button><span class="saved" id="rMsg"></span></div>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">3</span>Grocery list</h2><button type="button" class="btn ghost small" id="clearTicked">Clear ticked</button></div>
+        <label class="auto-row"><input type="checkbox" class="check" id="groceryAuto"> Add recipe ingredients here when I plan a meal</label>
+        <ul class="list" id="list-groceries"></ul>
+        <form class="addrow" data-add="groceries">
+          <input class="field" name="title" placeholder="Item" aria-label="Item" required>
+          <input class="field sm" name="qty" placeholder="Amount" aria-label="Amount">
           <button class="btn" type="submit">Add</button>
         </form>
       </div>
@@ -262,7 +294,7 @@
       <div class="slots" id="slots"></div>
     </div>
     <div class="panel" style="--c: var(--sage)">
-      <div class="panel-head"><h2><span class="step">2</span>Video pipeline</h2><span class="hint">Click the label to move it along: idea, filming, editing, scheduled, posted</span></div>
+      <div class="panel-head"><h2><span class="step">2</span>Video pipeline</h2><span class="hint">Tap a video to edit it. Pick its stage from the label.</span></div>
       <ul class="list" id="list-uploads"></ul>
       <form class="addrow" data-add="uploads">
         <input class="field" name="title" placeholder="Video title, e.g. 30 new home finds this winter" aria-label="Video title" required>
@@ -271,9 +303,19 @@
         <button class="btn" type="submit">Add</button>
       </form>
     </div>
+    <div class="panel" style="--c: var(--blush)">
+      <div class="panel-head"><h2><span class="step">3</span>Ideas inbox</h2><span class="hint">Jot it in two seconds. Make it a video later.</span></div>
+      <form class="addrow" id="ideaForm">
+        <input class="field" id="ideaText" placeholder="Video idea, e.g. One shelf styled three ways" aria-label="Video idea" required>
+        <label class="btn ghost filebtn">Add a photo<input type="file" id="ideaPhoto" accept="image/*" hidden></label>
+        <button class="btn" type="submit">Jot it</button>
+      </form>
+      <span class="saved" id="ideaMsg"></span>
+      <ul class="list ideas" id="ideaList"></ul>
+    </div>
     <div class="panel has-deco" style="--c: var(--mustard)">
         <img class="deco " src="asset:studio/deco-4" alt="" aria-hidden="true">
-      <div class="panel-head"><h2><span class="step">3</span>Watch later</h2><span class="hint">Paste the link so it's one click away. Tick when watched.</span></div>
+      <div class="panel-head"><h2><span class="step">4</span>Watch later</h2><span class="hint">Paste the link so it's one click away. Tick when watched.</span></div>
       <ul class="list" id="list-watch"></ul>
       <form class="addrow" data-add="watch">
         <input class="field" name="title" placeholder="Video, e.g. 30 new home finds this winter" aria-label="Video" required>
@@ -284,7 +326,7 @@
     </div>
     <div class="two">
       <div class="panel" style="--c: var(--sky)">
-        <div class="panel-head"><h2><span class="step">4</span>Favourite channels</h2></div>
+        <div class="panel-head"><h2><span class="step">5</span>Favourite channels</h2></div>
         <ul class="list" id="list-channels"></ul>
         <form class="addrow" data-add="channels">
           <input class="field" name="title" placeholder="Channel name" aria-label="Channel name" required>
@@ -295,7 +337,7 @@
       </div>
       <div class="panel has-deco" style="--c: var(--blush)">
         <img class="deco sm" src="asset:studio/sm-8" alt="" aria-hidden="true">
-        <div class="panel-head"><h2><span class="step">5</span>Finds to feature</h2><span class="hint">Click the label: spotted, want it, bought</span></div>
+        <div class="panel-head"><h2><span class="step">6</span>Finds to feature</h2><span class="hint">Click the label: spotted, want it, bought</span></div>
         <ul class="list" id="list-tries"></ul>
         <form class="addrow" data-add="tries">
           <input class="field" name="title" placeholder="e.g. Rattan basket for the blankets" aria-label="Find" required>
@@ -312,6 +354,18 @@
     <details class="lp-more"><summary class="btn ghost">More options</summary><div class="lp-menu"><button class="btn ghost" type="button" onclick="LPBackup.restoreSamples()">Restore default template design</button><button class="btn ghost" type="button" data-act="reset">Start fresh</button></div></details>
   </div>
 </div>
+
+<div class="undo" id="undoToast" role="status" hidden><span></span><button type="button" class="btn ghost small">Undo</button></div>
+
+<dialog id="bookDlg" aria-labelledby="tdTitle">
+  <form method="dialog" class="cbox">
+    <div class="chead"><h2 id="tdTitle">My thoughts</h2><button class="x" value="cancel" aria-label="Close">×</button></div>
+    <label class="tdl"><span>My thoughts</span><textarea class="field" id="tdThoughts" rows="6" placeholder="What did you love? What stayed with you?"></textarea></label>
+    <label class="tdl"><span>A line I loved</span><input class="field" id="tdFav" placeholder="Favourite quote from the book"></label>
+    <label class="tdl"><span>Finished on</span><input class="field" id="tdDone" type="date"></label>
+    <div class="erow"><button class="btn" value="save">Save</button><button class="btn ghost" value="cancel">Cancel</button></div>
+  </form>
+</dialog>
 
 <!-- MAKE IT YOURS -->
 <dialog id="customize" aria-labelledby="cTitle">

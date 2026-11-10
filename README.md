@@ -10,7 +10,7 @@ A free, pretty planner for your week, your goals and the things you care about. 
 
 | | Working Professionals | Students | Parents |
 |---|---|---|---|
-| **Built for** | Job hunting, goals and a busy week | Classes, deadlines, shifts, clubs and friends | Home projects, wellbeing, family, books and a hobby channel |
+| **Built for** | Job hunting, goals and a busy week | Classes, deadlines, shifts, clubs and friends | Home projects, meals, wellbeing, family, books and a hobby channel |
 | **Open it** | [Open](https://sabrinabedjera.github.io/life-planner/planners/working-professionals.html) | [Open](https://sabrinabedjera.github.io/life-planner/planners/students.html) | [Open](https://sabrinabedjera.github.io/life-planner/planners/parents.html) |
 | **Download** | [`working-professionals.html`](planners/working-professionals.html) | [`students.html`](planners/students.html) | [`parents.html`](planners/parents.html) |
 
@@ -87,6 +87,7 @@ Ideas to ask for: "Rename the tabs to Work, Home, Health and Fun", "Add a sectio
 **Latest**
 - Open any planner from a link, which is great on a phone.
 - A Month calendar and Prev / Next week buttons in every planner.
+- Parents: a Meals tab with a week of meals, favourite recipes and a grocery list that fills itself from your recipes (you can switch that off).
 - Parents: edit any entry, a stage dropdown for projects and videos, notes on each book, a video checklist, an ideas inbox and Undo.
 
 **2.1**

@@ -15,7 +15,7 @@ const IDS = ["arcade", "studio", "girly-pop"];
 const THEMES = JSON.parse(readFileSync(join(root, "src", "themes", "order.json"), "utf8"));
 const ORIGINAL_TABS = {
   arcade: ["Week", "Month", "Uni", "Work", "Social", "Gym"],
-  studio: ["This week", "Month", "Home projects", "Wellbeing", "Family & friends", "Inspiration", "Books", "My channel"],
+  studio: ["This week", "Month", "Home projects", "Meals", "Wellbeing", "Family & friends", "Inspiration", "Books", "My channel"],
   "girly-pop": ["This week", "Jobs", "Life"]
 };
 const FILE = { "girly-pop": "working-professionals", arcade: "students", studio: "parents" };
@@ -124,7 +124,7 @@ for (const id of IDS) {
     const lib = await page.evaluate(() => LP._lib.map((e) => ({ id: e.id, pack: e.pack, route: e.route, label: e.label })));
     const own = lib.filter((e) => e.pack === id);
     const other = lib.filter((e) => e.pack !== id);
-    check(lib.length === 24, "every planner has the full tab library (" + lib.length + " tabs)");
+    check(lib.length === 25, "every planner has the full tab library (" + lib.length + " tabs)");
     const before = JSON.stringify(await stored(page, KEY(id)));
     await openCustomize(page, "tabs");
     const target = own[1];
@@ -438,6 +438,62 @@ for (const id of IDS) {
     if (shots) await page.screenshot({ path: join(shots, `month-${id}-${width}.png`), fullPage: true });
     await ctx.close();
   }
+}
+
+// Studio: edit entries, pick a stage, video checklist, undo, ideas inbox, book thoughts, uploads on the Month calendar
+{
+  const { ctx } = await context({ width: 390, height: 900 });
+  const { page, errors } = await openIn(ctx, "planners", "studio", "watch");
+  const L = page.locator("#list-uploads:visible");
+  await L.locator(".edit").first().click();
+  await L.locator(".editbox input[name=title]").fill("Edited title"); await L.locator(".editbox input[name=date]").fill("2030-01-04");
+  await L.locator(".editbox select[name=s]").selectOption("editing"); await L.locator(".editbox textarea[name=outline]").fill("Shot list");
+  await L.locator(".editbox button[type=submit]").click(); await page.waitForTimeout(150);
+  const row = () => L.locator("li").filter({ hasText: "Edited title" });
+  check((await row().count()) === 1 && (await row().locator("select.pill").inputValue()) === "editing", "studio: a video can be edited in place, date and stage included");
+  await row().locator("select.pill").selectOption("posted"); await row().locator(".step-chip", { hasText: "Film" }).click(); await page.waitForTimeout(150);
+  check((await row().locator("select.pill").inputValue()) === "posted" && (await row().locator(".step-chip[aria-pressed=true]").count()) === 1, "studio: the stage is a dropdown and checklist steps tick on and off");
+  const n = await L.locator("li").count();
+  await L.locator("li").first().locator(".x").click(); await page.locator("#undoToast button").click(); await page.waitForTimeout(150);
+  check((await L.locator("li").count()) === n, "studio: Undo brings back a removed video");
+  await page.locator("#ideaText").fill("Pink bathroom refresh"); await page.locator("#ideaForm button[type=submit]").click();
+  await page.locator("#ideaList li").first().locator(".mk").click(); await page.waitForTimeout(150);
+  check((await L.locator("li").filter({ hasText: "Pink bathroom refresh" }).count()) === 1, "studio: an idea from the inbox becomes a video in the pipeline");
+  await page.evaluate(() => { location.hash = "books"; }); await page.waitForTimeout(300);
+  await page.locator("#shelf-read:visible .thoughts").first().click(); await page.locator("#tdThoughts").fill("Loved the garden.");
+  await page.locator("#bookDlg button[value=save]").click(); await page.reload(); await page.waitForTimeout(600);
+  const saved = await stored(page, KEY("studio"));
+  check(saved.books.some((b) => b.thoughts === "Loved the garden.") && saved.uploads.some((u) => u.title === "Edited title" && u.outline === "Shot list"), "studio: book thoughts and video notes are saved");
+  check(!errors.length, "studio: no errors while editing" + (errors.length ? " " + errors[0] : ""));
+  await ctx.close();
+}
+
+// Studio: Meals tab (week of meals, recipes, grocery list that fills from recipes)
+for (const width of [1280, 390]) {
+  const { ctx } = await context({ width, height: 900 });
+  const { page, errors } = await openIn(ctx, "planners", "studio", "meals");
+  const cell = page.locator('#mealGrid textarea[data-slot="10"]');
+  await cell.fill("Tacos"); await page.waitForTimeout(150);
+  const groceries = () => page.locator("#list-groceries li").count();
+  const g0 = await groceries();
+  const card = page.locator(".rc").first();
+  await card.getByRole("button", { name: "Add to a day" }).click();
+  await page.locator("[data-pday]").selectOption("2"); await page.locator("[data-pslot]").selectOption("2"); await page.locator("[data-pgo]").click(); await page.waitForTimeout(150);
+  const wed = await page.locator('#mealGrid textarea[data-slot="8"]').inputValue();
+  check(/Lentil soup/.test(wed) && (await groceries()) > g0, `studio meals @${width}: a recipe goes into a day and its ingredients onto the grocery list`);
+  await page.locator("#undoToast button").click(); await page.waitForTimeout(150);
+  check(!/Lentil soup/.test(await page.locator('#mealGrid textarea[data-slot="8"]').inputValue()) && (await groceries()) === g0, `studio meals @${width}: Undo takes the meal and the groceries back off`);
+  await page.locator("#groceryAuto").uncheck();
+  await card.getByRole("button", { name: "Add to a day" }).click(); await page.locator("[data-pgo]").click(); await page.waitForTimeout(150);
+  check((await groceries()) === g0, `studio meals @${width}: with the switch off, planning a meal leaves the grocery list alone`);
+  await page.locator(".rc .edit").nth(1).click(); await page.locator(".rc.editing input[name=title]").fill("Big salad"); await page.locator(".rc.editing button[type=submit]").click();
+  check((await page.locator(".rc .edit").nth(1).textContent()) === "Big salad", `studio meals @${width}: a recipe can be edited`);
+  await page.locator("#clearTicked").click(); await page.waitForTimeout(150);
+  check((await page.locator("#list-groceries .check:checked").count()) === 0, `studio meals @${width}: Clear ticked removes ticked items`);
+  await page.reload(); await page.waitForTimeout(600);
+  check((await page.locator('#mealGrid textarea[data-slot="10"]').inputValue()) === "Tacos" && !(await page.locator("#groceryAuto").isChecked()), `studio meals @${width}: meals and the switch stay after reloading`);
+  check((width > 400 || await noSideScroll(page)) && !errors.length, `studio meals @${width}: no errors` + (width > 400 ? "" : " or side scroll") + (errors.length ? " " + errors[0] : ""));
+  await ctx.close();
 }
 
 await browser.close();
