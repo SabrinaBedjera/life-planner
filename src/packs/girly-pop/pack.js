@@ -314,7 +314,7 @@
     const mon = parse(WEEK);
     $("weekTitle").textContent = `Week of ${mon.toLocaleDateString(undefined, { month: "long", day: "numeric" })}`;
     const items = weekItems();
-    const li = (it) => `<li class="${it.done ? "done" : ""}"><label for="wi-${esc(it.id)}"><input type="checkbox" id="wi-${esc(it.id)}" data-act="toggle-item" data-id="${esc(it.id)}" ${it.done ? "checked" : ""}><span>${esc(it.text)}</span></label></li>`;
+    const li = (it) => `<li class="${it.done ? "done" : ""}"><label for="wi-${esc(it.id)}"><input type="checkbox" id="wi-${esc(it.id)}" data-act="toggle-item" data-id="${esc(it.id)}" ${it.done ? "checked" : ""}><span>${esc(it.text)}</span></label><button type="button" class="link-btn rm-x" data-act="del-item" data-id="${esc(it.id)}" aria-label="Remove: ${esc(it.text)}">×</button></li>`;
     const wk = weekWorkouts(WEEK), wt = weekWorkoutTarget();
     const pulled = dueThisWeek();
     const act = document.activeElement, keep = act && act.classList && act.classList.contains("lane-input") ? { lane: act.closest("form").dataset.lane, v: act.value } : null;
@@ -1063,6 +1063,16 @@
     if (act === "toggle-item") {
       const items = weekItems().map((it) => (it.id === t.dataset.id ? { ...it, done: t.checked } : it));
       await saveWeek({ items }); render(true); return;
+    }
+    if (act === "del-item") {
+      const id = t.dataset.id, doc = weekDoc(), items = weekItems().filter((it) => it.id !== id), patch = { items };
+      const m = /^s-(mon|tue|wed|thu|fri|sat|sun)-/.exec(id);
+      if (m && doc && doc.schedule && doc.schedule[m[1]]) {
+        const d = m[1];
+        patch.schedule = { ...doc.schedule, [d]: doc.schedule[d].split(/\n|;/).map((x) => x.trim()).filter((line) => line && "s-" + d + "-" + line.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40) !== id).join("\n") };
+        if (schedWk() === WEEK) delete state.schedDraft[d];
+      }
+      await saveWeek(patch); render(true); return;
     }
     if (act === "count") {
       const a = weekActions(weekDoc()); a[t.dataset.k] = Math.max(0, a[t.dataset.k] + Number(t.dataset.d));
