@@ -17,6 +17,7 @@
     <a class="tab" role="tab" href="#week">This week</a>
     <a class="tab" role="tab" href="#month">Month</a>
     <a class="tab" role="tab" href="#home">Home projects</a>
+    <a class="tab" role="tab" href="#meals">Meals</a>
     <a class="tab" role="tab" href="#wellbeing">Wellbeing</a>
     <a class="tab" role="tab" href="#people">Family &amp; friends</a>
     <a class="tab" role="tab" href="#ideas">Inspiration</a>
@@ -92,6 +93,37 @@
         <form class="addrow" data-add="measures">
           <input class="field" name="title" placeholder="What, e.g. Bedroom alcove" aria-label="What" required>
           <input class="field sm" name="size" placeholder="Size, e.g. 92 × 40 cm" aria-label="Size">
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEALS -->
+  <section class="view" id="view-meals" role="tabpanel" hidden>
+    <div class="panel" style="--c: var(--sage)">
+      <div class="panel-head"><h2><span class="step">1</span><span id="mealTitle">This week's meals</span></h2><div class="wk-nav" role="group" aria-label="Choose a week"><button type="button" class="btn ghost small" data-mwk="-1" aria-label="Previous week">‹ Prev</button><button type="button" class="btn ghost small" data-mwk="0" id="mealNow" hidden>This week</button><button type="button" class="btn ghost small" data-mwk="1" aria-label="Next week">Next ›</button></div></div>
+      <div class="meal-grid" id="mealGrid"></div>
+    </div>
+    <div class="two meals-two">
+      <div class="panel" style="--c: var(--pinky)">
+        <div class="panel-head"><h2><span class="step">2</span>Favourite recipes</h2></div>
+        <div class="recipes" id="recipeList"></div>
+        <form class="recipe-form" id="recipeForm">
+          <input class="field" name="title" placeholder="Recipe name" aria-label="Recipe name" required>
+          <input class="field sm" name="time" placeholder="Time, e.g. 40 min" aria-label="Time">
+          <input class="field" name="link" placeholder="Link (optional)" aria-label="Link">
+          <textarea class="field wide" name="ingredients" rows="3" placeholder="Ingredients, one per line" aria-label="Ingredients"></textarea>
+          <div class="erow"><label class="btn ghost filebtn">Photo<input type="file" id="rPhoto" accept="image/*" hidden></label><button class="btn" type="submit">Add recipe</button><span class="saved" id="rMsg"></span></div>
+        </form>
+      </div>
+      <div class="panel" style="--c: var(--birch)">
+        <div class="panel-head"><h2><span class="step">3</span>Grocery list</h2><button type="button" class="btn ghost small" id="clearTicked">Clear ticked</button></div>
+        <label class="auto-row"><input type="checkbox" class="check" id="groceryAuto"> Add recipe ingredients here when I plan a meal</label>
+        <ul class="list" id="list-groceries"></ul>
+        <form class="addrow" data-add="groceries">
+          <input class="field" name="title" placeholder="Item" aria-label="Item" required>
+          <input class="field sm" name="qty" placeholder="Amount" aria-label="Amount">
           <button class="btn" type="submit">Add</button>
         </form>
       </div>
