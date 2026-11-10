@@ -125,6 +125,10 @@
         { id: uid(), title: "Best pink decor under $20", note: "", date: "", s: "idea" },
         { id: uid(), title: "Fall arrivals you'll love", note: "", date: at(-1), s: "posted" }
       ]; })(),
+      vidIdeas: [
+        { id: uid(), title: "Styling one shelf three ways", photo: "" },
+        { id: uid(), title: "Thrift store finds under $10", photo: "" }
+      ],
       watch: [
         { id: uid(), title: "35 new home products this winter", channel: "Cosy Corners", link: "", done: false },
         { id: uid(), title: "Cottagecore home tour: the cosiest finds", channel: "Cosy Corners", link: "", done: false },
@@ -263,6 +267,30 @@
     if (it.link) { var safe = /^https?:\/\//i.test(it.link) ? it.link : "https://" + it.link; bits.push('<a href="' + esc(safe) + '" target="_blank" rel="noopener">' + (key === "watch" ? "Watch" : "Open link") + "</a>"); }
     return bits.join(" · ");
   }
+  // Video checklist steps and the extra notes a video card can hold
+  var STEPS = ["Script", "Film", "Edit", "Thumbnail", "Description", "Upload"];
+  var editing = null;
+  // Remove something but offer Undo for a few seconds
+  var undoTimer = null;
+  function removeWithUndo(list, it, redraw, what) {
+    var arr = state[list], at = arr.indexOf(it); if (at < 0) return;
+    arr.splice(at, 1); save(); redraw();
+    var t = $("#undoToast");
+    t.querySelector("span").textContent = (what || "Removed") + ".";
+    t.hidden = false; clearTimeout(undoTimer);
+    t.querySelector("button").onclick = function () { state[list].splice(Math.min(at, state[list].length), 0, it); save(); redraw(); t.hidden = true; };
+    undoTimer = setTimeout(function () { t.hidden = true; }, 7000);
+  }
+  function editForm(key, it) {
+    var f = document.querySelector('form[data-add="' + key + '"]'), html = "";
+    Array.prototype.forEach.call(f ? f.elements : [], function (el) {
+      if (!el.name) return;
+      html += '<label><span>' + esc(el.getAttribute("aria-label") || el.name) + '</span><input class="field" name="' + el.name + '" type="' + (el.type === "date" ? "date" : el.type === "number" ? "number" : "text") + '" value="' + esc(it[el.name] || "") + '"' + (el.name === "title" ? " required" : "") + "></label>";
+    });
+    if (STATUS[key]) html += '<label><span>Stage</span><select class="field" name="s">' + STATUS[key].map(function (o) { return '<option value="' + o + '"' + (o === it.s ? " selected" : "") + ">" + LABEL[o] + "</option>"; }).join("") + "</select></label>";
+    if (key === "uploads") html += '<label class="wide"><span>Title ideas</span><textarea class="field" name="titles" rows="2" placeholder="One idea per line">' + esc(it.titles || "") + '</textarea></label><label class="wide"><span>Outline and notes</span><textarea class="field" name="outline" rows="4" placeholder="Shots, talking points, links">' + esc(it.outline || "") + "</textarea></label>";
+    return '<form class="editbox">' + html + '<div class="erow"><button class="btn" type="submit">Save</button><button class="btn ghost" type="button" data-cancel>Cancel</button></div></form>';
+  }
   function renderList(key) {
     var ul = $("#list-" + key); if (!ul) return;
     var items = state[key].slice();
@@ -277,14 +305,33 @@
       var lead = ticks ? '<input type="checkbox" class="check" aria-label="Done"' + (it.done ? " checked" : "") + ">" : "<span></span>";
       var s = sub(key, it);
       var title = (key === "watch" && !it.done ? '<span class="tag-new">NEW</span>' : "") + esc(it.title) + (s ? "<small>" + s + "</small>" : "");
-      var right = hasStatus ? '<button class="pill" data-s="' + it.s + '" title="Click to change">' + LABEL[it.s] + "</button>" : "";
+      var right = "";
       var d = when(it);
+      if (editing === it) {
+        li.className = "item editing"; li.innerHTML = editForm(key, it);
+        var ef = li.querySelector("form");
+        ef.addEventListener("submit", function (e) {
+          e.preventDefault();
+          Array.prototype.forEach.call(ef.elements, function (el) { if (el.name) it[el.name] = el.value.trim(); });
+          editing = null; save(); renderAll();
+        });
+        li.querySelector("[data-cancel]").addEventListener("click", function () { editing = null; renderAll(); });
+        ul.appendChild(li); setTimeout(function () { var first = ef.querySelector("input, select"); if (first) first.focus(); }, 0);
+        return;
+      }
+      title = '<button type="button" class="open edit" title="Tap to edit">' + title.replace(/<small>[\s\S]*$/, "") + "</button>" + (s ? "<small>" + s + "</small>" : "");
+      if (key === "uploads") {
+        var st = it.steps || {};
+        title += '<span class="steps" role="group" aria-label="Checklist">' + STEPS.map(function (n) { return '<button type="button" class="step-chip" data-step="' + n + '" aria-pressed="' + !!st[n] + '">' + (st[n] ? "✓ " : "") + n + "</button>"; }).join("") + "</span>";
+        if (it.outline || it.titles) title += '<small class="hasnotes">✎ Has notes</small>';
+      }
+      if (hasStatus) right = '<select class="pill" data-s="' + it.s + '" aria-label="Stage">' + STATUS[key].map(function (o) { return '<option value="' + o + '"' + (o === it.s ? " selected" : "") + ">" + LABEL[o] + "</option>"; }).join("") + "</select>";
       li.innerHTML = lead + '<span class="t"><span>' + title + "</span></span>" + (d && key !== "moves" && key !== "medits" ? dueLabel(d) : "<span></span>") + '<span style="display:flex;gap:8px;align-items:center">' + right + '<button class="x" aria-label="Remove">×</button></span>';
       if (ticks) li.querySelector(".check").addEventListener("change", function (e) { it.done = e.target.checked; save(); renderAll(); });
-      if (hasStatus) li.querySelector(".pill").addEventListener("click", function () {
-        var opts = STATUS[key]; it.s = opts[(opts.indexOf(it.s) + 1) % opts.length]; save(); renderAll();
-      });
-      li.querySelector(".x").addEventListener("click", function () { state[key] = state[key].filter(function (x) { return x !== it; }); save(); renderAll(); });
+      if (hasStatus) li.querySelector(".pill").addEventListener("change", function () { it.s = this.value; save(); renderAll(); });
+      li.querySelector(".edit").addEventListener("click", function () { editing = it; renderAll(); });
+      li.querySelectorAll(".step-chip").forEach(function (b) { b.addEventListener("click", function () { it.steps = it.steps || {}; it.steps[b.dataset.step] = !it.steps[b.dataset.step]; save(); renderAll(); }); });
+      li.querySelector(".x").addEventListener("click", function () { removeWithUndo(key, it, renderAll); });
       ul.appendChild(li);
     });
   }
@@ -328,11 +375,13 @@
         for (var n = 1; n <= 5; n++) stars += '<button type="button" class="star' + (n <= b.stars ? " on" : "") + '" data-n="' + n + '" aria-label="' + n + ' stars">★</button>';
         el.innerHTML = '<label class="cover" title="Click to add a cover photo">' + cover + '<input type="file" accept="image/*" hidden></label>' +
           '<div class="bt">' + esc(b.title) + "<small>" + esc(b.author) + "</small></div>" +
+          '<button type="button" class="btn ghost thoughts">' + (b.thoughts || b.fav ? "✎ My thoughts" : "+ My thoughts") + "</button>" +
           (sh === "read" ? '<div class="stars" role="group" aria-label="Rating">' + stars + "</div>" : "") +
           '<div class="bact"><select class="field sm" aria-label="Move to shelf"><option value="toread">To read</option><option value="reading">Reading now</option><option value="read">Read</option></select><button class="x" aria-label="Remove">×</button></div>';
         el.querySelector("select").value = b.shelf;
         el.querySelector("select").addEventListener("change", function () { b.shelf = this.value; save(); renderBooks(); });
-        el.querySelector(".x").addEventListener("click", function () { state.books = state.books.filter(function (x) { return x !== b; }); save(); renderBooks(); });
+        el.querySelector(".x").addEventListener("click", function () { removeWithUndo("books", b, renderBooks, "Book removed"); });
+        el.querySelector(".thoughts").addEventListener("click", function () { openThoughts(b); });
         el.querySelector(".cover input").addEventListener("change", function () { if (this.files[0]) shrink(this.files[0], function (d) { b.cover = d; save(); renderBooks(); }); });
         el.querySelectorAll(".star").forEach(function (st) { st.addEventListener("click", function () { var n = +st.dataset.n; b.stars = b.stars === n ? 0 : n; save(); renderBooks(); }); });
         box.appendChild(el);
@@ -341,6 +390,20 @@
     var read = state.books.filter(function (b) { return b.shelf === "read"; }).length;
     $("#readCount").textContent = read ? read + (read === 1 ? " book" : " books") + " read" : "";
   }
+  // My thoughts about a book: notes, a favourite line and when you finished it
+  var thinking = null;
+  function openThoughts(b) {
+    thinking = b; var d = $("#bookDlg");
+    $("#tdTitle").textContent = b.title;
+    $("#tdThoughts").value = b.thoughts || ""; $("#tdFav").value = b.fav || ""; $("#tdDone").value = b.finished || "";
+    if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+  }
+  $("#bookDlg").addEventListener("submit", function (e) {
+    if (!thinking) return;
+    if (e.submitter && e.submitter.value === "cancel") { thinking = null; return; }
+    thinking.thoughts = $("#tdThoughts").value.trim(); thinking.fav = $("#tdFav").value.trim(); thinking.finished = $("#tdDone").value;
+    thinking = null; save(); renderBooks();
+  });
   var pendingCover = "";
   $("#bCover").addEventListener("change", function () {
     if (!this.files[0]) return;
@@ -351,6 +414,33 @@
     state.books.unshift({ id: uid(), title: t, author: $("#bAuthor").value.trim(), shelf: $("#bShelf").value, stars: 0, cover: pendingCover });
     pendingCover = ""; $("#bTitle").value = ""; $("#bAuthor").value = ""; $("#bCover").value = ""; $("#bMsg").textContent = "Added.";
     save(); renderBooks();
+  });
+
+  /* Video ideas inbox: jot it now, make it a video later */
+  var pendingIdeaPhoto = "";
+  function renderIdeas() {
+    var ul = $("#ideaList"); if (!ul) return;
+    ul.innerHTML = state.vidIdeas.length ? "" : '<li class="empty">No ideas yet. Jot one above.</li>';
+    state.vidIdeas.forEach(function (it) {
+      var li = document.createElement("li"); li.className = "idea";
+      li.innerHTML = (it.photo ? '<img src="' + esc(it.photo) + '" alt="">' : '<span class="idea-dot" aria-hidden="true">✦</span>') + '<span class="t">' + esc(it.title) + '</span><button type="button" class="btn ghost small mk">Make it a video →</button><button class="x" aria-label="Remove">×</button>';
+      li.querySelector(".mk").addEventListener("click", function () {
+        state.vidIdeas = state.vidIdeas.filter(function (x) { return x !== it; });
+        state.uploads.push({ id: uid(), title: it.title, note: "", date: "", s: "idea", photo: it.photo || "" });
+        save(); renderIdeas(); renderAll();
+        var t = $("#undoToast"); t.querySelector("span").textContent = "Added to your video pipeline."; t.querySelector("button").hidden = true; t.hidden = false;
+        clearTimeout(undoTimer); undoTimer = setTimeout(function () { t.hidden = true; t.querySelector("button").hidden = false; }, 3000);
+      });
+      li.querySelector(".x").addEventListener("click", function () { removeWithUndo("vidIdeas", it, renderIdeas, "Idea removed"); });
+      ul.appendChild(li);
+    });
+  }
+  $("#ideaPhoto").addEventListener("change", function () { if (this.files[0]) shrink(this.files[0], function (d) { pendingIdeaPhoto = d; $("#ideaMsg").textContent = "Photo added."; }); });
+  $("#ideaForm").addEventListener("submit", function (e) {
+    e.preventDefault(); var t = $("#ideaText").value.trim(); if (!t) return;
+    state.vidIdeas.unshift({ id: uid(), title: t, photo: pendingIdeaPhoto });
+    pendingIdeaPhoto = ""; $("#ideaText").value = ""; $("#ideaPhoto").value = ""; $("#ideaMsg").textContent = "";
+    save(); renderIdeas();
   });
 
   /* Quote of the day */
@@ -511,6 +601,7 @@
   $("#postDay").addEventListener("change", function () { state.postDay = +this.value; save(); renderSlots(); });
 
   function renderAll() {
+    renderIdeas();
     ["projects", "shopping", "measures", "moves", "appts", "birthdays", "plans", "ideas", "quotes", "medits", "uploads", "watch", "channels", "tries"].forEach(renderList);
     renderDots(); renderSwatches(); renderUpcoming(); renderSlots(); renderMed(); renderQuote(); renderBooks();
   }
@@ -519,7 +610,7 @@
     var a = e.target.closest("[data-act]"); if (!a) return;
     if (a.dataset.act === "reset") {
       if (a.dataset.armed) {
-        state = { quotesV: 2, week: {}, weekSeed: null, todos: [], projects: [], shopping: [], measures: [], moves: [], medits: [], quotes: [], books: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], custom: state.custom, journal: {}, uploads: [], watch: [], channels: [], tries: [], postDay: state.postDay };
+        state = { quotesV: 2, week: {}, weekSeed: null, monthFocus: {}, vidIdeas: [], todos: [], projects: [], shopping: [], measures: [], moves: [], medits: [], quotes: [], books: [], appts: [], birthdays: [], plans: [], swatches: [], ideas: [], custom: state.custom, journal: {}, uploads: [], watch: [], channels: [], tries: [], postDay: state.postDay };
         save(); renderWeek(); renderTodos(); renderAll(); jDay = iso(today); renderJournal();
         a.textContent = "Start fresh"; delete a.dataset.armed;
       } else { a.dataset.armed = "1"; a.textContent = "Click again to clear everything"; setTimeout(function () { a.textContent = "Start fresh"; delete a.dataset.armed; }, 4000); }
@@ -618,6 +709,8 @@
       var ta = document.createElement("textarea");
       ta.id = "mon-" + ds; ta.dataset.week = iso(mon); ta.dataset.i = i; ta.value = weekText(mon, i);
       ta.setAttribute("aria-label", d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }));
+      var ups = state.uploads.filter(function (u) { return u.date === ds; });
+      if (ups.length) el.insertAdjacentHTML("beforeend", '<div class="mon-ups">' + ups.map(function (u) { return '<a class="mon-up" href="#watch" data-s="' + u.s + '" title="' + esc(LABEL[u.s] || "") + '">🎬 ' + esc(u.title) + "</a>"; }).join("") + "</div>");
       el.appendChild(ta); grid.appendChild(el); cells++;
     }
   }
