@@ -285,12 +285,13 @@
     const old = (doc && doc.items) || defaultItems();
     const kept = old.filter((it) => !String(it.id).startsWith("s-"));
     const prevDone = Object.fromEntries(old.filter((it) => String(it.id).startsWith("s-")).map((it) => [it.id, it.done]));
+    const prevHidden = new Set(old.filter((it) => String(it.id).startsWith("s-") && it.hidden).map((it) => it.id));
     const fromSched = [];
     DAYS.forEach((d, i) => {
       const label = parse(addDays(wk, i)).toLocaleDateString(undefined, { weekday: "short" });
       schedule[d].split(/\n|;/).map((x) => x.trim()).filter(Boolean).forEach((line) => {
         const id = "s-" + d + "-" + line.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
-        fromSched.push({ id, text: `${label}: ${line}`, lane: classify(line), done: !!prevDone[id] });
+        fromSched.push({ id, text: `${label}: ${line}`, lane: classify(line), done: !!prevDone[id], ...(prevHidden.has(id) ? { hidden: true } : {}) });
       });
     });
     const snapshot = { ...state.schedDraft };
@@ -314,12 +315,12 @@
     const mon = parse(WEEK);
     $("weekTitle").textContent = `Week of ${mon.toLocaleDateString(undefined, { month: "long", day: "numeric" })}`;
     const items = weekItems();
-    const li = (it) => `<li class="${it.done ? "done" : ""}"><label for="wi-${esc(it.id)}"><input type="checkbox" id="wi-${esc(it.id)}" data-act="toggle-item" data-id="${esc(it.id)}" ${it.done ? "checked" : ""}><span>${esc(it.text)}</span></label></li>`;
+    const li = (it) => `<li class="${it.done ? "done" : ""}"><label for="wi-${esc(it.id)}"><input type="checkbox" id="wi-${esc(it.id)}" data-act="toggle-item" data-id="${esc(it.id)}" ${it.done ? "checked" : ""}><span>${esc(it.text)}</span></label><button type="button" class="link-btn rm-x" data-act="del-item" data-id="${esc(it.id)}" aria-label="Remove: ${esc(it.text)}">×</button></li>`;
     const wk = weekWorkouts(WEEK), wt = weekWorkoutTarget();
     const pulled = dueThisWeek();
     const act = document.activeElement, keep = act && act.classList && act.classList.contains("lane-input") ? { lane: act.closest("form").dataset.lane, v: act.value } : null;
-    $("lanes").innerHTML = LANES.filter((ln) => ln.k !== "other" || items.some((it) => it.lane === "other")).map((ln) => {
-      const its = items.filter((it) => (it.lane || "career") === ln.k);
+    $("lanes").innerHTML = LANES.filter((ln) => ln.k !== "other" || items.some((it) => !it.hidden && it.lane === "other")).map((ln) => {
+      const its = items.filter((it) => !it.hidden && (it.lane || "career") === ln.k);
       const pl = pulled.filter((x) => x.lane === ln.k);
       const auto = "";
       const add = `<form class="lane-add" data-lane="${ln.k}"><input type="checkbox" disabled tabindex="-1" aria-hidden="true"><input class="lane-input" placeholder="Add something…" aria-label="Add to ${ln.l}" autocomplete="off"></form>`;
@@ -1062,6 +1063,11 @@
     }
     if (act === "toggle-item") {
       const items = weekItems().map((it) => (it.id === t.dataset.id ? { ...it, done: t.checked } : it));
+      await saveWeek({ items }); render(true); return;
+    }
+    if (act === "del-item") {
+      // Schedule lines stay in the day box: hide the list item instead of deleting it.
+      const id = t.dataset.id, items = String(id).startsWith("s-") ? weekItems().map((it) => (it.id === id ? { ...it, hidden: true } : it)) : weekItems().filter((it) => it.id !== id);
       await saveWeek({ items }); render(true); return;
     }
     if (act === "count") {
