@@ -1,0 +1,18 @@
+%page% .lpm-xmas { position: relative; text-align: center; padding: 40px 230px 30px 260px; background: #fffaf0; border: 1.5px solid #d9c79a; border-radius: 24px; box-shadow: 0 0 0 5px #fffaf0, 0 0 0 6.5px #c9a24a, 0 14px 30px -16px rgba(70,40,20,.5); overflow: visible; }
+%page% .lpm-xmas::before { content: ""; position: absolute; left: 22px; right: 22px; top: 0; height: 9px; border-radius: 0 0 8px 8px; background: repeating-linear-gradient(135deg, #b3262e 0 14px, #fffaf0 14px 22px, #2f6b45 22px 36px, #fffaf0 36px 44px); }
+%page% .lpm-xmas .lpm-title { font-family: "Fraunces", Georgia, serif; font-style: italic; color: #b3262e; font-size: clamp(44px, 6.6vw, 74px); line-height: .95; font-weight: 700; text-transform: none; letter-spacing: -.01em; text-shadow: 0 2px 0 #fffaf0, 0 4px 0 rgba(201,162,74,.5); }
+%page% .lpm-xmas > img { position: absolute; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(70,40,20,.28)); }
+%page% .x-snow { left: 14px; bottom: 8px; height: clamp(100px, 14vw, 150px); }
+%page% .x-deer { left: clamp(84px, 13vw, 150px); bottom: 8px; height: clamp(86px, 12vw, 128px); }
+%page% .x-tree { right: 14px; bottom: 8px; height: clamp(104px, 14.5vw, 150px); }
+%page% .x-gifts { right: clamp(86px, 14vw, 160px); bottom: 8px; height: clamp(64px, 9vw, 100px); }
+%page% .x-poin { left: 50%; top: -30px; width: 64px; transform: translateX(-50%) rotate(-6deg); }
+%page% #lp-decor img { filter: drop-shadow(0 6px 8px rgba(70,40,20,.28)); }
+%page% .xd-santa { width: 112px; top: 230px; left: calc(50% - 668px); transform: rotate(-4deg); }
+%page% .xd-wreath { width: 108px; top: 470px; right: calc(50% - 650px); transform: rotate(6deg); }
+%page% .xd-horse { width: 124px; top: 760px; left: calc(50% - 676px); }
+%page% .xd-poin { width: 84px; top: 1000px; right: calc(50% - 632px); transform: rotate(14deg); }
+%page% .xd-ginger { width: 76px; top: 1250px; left: calc(50% - 636px); transform: rotate(-9deg); }
+%page% .xd-cane { width: 44px; top: 1480px; right: calc(50% - 612px); transform: rotate(10deg); }
+@media (max-width: 1000px) { %page% .x-deer, %page% .x-gifts { display: none; } %page% .lpm-xmas { padding-inline: 150px; } }
+@media (max-width: 760px) { %page% .x-deer, %page% .x-gifts, %page% .x-poin { display: none; } %page% .lpm-xmas { padding-inline: 78px; } %page% .x-snow { height: 88px; left: 8px; } %page% .x-tree { height: 100px; right: 8px; } }
