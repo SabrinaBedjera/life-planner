@@ -14,7 +14,7 @@ A free, pretty planner for your week, your goals and the things you care about. 
 | **Open it** | [Open](https://sabrinabedjera.github.io/life-planner/planners/working-professionals.html) | [Open](https://sabrinabedjera.github.io/life-planner/planners/students.html) | [Open](https://sabrinabedjera.github.io/life-planner/planners/parents.html) |
 | **Download** | [`working-professionals.html`](planners/working-professionals.html) | [`students.html`](planners/students.html) | [`parents.html`](planners/parents.html) |
 
-They only differ in how they start. Any planner can turn on any tab and use any of the 15 themes.
+They only differ in how they start. Any planner can turn on any tab and use any of the 16 themes.
 
 ## Two ways to use it
 
@@ -42,7 +42,7 @@ Tap **✦ Customize** at the top right.
 - **Themes:** pick a look. Switching only changes the look, never your content.
 - **Start fresh** at the bottom clears the example content. **Restore default template design** brings the examples back without touching your own.
 
-![All fifteen themes on the Parents planner](docs/theme-gallery.jpg)
+![The themes on the Parents planner](docs/theme-gallery.jpg)
 
 ## Optional: use it with AI
 
@@ -59,7 +59,7 @@ Keep the same look and keep everything saving in the browser.
 Ideas to ask for: "Rename the tabs to Work, Home, Health and Fun", "Add a section for my reading list", "Make the text bigger".
 
 <details>
-<summary><b>All 15 themes</b></summary>
+<summary><b>All 16 themes</b></summary>
 
 | Theme | The feel |
 |---|---|
@@ -78,6 +78,7 @@ Ideas to ask for: "Rename the tabs to Work, Home, Health and Fun", "Add a sectio
 | Cat Cafe | Latte tones, blush pink, sleepy cats and fresh pastries |
 | Spa | Soft blush and sage, candlelight and jade rollers |
 | 70s Groove | Sunshine stripes, daisies and big round shapes |
+| Christmas | Vintage Santa, snowmen, gingerbread and candy canes in cosy red and green |
 
 </details>
 
