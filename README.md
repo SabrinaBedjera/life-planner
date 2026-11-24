@@ -44,6 +44,8 @@ Tap **✦ Customize** at the top right.
 
 ![The themes on the Parents planner](docs/theme-gallery.jpg)
 
+![The Christmas theme](docs/theme-christmas.jpg)
+
 ## Optional: use it with AI
 
 The planner never needs AI, but if you like, you can open it in an AI chat and ask it to change things for you. Download the file, start a new chat at [claude.ai](https://claude.ai) (or ChatGPT, Gemini and others), attach it, and paste:
