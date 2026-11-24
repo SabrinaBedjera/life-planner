@@ -44,7 +44,7 @@ Tap **✦ Customize** at the top right.
 
 ![The themes on the Parents planner](docs/theme-gallery.jpg)
 
-![The Christmas theme](docs/theme-christmas.jpg)
+![The Christmas theme](docs/christmas-theme.jpg)
 
 ## Optional: use it with AI
 
